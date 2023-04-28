@@ -5,20 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor"
         mc:Ignorable="d"
-        Title="Graphic editor" Height="450" Width="800" MinWidth="600" MinHeight="400">
+        Title="Graphic editor" Height="450" Width="800" MinWidth="600" MinHeight="500">
     <Grid>
         <DockPanel HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="200"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center">
-                    <Label HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">Инструменты</Label>
-                </DockPanel>
-                <DockPanel VerticalAlignment="Stretch" Grid.Row="1" Width="200" HorizontalAlignment="Center">
-                    <Label HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">Параметры инструмента</Label>
-                </DockPanel>
+                <Frame Grid.Row="0" x:Name="ToolsPage" Source="..\Tools\Tools.xaml"/>
+                <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\ToolParams\ToolParams.xaml"/>
             </Grid>
         </DockPanel>
         <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Top" Background="DarkGray">
@@ -55,12 +51,10 @@
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center">
-                    <Label HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">История изменений</Label>
-                </DockPanel>
-                <DockPanel VerticalAlignment="Stretch" Grid.Row="1" Width="200" HorizontalAlignment="Center">
-                    <Label HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">Слои</Label>
-                </DockPanel>
+                <Frame Grid.Row="0" x:Name="ChangeHistoryPage" Source="..\ChangeHistory\ChangeHistory.xaml"/>
+                <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
+                
+                
             </Grid>
         </DockPanel>
         
