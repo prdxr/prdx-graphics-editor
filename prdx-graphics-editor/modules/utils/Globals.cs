@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using prdx_graphics_editor.modules.color_picker.FormColorPicker;
 
 namespace prdx_graphics_editor.modules.utils
 {
     public static class Globals
     {
-        public static ApplicationSettings applicationSettings = new ApplicationSettings();
-
+        public static ApplicationSettings applicationSettings = ApplicationSettings.CreateApplicationSettings();
+        public static PageColorPicker pageColorPickerRef;
 
 
 

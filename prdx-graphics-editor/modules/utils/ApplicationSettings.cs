@@ -18,13 +18,15 @@ namespace prdx_graphics_editor.modules.utils
     {
         public Color primaryColor { get; set; }
         public Color secondaryColor { get; set; }
+        public string colorPickerDefaultColor { get; set; }
 
-        static string filepath = "../TEST/settings.ini";
+        public static string filepath = AppDomain.CurrentDomain.BaseDirectory + "/settings.json";
 
         public ApplicationSettings()
         {
-            primaryColor = Color.FromRgb(0, 0, 0);
-            secondaryColor = Color.FromRgb(255, 255, 255);
+            this.primaryColor = Color.FromRgb(0, 0, 0);
+            this.secondaryColor = Color.FromRgb(255, 255, 255);
+            this.colorPickerDefaultColor = "#FFFFFF";
         }
         ~ApplicationSettings()
         {
@@ -38,6 +40,24 @@ namespace prdx_graphics_editor.modules.utils
             using (StreamWriter stream = new StreamWriter(filepath))
             {
                 stream.Write(jsonString);
+            }
+        }
+        public static ApplicationSettings CreateApplicationSettings()
+        {
+            string jsonString;
+
+            if (File.Exists(filepath))
+            {
+                using (StreamReader stream = new StreamReader(filepath))
+                {
+                    jsonString = stream.ReadToEnd();
+                }
+
+                return JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
+            }
+            else
+            {
+                return new ApplicationSettings();
             }
         }
     }

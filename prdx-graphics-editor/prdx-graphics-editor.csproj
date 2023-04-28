@@ -84,7 +84,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="modules\actions\Actions.cs" />
-    <Compile Include="modules\color picker\ColorPicker.cs" />
+    <Compile Include="modules\canvas\PageCanvas\PageCanvas.xaml.cs">
+      <DependentUpon>PageCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="modules\color picker\FormColorPicker\PageColorPicker.xaml.cs">
+      <DependentUpon>PageColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="modules\color picker\WindowColorPicker\WindowColorPicker.xaml.cs">
+      <DependentUpon>WindowColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="modules\main\ChangeHistory\ChangeHistory.xaml.cs">
       <DependentUpon>ChangeHistory.xaml</DependentUpon>
     </Compile>
@@ -97,6 +105,18 @@
     <Compile Include="modules\main\Tools\Tools.xaml.cs">
       <DependentUpon>Tools.xaml</DependentUpon>
     </Compile>
+    <Page Include="modules\canvas\PageCanvas\PageCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="modules\color picker\FormColorPicker\PageColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="modules\color picker\WindowColorPicker\WindowColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="modules\main\MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,7 +176,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="modules\canvas\" />
     <Folder Include="modules\main\ToolParams\tool pages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

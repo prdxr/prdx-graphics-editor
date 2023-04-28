@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:prdx_graphics_editor"
         mc:Ignorable="d"
         Title="Graphic editor" Height="450" Width="800" MinWidth="600" MinHeight="500">
-    <Grid>
+    <Grid Background="#333333">
         <DockPanel HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
@@ -53,12 +53,13 @@
                 </Grid.RowDefinitions>
                 <Frame Grid.Row="0" x:Name="ChangeHistoryPage" Source="..\ChangeHistory\ChangeHistory.xaml"/>
                 <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
-                
-                
             </Grid>
         </DockPanel>
-        
-        <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Bottom" Background="DarkGray"/>
 
+        <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Bottom" Background="DarkGray">
+            <Button Click="Button_Click">pick color</Button>
+        </DockPanel>
+
+        <Frame x:Name="CanvasPage" Source="..\..\canvas\PageCanvas\PageCanvas.xaml" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>
