@@ -19,7 +19,7 @@ namespace prdx_graphics_editor.modules.utils
         public Color primaryColor { get; set; }
         public Color secondaryColor { get; set; }
 
-        static string filepath = "";
+        static string filepath = "../TEST/settings.ini";
 
         public ApplicationSettings()
         {

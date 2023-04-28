@@ -84,7 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="modules\actions\Actions.cs" />
-    <Compile Include="modules\color selector\ColorSelector.cs" />
+    <Compile Include="modules\color picker\ColorPicker.cs" />
     <Compile Include="modules\main\ChangeHistory\ChangeHistory.xaml.cs">
       <DependentUpon>ChangeHistory.xaml</DependentUpon>
     </Compile>
