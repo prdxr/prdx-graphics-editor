@@ -7,6 +7,8 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.IO;
 using System.Windows.Media;
+using System.Windows.Controls;
+using prdx_graphics_editor.modules.canvas.PageCanvas;
 
 
 
@@ -19,6 +21,8 @@ namespace prdx_graphics_editor.modules.utils
         public Color primaryColor { get; set; }
         public Color secondaryColor { get; set; }
         public string colorPickerDefaultColor { get; set; }
+        public CanvasToolType activeTool { get; set; }
+        public Canvas canvas { get; set; }
 
         public static string filepath = AppDomain.CurrentDomain.BaseDirectory + "/settings.json";
 
@@ -27,6 +31,8 @@ namespace prdx_graphics_editor.modules.utils
             this.primaryColor = Color.FromRgb(0, 0, 0);
             this.secondaryColor = Color.FromRgb(255, 255, 255);
             this.colorPickerDefaultColor = "#FFFFFF";
+            this.activeTool = CanvasToolType.ToolPencil;
+            
         }
         ~ApplicationSettings()
         {
@@ -52,6 +58,8 @@ namespace prdx_graphics_editor.modules.utils
                 {
                     jsonString = stream.ReadToEnd();
                 }
+
+                var obj = JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
 
                 return JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
             }

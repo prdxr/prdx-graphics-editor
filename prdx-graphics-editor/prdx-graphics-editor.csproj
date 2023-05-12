@@ -102,8 +102,8 @@
     <Compile Include="modules\main\ToolParams\ToolParams.xaml.cs">
       <DependentUpon>ToolParams.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\main\Tools\Tools.xaml.cs">
-      <DependentUpon>Tools.xaml</DependentUpon>
+    <Compile Include="modules\main\PageTools\PageTools.xaml.cs">
+      <DependentUpon>PageTools.xaml</DependentUpon>
     </Compile>
     <Page Include="modules\canvas\PageCanvas\PageCanvas.xaml">
       <SubType>Designer</SubType>
@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="modules\main\Tools\Tools.xaml">
+    <Page Include="modules\main\PageTools\PageTools.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

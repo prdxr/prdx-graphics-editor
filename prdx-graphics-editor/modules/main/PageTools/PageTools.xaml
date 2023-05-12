@@ -1,0 +1,49 @@
+﻿<Page x:Class="prdx_graphics_editor.PageTools"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:prdx_graphics_editor"
+      mc:Ignorable="d" 
+      d:DesignHeight="200" d:DesignWidth="200"
+      Title="PageTools">
+
+    <Grid>
+        <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center" LastChildFill="False">
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">Инструменты</Label>
+            <Grid Background="DimGray" DockPanel.Dock="Top" Margin="10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+                <RadioButton Grid.Row="0" Grid.Column="0" x:Name="ButtonPencil" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="P" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="1" x:Name="ButtonBrush" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Br" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="2" x:Name="ButtonEraser" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Er" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="3" x:Name="ButtonSelect" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Sel" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="4" x:Name="ButtonFill" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Fill" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="0" x:Name="ButtonSquare" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Sq" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="1" x:Name="ButtonCircle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Cir" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="2" x:Name="ButtonTriangle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Tri" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="3" x:Name="ButtonLine" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Line" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="4" x:Name="ButtonArrow" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Arr" Checked="ChangeTool"></RadioButton>
+            </Grid>
+            <Grid DockPanel.Dock="Top" Width="100" Height="35" Background="DimGray">
+                <Border Width="25" Height="25" BorderBrush="#444" BorderThickness="1" Margin="26,7,49,3">
+                    <Button x:Name="buttonBackgroundColor" BorderBrush="Gray" Click="ChangeBackgroundColor"></Button>
+                </Border>
+                <Border Width="25" Height="25" BorderBrush="#444" BorderThickness="1" Margin="14,2,61,8">
+                    <Button x:Name="buttonForegroundColor" BorderBrush="Gray" Click="ChangeForegroundColor"></Button>
+                </Border>
+                <Button x:Name="buttonSwitchColors" Width="30" Height="20" Margin="60,7,10,8" Click="SwitchColors" BorderBrush="#444">S</Button>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Page>

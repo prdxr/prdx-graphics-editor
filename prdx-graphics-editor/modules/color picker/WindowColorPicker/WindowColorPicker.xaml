@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.color_picker.WindowColorPicker"
         mc:Ignorable="d"
-        Title="Выбор цвета" Height="300" Width="400">
+        Title="Выбор цвета" MinHeight="400" MaxHeight="400" Height="400" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
     <Grid>
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="200" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
-        <Button x:Name="ButtonApply" Width="75" Height="25" Margin="227,234,90,10" Click="ButtonApply_Click">Применить</Button>
-        <Button x:Name="ButtonCancel" Width="75" Height="25" Margin="307,234,10,10" Click="ButtonCancel_Click">Отмена</Button>
+        <Button x:Name="ButtonApply" Width="75" Height="25" Click="ButtonApply_Click" Margin="10,327,207,17">Применить</Button>
+        <Button x:Name="ButtonCancel" Width="75" Height="25" Click="ButtonCancel_Click" Margin="102,327,115,17">Отмена</Button>
     </Grid>
 </Window>

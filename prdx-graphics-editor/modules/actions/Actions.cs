@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using prdx_graphics_editor.modules.color_picker.WindowColorPicker;
 using System.Windows.Media;
+using prdx_graphics_editor.modules.canvas.PageCanvas;
+using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -16,6 +18,11 @@ namespace prdx_graphics_editor.modules.actions
             window.ShowDialog();
             Color? color = window.color;
             return color;
+        }
+
+        public static void SetActiveTool(CanvasToolType toolType)
+        {
+            Globals.pageCanvasRef.SetActiveTool(toolType);
         }
     }
 }
