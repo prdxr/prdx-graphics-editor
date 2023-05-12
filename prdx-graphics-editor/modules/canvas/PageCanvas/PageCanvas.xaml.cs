@@ -42,7 +42,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         CanvasToolType activeTool;
         (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
-
+        public bool isEmpty;
 
 
 
@@ -60,19 +60,31 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public PageCanvas()
         {
             InitializeComponent();
-            
+
+            this.isEmpty = true;
             this.activeTool = Globals.applicationSettings.activeTool;
             this.selectionPoints = (new Point(0, 0), new Point(0, 0));
             this.selectionRectangle = new Rectangle();
             selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
-            double[] dashes = { 10, 5 };
-            selectionRectangle.StrokeDashArray = new DoubleCollection(dashes);
+            double[] selectionDashes = { 10, 5 };
+            selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+
+            //this.figureDrawer = new Rectangle();
+            //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
+            //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
+            //double[] drawerDashes = { 10, 5 };
+            //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
 
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
-            Canvas.SetZIndex(selectionRectangle, 1);
+            Canvas.SetZIndex(selectionRectangle, 2);
             canvas1.Children.Add(selectionRectangle);
+
+            //Canvas.SetLeft(figureDrawer, 0);
+            //Canvas.SetTop(figureDrawer, 0);
+            //Canvas.SetZIndex(figureDrawer, 1);
+            //canvas1.Children.Add(figureDrawer);
 
             Globals.pageCanvasRef = this;
         }
@@ -88,7 +100,17 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 selectionRectangle.Height = 0;
             }
         }
-       
+
+        public void ResetCanvas()
+        {
+            canvas1.Children.Clear();
+        }
+
+        public void DrawFigure(Figure figureType)
+        {
+
+        }
+
         public void DrawLine()
         {
             Line myLine = new Line();
@@ -116,6 +138,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Canvas.SetTop(rectangle, selectionPoints.Item1.Y);
                 canvas1.Children.Add(rectangle);
             }
+            else
+            {
+                string boxCaption = "Ошибка инструмента fill";
+                string boxText = "Инструмент fill нельзя применить без активного выделения. Сначала воспользуйтесь инструментом select";
+                MessageBoxButton boxButtons = MessageBoxButton.OK;
+                MessageBoxImage boxIcon = MessageBoxImage.Warning;
+                MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
+            }
         }
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
@@ -132,7 +162,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     OnCanvasMouseMoveDraw(sender, e);
                     break;
                 case CanvasToolType.ToolSelect:
-                    OnCanvasMouseMoveSelect(sender, e);
+                    OnCanvasMouseMoveFigureMode(sender, e);
+                    break;
+                case CanvasToolType.ToolSquare:
+                    OnCanvasMouseMoveFigureMode(sender, e);
                     break;
             }
         }
@@ -185,17 +218,29 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        private void OnCanvasMouseMoveSelect(object sender, MouseEventArgs e)
+        private void OnCanvasMouseMoveFigureMode(object sender, MouseEventArgs e)
         { 
             if (IsMouseDown == true)
             {
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
-                
+
                 double width = selectionPoints.Item2.X - selectionPoints.Item1.X;
                 double height = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
                 selectionRectangle.Width = width > 0 ? width : 0;
                 selectionRectangle.Height = height > 0 ? height : 0;
-                //canvas1.Children.Add(selectionRectElement);
+
+                if (activeTool == CanvasToolType.ToolSelect)
+                {
+                    selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
+                }
+
+                if (activeTool == CanvasToolType.ToolSquare)
+                {
+                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                    selectionRectangle.Fill = new SolidColorBrush(previewColor);
+                }
+
+
             }
         }
 
@@ -213,7 +258,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         private void OnCanvasMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             IsMouseDown = true;
-            if (this.activeTool == CanvasToolType.ToolSelect)
+            if (this.activeTool >= CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
             {
                 selectionPoints.Item1 = GetCanvasPosition(sender, e);
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
@@ -235,8 +280,27 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (this.activeTool != CanvasToolType.ToolSelect)
+            {
+                this.isEmpty = false;
+            }
+
+            if (this.activeTool > CanvasToolType.ToolSelect && (selectionPoints.Item2.X * selectionPoints.Item1.X != 0))
+            {
+                Rectangle figureResult = new Rectangle();
+                figureResult.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                canvas1.Children.Add(figureResult);
+
+                Canvas.SetLeft(figureResult, selectionPoints.Item1.X);
+                Canvas.SetTop(figureResult, selectionPoints.Item1.Y);
+
+                figureResult.Width = selectionPoints.Item2.X - selectionPoints.Item1.X;
+                figureResult.Height = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
+
+            }
+
             IsMouseDown = false;
-            SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
+            //SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
         }
     }
 }

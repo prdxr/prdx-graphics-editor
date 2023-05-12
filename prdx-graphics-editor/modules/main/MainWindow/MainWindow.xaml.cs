@@ -34,5 +34,10 @@ namespace prdx_graphics_editor
                 (sender as Button).Background = new SolidColorBrush(color.GetValueOrDefault());
             }
         }
+
+        private void CreateProject(object sender, RoutedEventArgs e)
+        {
+            Actions.CreateProject();
+        }
     }
 }

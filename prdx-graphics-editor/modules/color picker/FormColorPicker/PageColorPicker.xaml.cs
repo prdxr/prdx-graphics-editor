@@ -32,7 +32,6 @@ namespace prdx_graphics_editor.modules.color_picker.FormColorPicker
 
         public Color? GetColor()
         {
-            Globals.applicationSettings.colorPickerDefaultColor = TextBoxColorRgb.Text;
             this.color = (Color)ColorConverter.ConvertFromString(TextBoxColorRgb.Text);
             return this.color;
         }

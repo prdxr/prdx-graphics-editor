@@ -20,7 +20,7 @@
         <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Top" Background="DarkGray">
             <Menu FlowDirection="LeftToRight">
                 <MenuItem Header="Файл" VerticalAlignment="Stretch">
-                    <MenuItem Header="Создать проект"/>
+                    <MenuItem Header="Создать проект" Click="CreateProject"/>
                     <MenuItem Header="Открыть проект"/>
                     <Separator/>
                     <MenuItem Header="Сохранить"/>
