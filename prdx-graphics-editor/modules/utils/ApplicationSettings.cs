@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Controls;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
+using System.Windows.Shapes;
 
 
 
@@ -32,7 +33,6 @@ namespace prdx_graphics_editor.modules.utils
             this.secondaryColor = Color.FromRgb(255, 255, 255);
             this.colorPickerDefaultColor = "#FFFFFF";
             this.activeTool = CanvasToolType.ToolPencil;
-            
         }
         ~ApplicationSettings()
         {

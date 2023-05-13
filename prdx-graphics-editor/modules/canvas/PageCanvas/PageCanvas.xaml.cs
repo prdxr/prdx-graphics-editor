@@ -44,6 +44,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         Rectangle selectionRectangle;
         public bool isEmpty;
         Polyline currLine;
+        public Shape lastShape;
+
 
 
 
@@ -72,6 +74,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
             Globals.currentFile = null;
             currLine = null;
+            lastShape = null;
 
             //this.figureDrawer = new Rectangle();
             //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
@@ -107,8 +110,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void ResetCanvas()
         {
             canvas1.Children.Clear();
-            this.isEmpty = true;
+            ImageBrush brush = new ImageBrush();
+            
+            canvas1.Background = new SolidColorBrush(Colors.White);
             this.selectionPoints = (new Point(0, 0), new Point(0, 0));
+            Canvas.SetLeft(selectionRectangle, 0);
+            Canvas.SetTop(selectionRectangle, 0);
+            canvas1.Children.Add(selectionRectangle);
+
             Globals.currentFile = null;
         }
 
@@ -140,8 +149,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 rectangle.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                 rectangle.Width = selectionRectangle.Width;
                 rectangle.Height = selectionRectangle.Height;
-                Canvas.SetLeft(rectangle, selectionPoints.Item1.X); 
-                Canvas.SetTop(rectangle, selectionPoints.Item1.Y);
+                Canvas.SetLeft(rectangle, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X)); 
+                Canvas.SetTop(rectangle, Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y));
                 canvas1.Children.Add(rectangle);
             }
             else
@@ -195,10 +204,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
 
-                double width = selectionPoints.Item2.X - selectionPoints.Item1.X;
-                double height = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
-                selectionRectangle.Width = width > 0 ? width : 0;
-                selectionRectangle.Height = height > 0 ? height : 0;
+                double width = Math.Abs(selectionPoints.Item2.X - selectionPoints.Item1.X);
+                double height = Math.Abs(selectionPoints.Item2.Y - selectionPoints.Item1.Y);
+
+                Canvas.SetLeft(selectionRectangle, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X));
+                Canvas.SetTop(selectionRectangle, Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y));
+
+                selectionRectangle.Width = width;
+                selectionRectangle.Height = height;
 
                 if (activeTool == CanvasToolType.ToolSelect)
                 {
@@ -281,9 +294,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (this.activeTool != CanvasToolType.ToolSelect)
+            if (this.activeTool < CanvasToolType.ToolSelect)
             {
-                this.isEmpty = false;
+                lastShape = currLine;
+                currLine = null;
             }
 
             if (this.activeTool > CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
@@ -295,12 +309,20 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Canvas.SetLeft(figureResult, selectionPoints.Item1.X);
                 Canvas.SetTop(figureResult, selectionPoints.Item1.Y);
 
-                figureResult.Width = selectionPoints.Item2.X - selectionPoints.Item1.X;
-                figureResult.Height = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
+                figureResult.Width = Math.Abs(selectionPoints.Item2.X - selectionPoints.Item1.X);
+                figureResult.Height = Math.Abs(selectionPoints.Item2.Y - selectionPoints.Item1.Y);
 
+                lastShape = figureResult;
                 selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             }
 
+
+
+            if (this.activeTool != CanvasToolType.ToolSelect)
+            {
+                this.isEmpty = false;
+                Globals.changeHistoryBefore.Enqueue(lastShape);
+            }
             IsMouseDown = false;
             //SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
         }
