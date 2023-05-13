@@ -44,5 +44,10 @@ namespace prdx_graphics_editor
         {
             Actions.ExportProject();
         }
+
+        private void ImportToProject(object sender, RoutedEventArgs e)
+        {
+            Actions.ImportToProject();
+        }
     }
 }

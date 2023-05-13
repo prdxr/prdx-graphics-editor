@@ -43,6 +43,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
         public bool isEmpty;
+        string currentFile;
 
 
 
@@ -69,6 +70,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+            currentFile = null;
 
             //this.figureDrawer = new Rectangle();
             //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
@@ -308,6 +310,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void ExportProject(string exportType, string filename)
         {
+            this.currentFile = filename;
             selectionRectangle.Visibility = Visibility.Hidden;
             Rect rect = new Rect(0, 0, canvas1.ActualWidth, canvas1.ActualHeight);
 
@@ -350,10 +353,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 encoder.Save(fs);
                 selectionRectangle.Visibility = Visibility.Visible;
             }
+        }
 
-
-
-
+        public void ImportToProject(string filename)
+        {
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = new BitmapImage(new Uri(@filename, UriKind.Relative));
+            canvas1.Background = brush;
         }
     }
 }

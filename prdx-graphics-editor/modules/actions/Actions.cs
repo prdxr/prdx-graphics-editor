@@ -71,5 +71,23 @@ namespace prdx_graphics_editor.modules.actions
                 return;
             }
         }
+
+        public static void ImportToProject()
+        {
+            string filename;
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "Графические файлы (*.png, *.jpeg, *.bmp) |*.png; *.jpeg; *.bmp";
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                filename = dialog.FileName;
+                Globals.pageCanvasRef.ImportToProject(filename);
+
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }
