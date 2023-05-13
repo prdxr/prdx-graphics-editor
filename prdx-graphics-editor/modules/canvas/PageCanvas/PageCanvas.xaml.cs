@@ -43,7 +43,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
         public bool isEmpty;
-        string currentFile;
 
 
 
@@ -70,7 +69,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
-            currentFile = null;
+            Globals.currentFile = null;
 
             //this.figureDrawer = new Rectangle();
             //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
@@ -108,11 +107,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             canvas1.Children.Clear();
             this.isEmpty = true;
             this.selectionPoints = (new Point(0, 0), new Point(0, 0));
-        }
-
-        public void DrawFigure(Figure figureType)
-        {
-
+            Globals.currentFile = null;
         }
 
         public void DrawLine()
@@ -310,7 +305,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void ExportProject(string exportType, string filename)
         {
-            this.currentFile = filename;
+            Globals.currentFile = filename;
             selectionRectangle.Visibility = Visibility.Hidden;
             Rect rect = new Rect(0, 0, canvas1.ActualWidth, canvas1.ActualHeight);
 
@@ -358,8 +353,17 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void ImportToProject(string filename)
         {
             ImageBrush brush = new ImageBrush();
-            brush.ImageSource = new BitmapImage(new Uri(@filename, UriKind.Relative));
-            canvas1.Background = brush;
+            BitmapImage img = new BitmapImage(new Uri(@filename, UriKind.Relative));
+            //TEMP RESTRICTION TO 800x800
+            if (img.PixelWidth > 800 || img.PixelHeight > 800)
+            {
+                //throw new Exception("TEMP: Максимальное разрешение - 800x800 пикселей");
+            }
+                brush.ImageSource = img;
+
+                canvas1.Width = img.PixelWidth;
+                canvas1.Height = img.PixelHeight;
+                canvas1.Background = brush;
         }
     }
 }

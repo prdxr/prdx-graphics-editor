@@ -8,6 +8,7 @@ using prdx_graphics_editor.modules.color_picker.WindowColorPicker;
 using System.Windows.Media;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
+using System.IO;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -26,7 +27,7 @@ namespace prdx_graphics_editor.modules.actions
             Globals.pageCanvasRef.SetActiveTool(toolType);
         }
 
-        public static void CreateProject()
+        public static int CreateProject()
         {
             if (Globals.pageCanvasRef.isEmpty == false)
             {
@@ -47,7 +48,12 @@ namespace prdx_graphics_editor.modules.actions
                     //создать проект
                     Globals.pageCanvasRef.ResetCanvas();
                 }
+                else if (boxResult == MessageBoxResult.Cancel)
+                {
+                    return -1;
+                }
             }
+            return 0;
         }
 
         public static void ExportProject()
@@ -80,6 +86,9 @@ namespace prdx_graphics_editor.modules.actions
             Nullable<bool> result = dialog.ShowDialog();
             if (result == true)
             {
+                if (CreateProject() == -1) { 
+                    return;
+                }
                 filename = dialog.FileName;
                 Globals.pageCanvasRef.ImportToProject(filename);
 

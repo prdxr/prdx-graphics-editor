@@ -13,7 +13,7 @@ namespace prdx_graphics_editor.modules.utils
         public static ApplicationSettings applicationSettings = ApplicationSettings.CreateApplicationSettings();
         public static PageColorPicker pageColorPickerRef;
         public static PageCanvas pageCanvasRef;
-        
+        public static string currentFile;
 
 
         //public static ApplicationSettings applicationSettings = new ApplicationSettings();
