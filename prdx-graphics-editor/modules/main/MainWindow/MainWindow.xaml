@@ -27,7 +27,7 @@
                     <MenuItem Header="Сохранить как..."/>
                     <Separator/>
                     <MenuItem Header="Импорт изображения"/>
-                    <MenuItem Header="Экспортировать как..."/>
+                    <MenuItem Header="Экспортировать как..." Click="ExportProject"/>
                     <Separator/>
                     <MenuItem Header="Выход"/>
                 </MenuItem>

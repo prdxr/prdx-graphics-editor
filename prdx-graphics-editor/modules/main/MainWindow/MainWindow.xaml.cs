@@ -39,5 +39,10 @@ namespace prdx_graphics_editor
         {
             Actions.CreateProject();
         }
+
+        private void ExportProject(object sender, RoutedEventArgs e)
+        {
+            Actions.ExportProject();
+        }
     }
 }

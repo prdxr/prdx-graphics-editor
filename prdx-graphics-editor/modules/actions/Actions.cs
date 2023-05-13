@@ -49,5 +49,27 @@ namespace prdx_graphics_editor.modules.actions
                 }
             }
         }
+
+        public static void ExportProject()
+        {
+            string filename;
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.Filter = "Сжатие без потерь (*.png) |*.png; | Высокая степень сжатия (*.jpeg) | *.jpeg; | Битмап без сжатия (*.bmp) | *.bmp";
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                filename = dialog.FileName;
+                var ext = System.IO.Path.GetExtension(filename);
+                if (ext == ".png" || ext == ".jpeg" || ext == ".bmp")
+                {
+                    Globals.pageCanvasRef.ExportProject(ext, filename);
+                }
+
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }

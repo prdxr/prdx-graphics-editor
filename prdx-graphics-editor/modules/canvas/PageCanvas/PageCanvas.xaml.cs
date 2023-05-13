@@ -104,6 +104,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void ResetCanvas()
         {
             canvas1.Children.Clear();
+            this.isEmpty = true;
+            this.selectionPoints = (new Point(0, 0), new Point(0, 0));
         }
 
         public void DrawFigure(Figure figureType)
@@ -285,7 +287,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 this.isEmpty = false;
             }
 
-            if (this.activeTool > CanvasToolType.ToolSelect && (selectionPoints.Item2.X * selectionPoints.Item1.X != 0))
+            if (this.activeTool > CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
             {
                 Rectangle figureResult = new Rectangle();
                 figureResult.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
@@ -297,10 +299,61 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 figureResult.Width = selectionPoints.Item2.X - selectionPoints.Item1.X;
                 figureResult.Height = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
 
+                selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             }
 
             IsMouseDown = false;
             //SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
+        }
+
+        public void ExportProject(string exportType, string filename)
+        {
+            selectionRectangle.Visibility = Visibility.Hidden;
+            Rect rect = new Rect(0, 0, canvas1.ActualWidth, canvas1.ActualHeight);
+
+            RenderTargetBitmap renderBmp = new RenderTargetBitmap(
+                (int)rect.Right,
+                (int)rect.Bottom,
+                96d,
+                96d,
+                PixelFormats.Default);
+
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext ctx = dv.RenderOpen())
+            {
+                VisualBrush vb = new VisualBrush(canvas1);
+                ctx.DrawRectangle(vb, null,
+                    new Rect(new Point(canvas1.Margin.Left, canvas1.Margin.Top), new Point(canvas1.ActualWidth + canvas1.Margin.Left, canvas1.ActualHeight + canvas1.Margin.Top)));
+            }
+
+            renderBmp.Render(dv);
+
+            using (FileStream fs = new FileStream(filename, FileMode.Create))
+            {
+                BitmapEncoder encoder;
+                switch (exportType)
+                {
+                    case ".png":
+                        encoder = new PngBitmapEncoder();
+                        break;
+                    case ".jpeg":
+                        encoder = new JpegBitmapEncoder();
+                        break;
+                    case ".bmp":
+                        encoder = new BmpBitmapEncoder();
+                        break;
+                    default:
+                        return;
+                }
+
+                encoder.Frames.Add(BitmapFrame.Create(renderBmp));
+                encoder.Save(fs);
+                selectionRectangle.Visibility = Visibility.Visible;
+            }
+
+
+
+
         }
     }
 }
