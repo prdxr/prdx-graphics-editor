@@ -43,6 +43,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
         public bool isEmpty;
+        Polyline currLine;
 
 
 
@@ -70,6 +71,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
             Globals.currentFile = null;
+            currLine = null;
 
             //this.figureDrawer = new Rectangle();
             //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
@@ -110,21 +112,26 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Globals.currentFile = null;
         }
 
-        public void DrawLine()
+        //public void DrawLine()
+        //{
+        //    Line myLine = new Line();
+        //    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+        //    myLine.X1 = 1;
+        //    myLine.X2 = 50;
+        //    myLine.Y1 = 1;
+        //    myLine.Y2 = 50;
+        //    myLine.HorizontalAlignment = HorizontalAlignment.Left;
+        //    myLine.VerticalAlignment = VerticalAlignment.Center;
+        //    myLine.StrokeThickness = 2;
+        //    //myLine.AddHandler();
+        //    //myLine.MouseMove = this.OnCanvasMouseMove;
+        //    canvas1.Children.Add(myLine);
+        //}
+        public void DrawLine(Polyline currLine)
         {
-            Line myLine = new Line();
-            myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-            myLine.X1 = 1;
-            myLine.X2 = 50;
-            myLine.Y1 = 1;
-            myLine.Y2 = 50;
-            myLine.HorizontalAlignment = HorizontalAlignment.Left;
-            myLine.VerticalAlignment = VerticalAlignment.Center;
-            myLine.StrokeThickness = 2;
-            //myLine.AddHandler();
-            //myLine.MouseMove = this.OnCanvasMouseMove;
-            canvas1.Children.Add(myLine);
+            //currLine.Points.Add
         }
+
         public void FillSelection()
         {
             if (selectionRectangle.Width > 0 && selectionRectangle.Height > 0)
@@ -152,13 +159,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             switch (activeTool)
             {
                 case CanvasToolType.ToolPencil:
-                    OnCanvasMouseMoveDraw(sender, e);
+                    OnCanvasMouseMoveDraw(sender, e, currLine);
                     break;
                 case CanvasToolType.ToolBrush:
-                    OnCanvasMouseMoveDraw(sender, e);
+                    OnCanvasMouseMoveDraw(sender, e, currLine);
                     break;
                 case CanvasToolType.ToolEraser:
-                    OnCanvasMouseMoveDraw(sender, e);
+                    OnCanvasMouseMoveDraw(sender, e, currLine);
                     break;
                 case CanvasToolType.ToolSelect:
                     OnCanvasMouseMoveFigureMode(sender, e);
@@ -169,51 +176,16 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        Point canvasPointer1 = new Point();
-        Point canvasPointer2 = new Point();
+        Point canvasPointer = new Point();
         //Point canvasPointer = new Point(canvasGrid.Margin.Left, canvasGrid.Margin.Top);
-        private void OnCanvasMouseMoveDraw(object sender, MouseEventArgs e)
+        private void OnCanvasMouseMoveDraw(object sender, MouseEventArgs e, Polyline line)
         {
             Canvas canvas = (Canvas)sender;
 
-
-            if (e.GetPosition(this).X > this.Width || e.GetPosition(this).Y > this.Height)
-            {
-                return;
-            }
-
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Line line = new Line();
-
-                canvasPointer2 = GetCanvasPosition(sender, e);
-
-                line.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-
-                switch (activeTool)
-                {
-                    case CanvasToolType.ToolPencil:
-                        line.StrokeThickness = 1;
-                        line.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                        break;
-                    case CanvasToolType.ToolBrush:
-                        line.StrokeThickness = 10;
-                        line.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                        break;
-                    case CanvasToolType.ToolEraser:
-                        line.StrokeThickness = 10;
-                        line.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
-                        break;
-                }
-
-                line.X1 = canvasPointer1.X;
-                line.Y1 = canvasPointer1.Y;
-                line.X2 = canvasPointer2.X;
-                line.Y2 = canvasPointer2.Y;
-
-                canvasPointer1 = GetCanvasPosition(sender, e);
-
-                canvas.Children.Add(line);
+                canvasPointer = GetCanvasPosition(sender, e);
+                line.Points.Add(canvasPointer);
             }
         }
 
@@ -269,7 +241,37 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
-                canvasPointer1 = GetCanvasPosition(sender, e);
+                canvasPointer = GetCanvasPosition(sender, e);
+                Canvas canvas = (Canvas)sender;
+
+                if (e.GetPosition(this).X > this.Width || e.GetPosition(this).Y > this.Height)
+                {
+                    return;
+                }
+
+                currLine = new Polyline();
+
+                canvasPointer = GetCanvasPosition(sender, e);
+
+                switch (activeTool)
+                {
+                    case CanvasToolType.ToolPencil:
+                        currLine.StrokeThickness = 1;
+                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        break;
+                    case CanvasToolType.ToolBrush:
+                        currLine.StrokeThickness = 10;
+                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        break;
+                    case CanvasToolType.ToolEraser:
+                        currLine.StrokeThickness = 10;
+                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+                        break;
+                }
+
+                currLine.Points.Add(canvasPointer);
+
+                canvas.Children.Add(currLine);
             }
 
             if (this.activeTool == CanvasToolType.ToolFill)
