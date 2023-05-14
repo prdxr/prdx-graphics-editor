@@ -24,16 +24,36 @@
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0" Grid.Column="0" x:Name="ButtonPencil" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="P" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="1" x:Name="ButtonBrush" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Br" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="2" x:Name="ButtonEraser" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Er" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="3" x:Name="ButtonSelect" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Sel" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="4" x:Name="ButtonFill" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Fill" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="0" x:Name="ButtonSquare" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Sq" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="1" x:Name="ButtonCircle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Cir" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="2" x:Name="ButtonTriangle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Tri" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="3" x:Name="ButtonLine" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Line" Checked="ChangeTool"></RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="4" x:Name="ButtonArrow" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Content="Arr" Checked="ChangeTool"></RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="0" x:Name="ButtonPencil" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Карандаш">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/pencil.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="1" x:Name="ButtonBrush" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Кисть">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/brush.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="2" x:Name="ButtonEraser" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Ластик">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/eraser.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="3" x:Name="ButtonSelect" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Выделение">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/selection.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="0" Grid.Column="4" x:Name="ButtonFill" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Заливка">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/fill.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="0" x:Name="ButtonSquare" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Квадрат">
+                    <Image Margin="4" Stretch="Fill" Source="/modules/main/PageTools/icons/square.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="1" x:Name="ButtonCircle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Окружность">
+                    <Image Margin="3" Stretch="Fill" Source="/modules/main/PageTools/icons/circle.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="2" x:Name="ButtonTriangle" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Треугольник">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/triangle.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="3" x:Name="ButtonLine" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Линия">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/line.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="4" x:Name="ButtonArrow" Background="DimGray" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Стрелка">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
+                </RadioButton>
             </Grid>
             <Grid DockPanel.Dock="Top" Width="100" Height="35" Background="DimGray">
                 <Border Width="25" Height="25" BorderBrush="#444" BorderThickness="1" Margin="26,7,49,3">

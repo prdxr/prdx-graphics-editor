@@ -43,6 +43,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -165,6 +166,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -176,7 +178,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="modules\main\ToolParams\tool pages\" />
+    <Resource Include="modules\main\PageTools\icons\pencil.png" />
+    <Resource Include="modules\main\PageTools\icons\brush.png" />
+    <Resource Include="modules\main\PageTools\icons\eraser.png" />
+    <Resource Include="modules\main\PageTools\icons\selection.png" />
+    <Resource Include="modules\main\PageTools\icons\fill.png" />
+    <Resource Include="modules\main\PageTools\icons\arrow.png" />
+    <Resource Include="modules\main\PageTools\icons\circle.png" />
+    <Resource Include="modules\main\PageTools\icons\line.png" />
+    <Resource Include="modules\main\PageTools\icons\square.png" />
+    <Resource Include="modules\main\PageTools\icons\triangle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
