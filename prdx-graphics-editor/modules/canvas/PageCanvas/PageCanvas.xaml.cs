@@ -35,6 +35,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolLine,
         ToolArrow
     }
+    
 
     public partial class PageCanvas : Page
     {
@@ -43,11 +44,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
         public bool isEmpty;
-        Polyline currLine;
+        Polyline currentLine;
         public Shape lastShape;
-
-
-
+        public event EventHandler OnFiguresChanged;
+        string[] CanvasToolDescription;
 
         public static void SerializeToXML(Canvas canvas, string filename)
         {
@@ -58,7 +58,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             streamwriter.Close();
             filestream.Close();
         }
-
 
         public PageCanvas()
         {
@@ -73,19 +72,33 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
             Globals.currentFile = null;
-            currLine = null;
+            currentLine = null;
             lastShape = null;
 
-            //this.figureDrawer = new Rectangle();
-            //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
-            //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
-            //double[] drawerDashes = { 10, 5 };
-            //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
+            CanvasToolDescription = new string[]
+            {
+                "Карандаш",
+                "Кисть",
+                "Ластик",
+                "Выделение",
+                "Заливка",
+                "Прямоугольник",
+                "Круг",
+                "Треугольник",
+                "Прямая",
+                "Стрелка"
+            };
 
-            Canvas.SetLeft(selectionRectangle, 0);
+        //this.figureDrawer = new Rectangle();
+        //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
+        //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
+        //double[] drawerDashes = { 10, 5 };
+        //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
+
+        Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
             Canvas.SetZIndex(selectionRectangle, 2);
-            canvas1.Children.Add(selectionRectangle);
+            mainCanvas.Children.Add(selectionRectangle);
 
             //Canvas.SetLeft(figureDrawer, 0);
             //Canvas.SetTop(figureDrawer, 0);
@@ -109,16 +122,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void ResetCanvas()
         {
-            canvas1.Children.Clear();
+            mainCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
             
-            canvas1.Background = new SolidColorBrush(Colors.White);
+            mainCanvas.Background = new SolidColorBrush(Colors.White);
             this.selectionPoints = (new Point(0, 0), new Point(0, 0));
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
-            canvas1.Children.Add(selectionRectangle);
+            mainCanvas.Children.Add(selectionRectangle);
 
             Globals.currentFile = null;
+            Globals.changeHistoryBefore.Clear();
+            Globals.changeHistoryAfter.Clear();
+            OnFiguresChanged.Invoke(this, null);
         }
 
         //public void DrawLine()
@@ -149,9 +165,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 rectangle.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                 rectangle.Width = selectionRectangle.Width;
                 rectangle.Height = selectionRectangle.Height;
-                Canvas.SetLeft(rectangle, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X)); 
-                Canvas.SetTop(rectangle, Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y));
-                canvas1.Children.Add(rectangle);
+
+                double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
+                double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
+                string currentToolDescription = CanvasToolDescription[(int)activeTool];
+                AddNewFigure(rectangle, currentToolDescription, new Point(x, y));
             }
             else
             {
@@ -168,13 +186,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             switch (activeTool)
             {
                 case CanvasToolType.ToolPencil:
-                    OnCanvasMouseMoveDraw(sender, e, currLine);
+                    OnCanvasMouseMoveDraw(sender, e, currentLine);
                     break;
                 case CanvasToolType.ToolBrush:
-                    OnCanvasMouseMoveDraw(sender, e, currLine);
+                    OnCanvasMouseMoveDraw(sender, e, currentLine);
                     break;
                 case CanvasToolType.ToolEraser:
-                    OnCanvasMouseMoveDraw(sender, e, currLine);
+                    OnCanvasMouseMoveDraw(sender, e, currentLine);
                     break;
                 case CanvasToolType.ToolSelect:
                     OnCanvasMouseMoveFigureMode(sender, e);
@@ -262,29 +280,30 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     return;
                 }
 
-                currLine = new Polyline();
+                currentLine = new Polyline();
+                string currentToolDescription = CanvasToolDescription[(int)activeTool];
+                AddNewFigure(currentLine, currentToolDescription, new Point(0, 0));
 
                 canvasPointer = GetCanvasPosition(sender, e);
+                currentLine.Points.Add(canvasPointer);
 
                 switch (activeTool)
                 {
                     case CanvasToolType.ToolPencil:
-                        currLine.StrokeThickness = 1;
-                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        currentLine.StrokeThickness = 1;
+                        currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         break;
                     case CanvasToolType.ToolBrush:
-                        currLine.StrokeThickness = 10;
-                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        currentLine.StrokeThickness = 10;
+                        currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         break;
                     case CanvasToolType.ToolEraser:
-                        currLine.StrokeThickness = 10;
-                        currLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+                        currentLine.StrokeThickness = 10;
+                        currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
                         break;
                 }
 
-                currLine.Points.Add(canvasPointer);
 
-                canvas.Children.Add(currLine);
             }
 
             if (this.activeTool == CanvasToolType.ToolFill)
@@ -296,18 +315,20 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
-                lastShape = currLine;
-                currLine = null;
+                lastShape = currentLine;
+                currentLine = null;
             }
 
             if (this.activeTool > CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
             {
                 Rectangle figureResult = new Rectangle();
                 figureResult.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                canvas1.Children.Add(figureResult);
 
-                Canvas.SetLeft(figureResult, selectionPoints.Item1.X);
-                Canvas.SetTop(figureResult, selectionPoints.Item1.Y);
+                string currentToolDescription = CanvasToolDescription[(int)activeTool];
+                double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
+                double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
+                Point topLeftPoint = new Point(x, y);
+                AddNewFigure(figureResult, currentToolDescription, topLeftPoint);
 
                 figureResult.Width = Math.Abs(selectionPoints.Item2.X - selectionPoints.Item1.X);
                 figureResult.Height = Math.Abs(selectionPoints.Item2.Y - selectionPoints.Item1.Y);
@@ -321,7 +342,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             if (this.activeTool != CanvasToolType.ToolSelect)
             {
                 this.isEmpty = false;
-                Globals.changeHistoryBefore.Enqueue(lastShape);
             }
             IsMouseDown = false;
             //SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
@@ -331,7 +351,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             Globals.currentFile = filename;
             selectionRectangle.Visibility = Visibility.Hidden;
-            Rect rect = new Rect(0, 0, canvas1.ActualWidth, canvas1.ActualHeight);
+            Rect rect = new Rect(0, 0, mainCanvas.ActualWidth, mainCanvas.ActualHeight);
 
             RenderTargetBitmap renderBmp = new RenderTargetBitmap(
                 (int)rect.Right,
@@ -343,9 +363,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             DrawingVisual dv = new DrawingVisual();
             using (DrawingContext ctx = dv.RenderOpen())
             {
-                VisualBrush vb = new VisualBrush(canvas1);
+                VisualBrush vb = new VisualBrush(mainCanvas);
                 ctx.DrawRectangle(vb, null,
-                    new Rect(new Point(canvas1.Margin.Left, canvas1.Margin.Top), new Point(canvas1.ActualWidth + canvas1.Margin.Left, canvas1.ActualHeight + canvas1.Margin.Top)));
+                    new Rect(new Point(mainCanvas.Margin.Left, mainCanvas.Margin.Top), new Point(mainCanvas.ActualWidth + mainCanvas.Margin.Left, mainCanvas.ActualHeight + mainCanvas.Margin.Top)));
             }
 
             renderBmp.Render(dv);
@@ -385,9 +405,61 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
                 brush.ImageSource = img;
 
-                canvas1.Width = img.PixelWidth;
-                canvas1.Height = img.PixelHeight;
-                canvas1.Background = brush;
+                mainCanvas.Width = img.PixelWidth;
+                mainCanvas.Height = img.PixelHeight;
+                mainCanvas.Background = brush;
+        }
+
+        public void AddNewFigure(Shape figure, string operationDescription, Point position,  bool isRedo = false)
+        {
+            mainCanvas.Children.Add(figure);
+            Canvas.SetLeft(figure, position.X);
+            Canvas.SetTop(figure, position.Y);
+            Globals.changeHistoryBefore.Push((figure, operationDescription, position));
+            if (!isRedo)
+            {
+                Globals.changeHistoryAfter.Clear();
+            }
+            if (OnFiguresChanged != null)
+            {
+                OnFiguresChanged.Invoke(this, null);
+            }
+        }
+
+        public void RemoveLastFigure()
+        {
+            if (Globals.changeHistoryBefore.Count == 0)
+            {
+                return;
+            }
+            (Shape figure, string operationDescription, Point position) = Globals.changeHistoryBefore.Pop();
+            
+            selectionRectangle.Width = 0;
+            selectionRectangle.Height = 0;
+
+            mainCanvas.Children.Remove(figure);
+            Globals.changeHistoryAfter.Push((figure, operationDescription, position));
+
+            if (OnFiguresChanged != null)
+            {
+                OnFiguresChanged.Invoke(this, null);
+            }
+        }
+        public void ReturnLastFigure()
+        {
+            if (Globals.changeHistoryAfter.Count == 0)
+            {
+                return;
+            }
+            (Shape figure, string operationDescription, Point position) = Globals.changeHistoryAfter.Pop();
+
+            AddNewFigure(figure, operationDescription, position, true);
+
+            if (OnFiguresChanged != null)
+            {
+                OnFiguresChanged.Invoke(this, null);
+            }
         }
     }
 }
+

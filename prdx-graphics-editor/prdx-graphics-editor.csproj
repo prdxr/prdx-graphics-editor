@@ -93,8 +93,8 @@
     <Compile Include="modules\color picker\WindowColorPicker\WindowColorPicker.xaml.cs">
       <DependentUpon>WindowColorPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\main\ChangeHistory\ChangeHistory.xaml.cs">
-      <DependentUpon>ChangeHistory.xaml</DependentUpon>
+    <Compile Include="modules\main\PageHistory\PageHistory.xaml.cs">
+      <DependentUpon>PageHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="modules\main\Layers\Layers.xaml.cs">
       <DependentUpon>Layers.xaml</DependentUpon>
@@ -129,7 +129,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="modules\main\ChangeHistory\ChangeHistory.xaml">
+    <Page Include="modules\main\PageHistory\PageHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

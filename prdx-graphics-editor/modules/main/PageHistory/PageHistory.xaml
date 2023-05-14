@@ -1,0 +1,27 @@
+﻿<Page x:Class="prdx_graphics_editor.modules.main.PageHistory"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:prdx_graphics_editor.modules.main"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="200"
+      Title="PageHistory">
+
+    <Grid Width="200">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" Grid.Row="0" Height="30" VerticalAlignment="Top">История изменений</Label>
+        <Grid HorizontalAlignment="Stretch" Grid.Row="0" Height="30" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="ClickUndo">Undo</Button>
+            <Button Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="ClickRedo">Redo</Button>
+        </Grid>
+        <ListView x:Name="HistoryListView" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
+    </Grid>
+</Page>

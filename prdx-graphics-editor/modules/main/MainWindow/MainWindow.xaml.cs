@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using prdx_graphics_editor.modules.actions;
+using prdx_graphics_editor.modules.utils;
+using prdx_graphics_editor.modules.canvas.PageCanvas;
+using prdx_graphics_editor.modules.main;
 
 namespace prdx_graphics_editor
 {
@@ -24,6 +27,9 @@ namespace prdx_graphics_editor
         public MainWindow()
         {
             InitializeComponent();
+            this.FrameCanvas.Content = new PageCanvas();
+            this.FrameHistory.Content = new PageHistory();
+            Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -10,11 +10,11 @@
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border Background="Aqua" BorderThickness="2">
-            <Canvas 
+            <Canvas
                 Background="white" 
                 Width="800" 
                 Height="800" 
-                x:Name="canvas1" 
+                x:Name="mainCanvas" 
                 MouseDown="OnCanvasMouseDown" 
                 MouseUp="OnCanvasMouseUp"
                 MouseMove="OnCanvasMouseMove"

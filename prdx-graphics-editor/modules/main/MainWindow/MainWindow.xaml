@@ -51,7 +51,7 @@
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="ChangeHistoryPage" Source="..\ChangeHistory\ChangeHistory.xaml"/>
+                <Frame Grid.Row="0" x:Name="FrameHistory"/>
                 <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
             </Grid>
         </DockPanel>
@@ -60,6 +60,6 @@
             <Button Click="Button_Click">pick color</Button>
         </DockPanel>
 
-        <Frame x:Name="CanvasPage" Source="..\..\canvas\PageCanvas\PageCanvas.xaml" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

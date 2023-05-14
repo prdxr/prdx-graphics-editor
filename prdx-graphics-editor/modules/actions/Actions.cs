@@ -9,6 +9,8 @@ using System.Windows.Media;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
 using System.IO;
+using System.Windows.Shapes;
+
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -97,6 +99,15 @@ namespace prdx_graphics_editor.modules.actions
             {
                 return;
             }
+        }
+
+        public static void Undo()
+        {
+            Globals.pageCanvasRef.RemoveLastFigure();
+        }
+        public static void Redo()
+        {
+            Globals.pageCanvasRef.ReturnLastFigure();
         }
     }
 }
