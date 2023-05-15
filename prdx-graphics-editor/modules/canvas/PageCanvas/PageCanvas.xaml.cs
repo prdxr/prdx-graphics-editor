@@ -460,6 +460,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 OnFiguresChanged.Invoke(this, null);
             }
         }
+
+        public void SelectClear()
+        {
+            selectionRectangle.Width = 0;
+            selectionRectangle.Height = 0;
+        }
+        public void SelectAll()
+        {
+            Canvas.SetTop(selectionRectangle, 0);
+            Canvas.SetLeft(selectionRectangle, 0);
+            selectionRectangle.Width = mainCanvas.ActualWidth;
+            selectionRectangle.Height = mainCanvas.ActualHeight;
+        }
     }
 }
 

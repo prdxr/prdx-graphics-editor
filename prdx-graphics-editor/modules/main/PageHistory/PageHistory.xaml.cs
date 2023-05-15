@@ -33,7 +33,7 @@ namespace prdx_graphics_editor.modules.main
 
         EventHandler historyChanged;
 
-    private void ClickUndo(object sender, RoutedEventArgs e)
+        private void ClickUndo(object sender, RoutedEventArgs e)
         {
             Actions.Undo();
         }
@@ -67,7 +67,15 @@ namespace prdx_graphics_editor.modules.main
             
             //historyList = new ObservableCollection<string>(mergeList.);
             HistoryListView.ItemsSource = historyList;
-            HistoryListView.SelectedIndex = Globals.changeHistoryAfter.Count;
+            int currentIndex = Globals.changeHistoryBefore.Count;
+            if (currentIndex == 0)
+            {
+                HistoryListView.UnselectAll();
+            }
+            else
+            {
+                HistoryListView.SelectedIndex = Globals.changeHistoryAfter.Count;
+            }
         }
         public static string PointFToPoint((Shape, string, Point) element)
         {

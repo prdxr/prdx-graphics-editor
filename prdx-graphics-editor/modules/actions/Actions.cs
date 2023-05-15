@@ -109,5 +109,14 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.ReturnLastFigure();
         }
+
+        public static void SelectAll()
+        {
+            Globals.pageCanvasRef.SelectAll();
+        }
+        public static void SelectClear()
+        {
+            Globals.pageCanvasRef.SelectClear();
+        }
     }
 }

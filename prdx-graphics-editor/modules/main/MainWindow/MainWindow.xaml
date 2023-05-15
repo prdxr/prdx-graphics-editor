@@ -32,16 +32,16 @@
                     <MenuItem Header="Выход"/>
                 </MenuItem>
                 <MenuItem Header="Правка" VerticalAlignment="Stretch">
-                    <MenuItem Header="Отменить последнее действие"/>
-                    <MenuItem Header="Вернуть последнее действие"/>
+                    <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
+                    <MenuItem Header="Вернуть последнее действие" Click="ClickRedo"/>
                     <Separator/>
                     <MenuItem Header="Вырезать"/>
                     <MenuItem Header="Копировать"/>
                     <MenuItem Header="Вставить"/>
                 </MenuItem>
                 <MenuItem Header="Выделение" VerticalAlignment="Stretch">
-                    <MenuItem Header="Выделить всё"/>
-                    <MenuItem Header="Снять выделение"/>
+                    <MenuItem Header="Выделить всё" Click="SelectAll"/>
+                    <MenuItem Header="Снять выделение" Click="SelectClear"/>
                 </MenuItem>
             </Menu>
         </DockPanel>

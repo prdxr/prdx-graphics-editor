@@ -55,5 +55,23 @@ namespace prdx_graphics_editor
         {
             Actions.ImportToProject();
         }
+
+        private void ClickUndo(object sender, RoutedEventArgs e)
+        {
+            Actions.Undo();
+        }
+        private void ClickRedo(object sender, RoutedEventArgs e)
+        {
+            Actions.Redo();
+        }
+
+        private void SelectAll(object sender, RoutedEventArgs e)
+        {
+            Actions.SelectAll();
+        }
+        private void SelectClear(object sender, RoutedEventArgs e)
+        {
+            Actions.SelectClear();
+        }
     }
 }
