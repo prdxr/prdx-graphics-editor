@@ -84,7 +84,7 @@ namespace prdx_graphics_editor.modules.actions
         {
             string filename;
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.Filter = "Графические файлы (*.png, *.jpeg, *.bmp) |*.png; *.jpeg; *.bmp";
+            dialog.Filter = "Графические файлы (*.png, *.jpeg, *.jpg, *.bmp) |*.png; *.jpeg; *.jpg; *.bmp";
             Nullable<bool> result = dialog.ShowDialog();
             if (result == true)
             {

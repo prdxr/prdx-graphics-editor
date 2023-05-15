@@ -296,6 +296,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     case CanvasToolType.ToolBrush:
                         currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        //currentLine.Stroke = new LinearGradientBrush(Globals.applicationSettings.primaryColor, Colors.Transparent);
+                        //currentLine.StrokeStartLineCap = PenLineCap.Round;
+                        //currentLine.StrokeEndLineCap = PenLineCap.Round;
                         break;
                     case CanvasToolType.ToolEraser:
                         currentLine.StrokeThickness = 10;
@@ -379,6 +382,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         encoder = new PngBitmapEncoder();
                         break;
                     case ".jpeg":
+                        encoder = new JpegBitmapEncoder();
+                        break;
+                    case ".jpg":
                         encoder = new JpegBitmapEncoder();
                         break;
                     case ".bmp":
