@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor"
         mc:Ignorable="d"
-        Title="Graphic editor" Height="1080" Width="1920" MinHeight="500" MinWidth="600">
+        Title="Graphic editor" Height="720" Width="1280" MinHeight="500" MinWidth="600">
     <Grid Background="#333333">
         <DockPanel HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
