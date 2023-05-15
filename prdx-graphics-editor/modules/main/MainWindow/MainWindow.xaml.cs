@@ -73,5 +73,11 @@ namespace prdx_graphics_editor
         {
             Actions.SelectClear();
         }
+
+        private void CloseApplication(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            //Actions.CloseApplication();
+        }
     }
 }

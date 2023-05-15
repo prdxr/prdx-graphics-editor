@@ -29,7 +29,7 @@
                     <MenuItem Header="Импорт изображения" Click="ImportToProject"/>
                     <MenuItem Header="Экспортировать как..." Click="ExportProject"/>
                     <Separator/>
-                    <MenuItem Header="Выход"/>
+                    <MenuItem Header="Выход" Click="CloseApplication"/>
                 </MenuItem>
                 <MenuItem Header="Правка" VerticalAlignment="Stretch">
                     <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
