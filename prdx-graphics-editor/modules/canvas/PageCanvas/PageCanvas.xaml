@@ -9,7 +9,7 @@
       Title="PageCanvas">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Border Background="Aqua" BorderThickness="2">
+        <!--<Border Background="Aqua" BorderThickness="2">-->
             <Canvas
                 Background="white" 
                 Width="800" 
@@ -20,7 +20,8 @@
                 MouseMove="OnCanvasMouseMove"
                 Cursor="Cross"
                 ClipToBounds="True"
+                MouseEnter="OnMouseEnter"
             />
-        </Border>
+        <!--</Border>-->
     </Grid>
 </Page>

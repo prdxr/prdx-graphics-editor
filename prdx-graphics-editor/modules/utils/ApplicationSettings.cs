@@ -24,6 +24,9 @@ namespace prdx_graphics_editor.modules.utils
         public string colorPickerDefaultColor { get; set; }
         public CanvasToolType activeTool { get; set; }
         public Canvas canvas { get; set; }
+        
+        //accent1, accent2, accent1Text, accent2Text
+        public List<Color> applicationTheme { get; set; }
 
         public static string filepath = AppDomain.CurrentDomain.BaseDirectory + "/settings.json";
 
@@ -33,6 +36,12 @@ namespace prdx_graphics_editor.modules.utils
             this.secondaryColor = Color.FromRgb(255, 255, 255);
             this.colorPickerDefaultColor = "#FFFFFF";
             this.activeTool = CanvasToolType.ToolPencil;
+            this.applicationTheme = new List<Color> { 
+                Color.FromRgb(67, 71, 77), 
+                Color.FromRgb(88, 95, 117), 
+                Color.FromRgb(234, 242, 255),
+                Color.FromRgb(0, 0, 0)
+            };
         }
         ~ApplicationSettings()
         {

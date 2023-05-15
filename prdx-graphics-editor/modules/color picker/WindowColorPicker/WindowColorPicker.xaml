@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.color_picker.WindowColorPicker"
         mc:Ignorable="d"
-        Title="Выбор цвета" MinHeight="400" MaxHeight="400" Height="400" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
+        Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
     <Grid>
-        <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="200" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
-        <Button x:Name="ButtonApply" Width="75" Height="25" Click="ButtonApply_Click" Margin="10,327,207,17">Применить</Button>
-        <Button x:Name="ButtonCancel" Width="75" Height="25" Click="ButtonCancel_Click" Margin="102,327,115,17">Отмена</Button>
+        <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
+        <DockPanel Width="225" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
+            <Button x:Name="ButtonApply" DockPanel.Dock="Left" Width="100" Height="40" Click="ButtonApply_Click">Применить</Button>
+            <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Click="ButtonCancel_Click">Отмена</Button>
+        </DockPanel>
+        
     </Grid>
 </Window>

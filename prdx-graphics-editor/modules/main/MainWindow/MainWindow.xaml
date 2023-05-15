@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:prdx_graphics_editor"
         mc:Ignorable="d"
         Title="Graphic editor" Height="720" Width="1280" MinHeight="500" MinWidth="600">
-    <Grid Background="#333333">
-        <DockPanel HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
+    <!--mainGrid background: accent1-->
+    <Grid x:Name="mainGrid">
+        <!--leftDockPanel background: accent2-->
+        <DockPanel x:Name="leftDockPanel" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="200"/>
@@ -17,35 +19,40 @@
                 <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\ToolParams\ToolParams.xaml"/>
             </Grid>
         </DockPanel>
-        <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Top" Background="DarkGray">
-            <Menu FlowDirection="LeftToRight">
-                <MenuItem Header="Файл" VerticalAlignment="Stretch">
-                    <MenuItem Header="Создать проект" Click="CreateProject"/>
-                    <MenuItem Header="Открыть проект"/>
-                    <Separator/>
-                    <MenuItem Header="Сохранить"/>
-                    <MenuItem Header="Сохранить как..."/>
-                    <Separator/>
-                    <MenuItem Header="Импорт изображения" Click="ImportToProject"/>
-                    <MenuItem Header="Экспортировать как..." Click="ExportProject"/>
-                    <Separator/>
-                    <MenuItem Header="Выход" Click="CloseApplication"/>
-                </MenuItem>
-                <MenuItem Header="Правка" VerticalAlignment="Stretch">
-                    <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
-                    <MenuItem Header="Вернуть последнее действие" Click="ClickRedo"/>
-                    <Separator/>
-                    <MenuItem Header="Вырезать"/>
-                    <MenuItem Header="Копировать"/>
-                    <MenuItem Header="Вставить"/>
-                </MenuItem>
-                <MenuItem Header="Выделение" VerticalAlignment="Stretch">
-                    <MenuItem Header="Выделить всё" Click="SelectAll"/>
-                    <MenuItem Header="Снять выделение" Click="SelectClear"/>
-                </MenuItem>
-            </Menu>
-        </DockPanel>
-        <DockPanel HorizontalAlignment="Right" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
+        <!--topDockPanel background: accent2-->
+        <Border BorderThickness="1" BorderBrush="Black">
+            <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Top" Background="DarkGray">
+                <Menu FlowDirection="LeftToRight">
+                    <MenuItem Header="Файл" VerticalAlignment="Stretch">
+                        <MenuItem Header="Создать проект" Click="CreateProject"/>
+                        <MenuItem Header="Открыть проект"/>
+                        <Separator/>
+                        <MenuItem Header="Сохранить"/>
+                        <MenuItem Header="Сохранить как..."/>
+                        <Separator/>
+                        <MenuItem Header="Импорт изображения" Click="ImportToProject"/>
+                        <MenuItem Header="Экспортировать как..." Click="ExportProject"/>
+                        <Separator/>
+                        <MenuItem Header="Выход" Click="CloseApplication"/>
+                    </MenuItem>
+                    <MenuItem Header="Правка" VerticalAlignment="Stretch">
+                        <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
+                        <MenuItem Header="Вернуть последнее действие" Click="ClickRedo"/>
+                        <Separator/>
+                        <MenuItem Header="Вырезать"/>
+                        <MenuItem Header="Копировать"/>
+                        <MenuItem Header="Вставить"/>
+                    </MenuItem>
+                    <MenuItem Header="Выделение" VerticalAlignment="Stretch">
+                        <MenuItem Header="Выделить всё" Click="SelectAll"/>
+                        <MenuItem Header="Снять выделение" Click="SelectClear"/>
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+        </Border>
+
+        <!--topDockPanel background: accent2-->
+        <DockPanel x:Name="rightDockPanel" HorizontalAlignment="Right" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
@@ -55,11 +62,11 @@
                 <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
             </Grid>
         </DockPanel>
-
-        <DockPanel HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Bottom" Background="DarkGray">
+        <!--bottomDockPanel background: accent2-->
+        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Bottom" Background="DarkGray">
             <Button Click="Button_Click">pick color</Button>
         </DockPanel>
 
-        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
     </Grid>
 </Window>

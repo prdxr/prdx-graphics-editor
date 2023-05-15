@@ -5,10 +5,64 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.color_picker.FormColorPicker"
       mc:Ignorable="d" 
-      d:DesignHeight="200" d:DesignWidth="300"
+      d:DesignHeight="400" d:DesignWidth="300"
       Title="PageColorPicker">
 
     <Grid>
-        <TextBox x:Name="TextBoxColorRgb" Background="Gray" Width="100" Height="25"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="ColorsGrid"></Grid>
+        <DockPanel Width="110" Height="140" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Row="1">
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontWeight="Bold">Текущий цвет</Label>
+            <Border DockPanel.Dock="Top" BorderBrush="Black" Width="50" Height="50" VerticalAlignment="Top" BorderThickness="2">
+                <Rectangle x:Name="CurrentColorDisplay"/>
+            </Border>
+            <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                <TextBox DockPanel.Dock="Left" Background="DimGray" 
+                     Height="30" Width="30" 
+                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     IsReadOnly="True" SelectionOpacity="0" Text="#" FontSize="16">
+                </TextBox>
+                <TextBox DockPanel.Dock="Left" x:Name="TextBoxColorRgb" Background="Gray" 
+                     Height="30" Width="80" 
+                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     IsReadOnly="True" FontSize="16">
+                </TextBox>
+            </DockPanel>
+            <Label DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>
+
+        </DockPanel>
+        <!--<TextBox Grid.Row="1" x:Name="TextBoxColorRgb" Background="Gray" Height="20" Margin="46,108,206,22"/>-->
+
+        <Border Grid.Row="1" Height="140" VerticalAlignment="Top" Width="150" HorizontalAlignment="Right" Margin="10" BorderThickness="2" BorderBrush="DimGray">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" HorizontalAlignment="Left" FontWeight="Bold">Задать цвет в RGB</Label>
+                <DockPanel Grid.Row="1">
+                    <Label DockPanel.Dock="Left" Width="80">Красный (R)</Label>
+                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                </DockPanel>
+                <DockPanel Grid.Row="2">
+                    <Label DockPanel.Dock="Left" Width="80">Зелёный (G)</Label>
+                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                </DockPanel>
+                <DockPanel Grid.Row="3">
+                    <Label DockPanel.Dock="Left" Width="80">Синий (B)</Label>
+                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                </DockPanel>
+
+            </Grid>
+        </Border>
+        
+
     </Grid>
 </Page>

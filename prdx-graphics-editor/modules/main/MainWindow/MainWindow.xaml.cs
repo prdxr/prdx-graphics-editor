@@ -30,6 +30,14 @@ namespace prdx_graphics_editor
             this.FrameCanvas.Content = new PageCanvas();
             this.FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
+            SolidColorBrush accent1 = new SolidColorBrush(Globals.applicationSettings.applicationTheme[0]);
+            SolidColorBrush accent2 = new SolidColorBrush(Globals.applicationSettings.applicationTheme[1]);
+            mainGrid.Background = accent1;
+            leftDockPanel.Background = accent2;
+            topDockPanel.Background = accent2;
+            rightDockPanel.Background = accent2;
+            bottomDockPanel.Background = accent2;
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
