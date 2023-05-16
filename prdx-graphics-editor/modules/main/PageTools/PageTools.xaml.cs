@@ -27,6 +27,10 @@ namespace prdx_graphics_editor
         {
             InitializeComponent();
             ChangeColorListener();
+
+            toolGrid.Background = Globals.colorAccent1;
+            colorGrid.Background = Globals.colorAccent1;
+            mainLabel.Foreground = Globals.colorTextBright;
         }
 
         private void ChangeTool(object sender, RoutedEventArgs e)

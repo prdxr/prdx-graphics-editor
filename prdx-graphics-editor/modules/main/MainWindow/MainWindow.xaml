@@ -8,22 +8,23 @@
         Title="Graphic editor" Height="720" Width="1280" MinHeight="500" MinWidth="600">
     <!--mainGrid background: accent1-->
     <Grid x:Name="mainGrid">
+        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
         <!--leftDockPanel background: accent2-->
         <DockPanel x:Name="leftDockPanel" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
-                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Frame Grid.Row="0" x:Name="ToolsPage" Source="..\PageTools\PageTools.xaml"/>
                 <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\ToolParams\ToolParams.xaml"/>
             </Grid>
         </DockPanel>
         <!--topDockPanel background: accent2-->
-        <Border BorderThickness="1" BorderBrush="Black">
-            <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Top" Background="DarkGray">
-                <Menu FlowDirection="LeftToRight">
-                    <MenuItem Header="Файл" VerticalAlignment="Stretch">
+        <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top" Background="DarkGray">
+            <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
+                <Menu x:Name="mainMenu" FlowDirection="LeftToRight" HorizontalAlignment="Left">
+                    <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
                         <MenuItem Header="Создать проект" Click="CreateProject"/>
                         <MenuItem Header="Открыть проект"/>
                         <Separator/>
@@ -35,7 +36,7 @@
                         <Separator/>
                         <MenuItem Header="Выход" Click="CloseApplication"/>
                     </MenuItem>
-                    <MenuItem Header="Правка" VerticalAlignment="Stretch">
+                    <MenuItem x:Name="mainMenuEdit" Header="Правка" VerticalAlignment="Stretch">
                         <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
                         <MenuItem Header="Вернуть последнее действие" Click="ClickRedo"/>
                         <Separator/>
@@ -43,30 +44,28 @@
                         <MenuItem Header="Копировать"/>
                         <MenuItem Header="Вставить"/>
                     </MenuItem>
-                    <MenuItem Header="Выделение" VerticalAlignment="Stretch">
+                    <MenuItem x:Name="mainMenuSelect" Header="Выделение" VerticalAlignment="Stretch">
                         <MenuItem Header="Выделить всё" Click="SelectAll"/>
                         <MenuItem Header="Снять выделение" Click="SelectClear"/>
                     </MenuItem>
                 </Menu>
-            </DockPanel>
-        </Border>
+            </Border>
+        </DockPanel>
 
-        <!--topDockPanel background: accent2-->
-        <DockPanel x:Name="rightDockPanel" HorizontalAlignment="Right" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
+        <!--rightDockPanel background: accent2-->
+        <DockPanel x:Name="rightDockPanel" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="FrameHistory"/>
+                <Frame Grid.Row="0" x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
                 <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
             </Grid>
         </DockPanel>
         <!--bottomDockPanel background: accent2-->
-        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="False" VerticalAlignment="Bottom" Background="DarkGray">
-            <Button Click="Button_Click">pick color</Button>
+        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Bottom" Background="DarkGray">
+            <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent"></Border>
         </DockPanel>
-
-        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
     </Grid>
 </Window>

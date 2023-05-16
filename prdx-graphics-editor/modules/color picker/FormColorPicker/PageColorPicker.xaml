@@ -30,7 +30,7 @@
                      Height="30" Width="80" 
                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                     IsReadOnly="True" FontSize="16">
+                     FontSize="16">
                 </TextBox>
             </DockPanel>
             <Label DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>

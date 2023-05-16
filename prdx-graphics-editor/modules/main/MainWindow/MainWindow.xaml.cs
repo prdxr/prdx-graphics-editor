@@ -30,14 +30,16 @@ namespace prdx_graphics_editor
             this.FrameCanvas.Content = new PageCanvas();
             this.FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
-            SolidColorBrush accent1 = new SolidColorBrush(Globals.applicationSettings.applicationTheme[0]);
-            SolidColorBrush accent2 = new SolidColorBrush(Globals.applicationSettings.applicationTheme[1]);
-            mainGrid.Background = accent1;
-            leftDockPanel.Background = accent2;
-            topDockPanel.Background = accent2;
-            rightDockPanel.Background = accent2;
-            bottomDockPanel.Background = accent2;
-            
+            mainMenu.Background = Globals.colorAccent2;
+            mainMenuFile.Foreground = Globals.colorTextBright;
+            mainMenuEdit.Foreground = Globals.colorTextBright;
+            mainMenuSelect.Foreground = Globals.colorTextBright;
+            mainGrid.Background = Globals.colorAccent1;
+            leftDockPanel.Background = Globals.colorAccent2;
+            topDockPanel.Background = Globals.colorAccent2;
+            rightDockPanel.Background = Globals.colorAccent2;
+            bottomDockPanel.Background = Globals.colorAccent2;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

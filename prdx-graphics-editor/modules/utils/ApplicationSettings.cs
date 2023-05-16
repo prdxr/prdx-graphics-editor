@@ -37,8 +37,8 @@ namespace prdx_graphics_editor.modules.utils
             this.colorPickerDefaultColor = "#FFFFFF";
             this.activeTool = CanvasToolType.ToolPencil;
             this.applicationTheme = new List<Color> { 
+                Color.FromRgb(47, 51, 56), 
                 Color.FromRgb(67, 71, 77), 
-                Color.FromRgb(88, 95, 117), 
                 Color.FromRgb(234, 242, 255),
                 Color.FromRgb(0, 0, 0)
             };

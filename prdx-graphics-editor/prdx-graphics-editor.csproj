@@ -189,5 +189,12 @@
     <Resource Include="modules\main\PageTools\icons\square.png" />
     <Resource Include="modules\main\PageTools\icons\triangle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="modules\main\PageTools\icons\swap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="modules\main\PageTools\icons\redo.png" />
+    <Resource Include="modules\main\PageTools\icons\undo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
