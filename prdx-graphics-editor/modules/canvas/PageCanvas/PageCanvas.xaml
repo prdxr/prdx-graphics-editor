@@ -5,15 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.canvas.PageCanvas"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="800"
       Title="PageCanvas">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <!--<Border Background="Aqua" BorderThickness="2">-->
-            <Canvas
+        <!--<Border Background="Aqua" BorderThickness="2"> -->
+        <Canvas
                 Background="white" 
                 Width="800" 
-                Height="800" 
+                Height="800"
                 x:Name="mainCanvas" 
                 MouseDown="OnCanvasMouseDown" 
                 MouseUp="OnCanvasMouseUp"
@@ -21,7 +21,8 @@
                 Cursor="Cross"
                 ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
-            />
+            >
+        </Canvas>
         <!--</Border>-->
     </Grid>
 </Page>

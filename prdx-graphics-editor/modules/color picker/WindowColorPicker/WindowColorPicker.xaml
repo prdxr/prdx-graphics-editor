@@ -8,9 +8,13 @@
         Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
     <Grid>
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
-        <DockPanel Width="225" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
-            <Button x:Name="ButtonApply" DockPanel.Dock="Left" Width="100" Height="40" Click="ButtonApply_Click">Применить</Button>
-            <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Click="ButtonCancel_Click">Отмена</Button>
+        <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
+            <Button x:Name="ButtonApply" DockPanel.Dock="Left" Width="100" Height="40" Content="Применить"
+                    Click="ButtonApply_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
+            </Button>
+            <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
+                    Click="ButtonCancel_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
+            </Button>
         </DockPanel>
         
     </Grid>

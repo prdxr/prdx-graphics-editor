@@ -28,13 +28,33 @@ namespace prdx_graphics_editor.modules.color_picker.FormColorPicker
             InitializeComponent();
             PrepareGrid();
             Globals.pageColorPickerRef = this;
-            TextBoxColorRgb.Text = Globals.applicationSettings.colorPickerDefaultColor;
+            textboxHexInput.Text = Globals.applicationSettings.colorPickerDefaultColor;
             this.color = null;
+
+            this.Background = Globals.colorAccent1;
+
+            this.labelCurrentColor.Foreground = Globals.colorTextBright;
+            this.labelHexInput.Foreground = Globals.colorTextBright;
+            this.labelRgbField.Foreground = Globals.colorTextBright;
+            this.labelR.Foreground = Globals.colorTextBright;
+            this.labelG.Foreground = Globals.colorTextBright;
+            this.labelB.Foreground = Globals.colorTextBright;
+
+            this.textboxHexInput.Background = Globals.colorAccent1;
+            this.textboxHexInput.Foreground = Globals.colorTextBright;
+            this.textboxHexSign.Background = Globals.colorAccent2;
+            this.textboxHexSign.Foreground = Globals.colorTextBright;
+            this.textboxInputR.Background = Globals.colorAccent1;
+            this.textboxInputR.Foreground = Globals.colorTextBright;
+            this.textboxInputG.Background = Globals.colorAccent1;
+            this.textboxInputG.Foreground = Globals.colorTextBright;
+            this.textboxInputB.Background = Globals.colorAccent1;
+            this.textboxInputB.Foreground = Globals.colorTextBright;
         }
 
         public Color? GetColor()
         {
-            this.color = (Color)ColorConverter.ConvertFromString(TextBoxColorRgb.Text);
+            this.color = (Color)ColorConverter.ConvertFromString(textboxHexInput.Text);
             return this.color;
         }
 
@@ -74,6 +94,7 @@ namespace prdx_graphics_editor.modules.color_picker.FormColorPicker
                     panel.Background = (Brush)brushConverter.ConvertFrom(color);
                     panel.Width = 50;
                     panel.Height = 50;
+                    //panel.MouseDown += new MouseButtonEventHandler(panel, null);
                     Grid.SetRow(panel, row);
                     Grid.SetColumn(panel, col);
                     ColorsGrid.Children.Add(panel);
@@ -81,5 +102,11 @@ namespace prdx_graphics_editor.modules.color_picker.FormColorPicker
             }
 
         }
+
+        //private void SelectColorFromDefault(object sender, MouseButtonEventHandler e)
+        //{
+        //    string hex = ((sender as DockPanel).Grid.Row)
+        //    //call actions change color
+        //}
     }
 }

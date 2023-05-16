@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.main.ToolParams
 {
@@ -23,6 +24,12 @@ namespace prdx_graphics_editor.modules.main.ToolParams
         public ToolParams()
         {
             InitializeComponent();
+            mainLabel.Foreground = Globals.colorTextBright;
+            paramGrid.Background = Globals.colorAccent2;
+            labelThickness.Foreground = Globals.colorTextBright;
+            textboxThickness.Background = Globals.colorAccent1;
+            textboxThickness.Foreground = Globals.colorTextBright;
+
         }
     }
 }

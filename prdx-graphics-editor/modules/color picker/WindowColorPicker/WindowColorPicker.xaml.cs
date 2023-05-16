@@ -24,6 +24,12 @@ namespace prdx_graphics_editor.modules.color_picker.WindowColorPicker
         public WindowColorPicker()
         {
             InitializeComponent();
+            this.Background = Globals.colorAccent2;
+
+            this.ButtonApply.Background = Globals.colorAccent1;
+            this.ButtonApply.Foreground = Globals.colorTextBright;
+            this.ButtonCancel.Background = Globals.colorAccent1;
+            this.ButtonCancel.Foreground = Globals.colorTextBright;
         }
 
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
@@ -35,6 +41,16 @@ namespace prdx_graphics_editor.modules.color_picker.WindowColorPicker
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void onMouseEnterStyle(object sender, MouseEventArgs e)
+        {
+            (sender as Button).Foreground = Globals.colorTextDim;
+        }
+
+        private void onMouseLeaveStyle(object sender, MouseEventArgs e)
+        {
+            (sender as Button).Foreground = Globals.colorTextBright;
         }
     }
 }

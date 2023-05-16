@@ -14,26 +14,26 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="ColorsGrid"></Grid>
-        <DockPanel Width="110" Height="140" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Row="1">
-            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontWeight="Bold">Текущий цвет</Label>
+        <DockPanel x:Name="dockpanelCurrentColor" Width="110" Height="140" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Row="1">
+            <Label x:Name="labelCurrentColor" DockPanel.Dock="Top" HorizontalAlignment="Center" FontWeight="Bold">Текущий цвет</Label>
             <Border DockPanel.Dock="Top" BorderBrush="Black" Width="50" Height="50" VerticalAlignment="Top" BorderThickness="2">
-                <Rectangle x:Name="CurrentColorDisplay"/>
+                <Rectangle x:Name="CurrentColorDisplay" Fill="White"/>
             </Border>
             <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-                <TextBox DockPanel.Dock="Left" Background="DimGray" 
+                <TextBox x:Name="textboxHexSign" DockPanel.Dock="Left" Background="DimGray" 
                      Height="30" Width="30" 
                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"
                      IsReadOnly="True" SelectionOpacity="0" Text="#" FontSize="16">
                 </TextBox>
-                <TextBox DockPanel.Dock="Left" x:Name="TextBoxColorRgb" Background="Gray" 
+                <TextBox x:Name="textboxHexInput" DockPanel.Dock="Left" Background="Gray" 
                      Height="30" Width="80" 
                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"
                      FontSize="16">
                 </TextBox>
             </DockPanel>
-            <Label DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>
+            <Label x:Name="labelHexInput" DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>
 
         </DockPanel>
         <!--<TextBox Grid.Row="1" x:Name="TextBoxColorRgb" Background="Gray" Height="20" Margin="46,108,206,22"/>-->
@@ -46,18 +46,18 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" HorizontalAlignment="Left" FontWeight="Bold">Задать цвет в RGB</Label>
+                <Label x:Name="labelRgbField" Grid.Row="0" HorizontalAlignment="Left" FontWeight="Bold">Задать цвет в RGB</Label>
                 <DockPanel Grid.Row="1">
-                    <Label DockPanel.Dock="Left" Width="80">Красный (R)</Label>
-                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                    <Label x:Name="labelR" DockPanel.Dock="Left" Width="80">Красный (R)</Label>
+                    <TextBox x:Name="textboxInputR" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
                 </DockPanel>
                 <DockPanel Grid.Row="2">
-                    <Label DockPanel.Dock="Left" Width="80">Зелёный (G)</Label>
-                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                    <Label x:Name="labelG" DockPanel.Dock="Left" Width="80">Зелёный (G)</Label>
+                    <TextBox x:Name="textboxInputG" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
                 </DockPanel>
                 <DockPanel Grid.Row="3">
-                    <Label DockPanel.Dock="Left" Width="80">Синий (B)</Label>
-                    <TextBox DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20"></TextBox>
+                    <Label x:Name="labelB" DockPanel.Dock="Left" Width="80">Синий (B)</Label>
+                    <TextBox x:Name="textboxInputB" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
                 </DockPanel>
 
             </Grid>

@@ -92,13 +92,36 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Стрелка"
             };
 
-        //this.figureDrawer = new Rectangle();
-        //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
-        //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
-        //double[] drawerDashes = { 10, 5 };
-        //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
 
-        Canvas.SetLeft(selectionRectangle, 0);
+
+            //var st = new ScaleTransform();
+            //var textBox = new TextBox { Text = "Test" };
+            //mainCanvas.RenderTransform = st;
+            //mainCanvas.Children.Add(textBox);
+            //mainCanvas.MouseWheel += (sender, e) =>
+            //{
+            //    if (e.Delta > 0)
+            //    {
+            //        st.ScaleX *= 2;
+            //        st.ScaleY *= 2;
+            //    }
+            //    else
+            //    {
+            //        st.ScaleX /= 2;
+            //        st.ScaleY /= 2;
+            //    }
+            //};
+
+
+
+
+            //this.figureDrawer = new Rectangle();
+            //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
+            //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
+            //double[] drawerDashes = { 10, 5 };
+            //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
+
+            Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
             Canvas.SetZIndex(selectionRectangle, 2);
             mainCanvas.Children.Add(selectionRectangle);
@@ -360,12 +383,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 switch (activeTool)
                 {
                     case CanvasToolType.ToolPencil:
-                        currentLine.StrokeThickness = 1;
+                        currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         break;
                     case CanvasToolType.ToolBrush:
                         currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        currentLine.SnapsToDevicePixels = false;
                         //currentLine.Stroke = new LinearGradientBrush(Globals.applicationSettings.primaryColor, Colors.Transparent);
                         //currentLine.StrokeStartLineCap = PenLineCap.Round;
                         //currentLine.StrokeEndLineCap = PenLineCap.Round;
@@ -577,6 +601,33 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             //    OnCanvasMouseUp(sender, null);
             //}
         }
+
+
+
+
+
+
+        private Double zoomMax = 5;
+        private Double zoomMin = 0.5;
+        private Double zoomSpeed = 0.001;
+        private Double zoom = 1;
+        //private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    zoom += zoomSpeed * e.Delta; // Ajust zooming speed (e.Delta = Mouse spin value )
+        //    if (zoom < zoomMin) { zoom = zoomMin; } // Limit Min Scale
+        //    if (zoom > zoomMax) { zoom = zoomMax; } // Limit Max Scale
+
+        //    Point mousePos = e.GetPosition(mainCanvas);
+
+        //    if (zoom > 1)
+        //    {
+        //        mainCanvas.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y); // transform Canvas size from mouse position
+        //    }
+        //    else
+        //    {
+        //        mainCanvas.RenderTransform = new ScaleTransform(zoom, zoom); // transform Canvas size
+        //    }
+        //}
     }
 }
 
