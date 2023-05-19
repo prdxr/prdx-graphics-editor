@@ -40,51 +40,80 @@ namespace prdx_graphics_editor
             rightDockPanel.Background = Globals.colorAccent2;
             bottomDockPanel.Background = Globals.colorAccent2;
 
+            //var setter = (topDockPanel.Resources["MenuStyle"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Property == MenuItem.BackgroundProperty);
+            //setter.Value = Globals.colorAccent1;
+
+            //foreach (var menuItem in topDockPanel.Children.OfType<MenuItem>())
+            //{
+            //    if (menuItem == null)
+            //    {
+            //        menuItem.Style = topDockPanel.Resources["MenuStyle"] as Style;
+            //    }
+            //}
+
+            ////var setter = topDockPanel.Resources;
+            ////["Style"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Value == MenuItem.BackgroundProperty) as Setter;
+            //if (setter != null)
+            //{
+            //    setter.Value = Globals.colorTextBright;
+            //}
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Color? color = Actions.PickColor();
-            if (color != null)
-            {
-                (sender as Button).Background = new SolidColorBrush(color.GetValueOrDefault());
-            }
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Color? color = Actions.PickColor();
+        //    if (color != null)
+        //    {
+        //        (sender as Button).Background = new SolidColorBrush(color.GetValueOrDefault());
+        //    }
+        //}
 
-        private void CreateProject(object sender, RoutedEventArgs e)
+        private void CreateProject(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.CreateProject();
         }
-
-        private void ExportProject(object sender, RoutedEventArgs e)
+        private void OpenProject(object sender, ExecutedRoutedEventArgs e)
         {
-            Actions.ExportProject();
+            //Actions.CreateProject();
+        }
+        private void SaveProject(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Actions.CreateProject();
+        }
+        private void SaveProjectAs(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Actions.CreateProject();
         }
 
-        private void ImportToProject(object sender, RoutedEventArgs e)
+        private void ImportToProject(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.ImportToProject();
         }
-
-        private void ClickUndo(object sender, RoutedEventArgs e)
+        private void ExportProject(object sender, ExecutedRoutedEventArgs e)
+        {
+            Actions.ExportProject();
+        }
+        private void UndoAction(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Undo();
         }
-        private void ClickRedo(object sender, RoutedEventArgs e)
+
+        private void RedoAction(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Redo();
         }
 
-        private void SelectAll(object sender, RoutedEventArgs e)
+        private void SelectAll(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.SelectAll();
         }
-        private void SelectClear(object sender, RoutedEventArgs e)
+
+        private void DeselectAll(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.SelectClear();
         }
 
-        private void CloseApplication(object sender, RoutedEventArgs e)
+        private void ExitApp(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
             //Actions.CloseApplication();

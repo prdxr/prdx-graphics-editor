@@ -8,6 +8,46 @@
         Title="Graphic editor" Height="1080" Width="1920" MinHeight="500" MinWidth="600">
     <!--720x1280-->
     <!--mainGrid background: accent1-->
+    <Window.Resources>
+        <RoutedUICommand x:Key="CreateProject" Text="Создать проект"/>
+        <RoutedUICommand x:Key="OpenProject" Text="Открыть проект"/>
+        <RoutedUICommand x:Key="SaveProject" Text="Сохранить проект"/>
+        <RoutedUICommand x:Key="SaveProjectAs" Text="Сохранить проект как..."/>
+        <RoutedUICommand x:Key="ImportToProject" Text="Импортировать изображение..."/>
+        <RoutedUICommand x:Key="ExportProject" Text="Экспоритровать..."/>
+        <RoutedUICommand x:Key="ExitApp" Text="Выход"/>
+        <RoutedUICommand x:Key="UndoAction" Text="Отменить"/>
+        <RoutedUICommand x:Key="RedoAction" Text="Вернуть"/>
+        <RoutedUICommand x:Key="SelectAll" Text="Выделить всё"/>
+        <RoutedUICommand x:Key="DeselectAll" Text="Снять выделение"/>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource CreateProject}" Executed="CreateProject"/>
+        <CommandBinding Command="{StaticResource OpenProject}" Executed="OpenProject"/>
+        <CommandBinding Command="{StaticResource SaveProject}" Executed="SaveProject"/>
+        <CommandBinding Command="{StaticResource SaveProjectAs}" Executed="SaveProjectAs"/>
+        <CommandBinding Command="{StaticResource ImportToProject}" Executed="ImportToProject"/>
+        <CommandBinding Command="{StaticResource ExportProject}" Executed="ExportProject"/>
+        <CommandBinding Command="{StaticResource ExitApp}" Executed="ExitApp"/>
+        <CommandBinding Command="{StaticResource UndoAction}" Executed="UndoAction"/>
+        <CommandBinding Command="{StaticResource RedoAction}" Executed="RedoAction"/>
+        <CommandBinding Command="{StaticResource SelectAll}" Executed="SelectAll"/>
+        <CommandBinding Command="{StaticResource DeselectAll}" Executed="DeselectAll"/>
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource CreateProject}"/>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource OpenProject}"/>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource SaveProject}"/>
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{StaticResource SaveProjectAs}"/>
+        <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource ImportToProject}"/>
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{StaticResource ExportProject}"/>
+        <KeyBinding Key="Esc" Modifiers="Shift" Command="{StaticResource ExitApp}"/>
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectAll}"/>
+        <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource DeselectAll}"/>
+    </Window.InputBindings>
+
     <Grid x:Name="mainGrid">
         <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
         <!--leftDockPanel background: accent2-->
@@ -23,31 +63,36 @@
         </DockPanel>
         <!--topDockPanel background: accent2-->
         <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top" Background="DarkGray">
+            <DockPanel.Resources>
+                <Style x:Key="MenuStyle" TargetType="MenuItem">
+                    <Setter Property="Background" Value="black" />
+                </Style>                
+            </DockPanel.Resources>
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Menu x:Name="mainMenu" FlowDirection="LeftToRight" HorizontalAlignment="Left">
                     <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
-                        <MenuItem Header="Создать проект" Click="CreateProject"/>
-                        <MenuItem Header="Открыть проект"/>
+                        <MenuItem Foreground="Black" Header="Создать проект" Command="{StaticResource CreateProject}"/>
+                        <MenuItem Foreground="Black" Header="Открыть проект" Command="{StaticResource OpenProject}"/>
                         <Separator/>
-                        <MenuItem Header="Сохранить"/>
-                        <MenuItem Header="Сохранить как..."/>
+                        <MenuItem Foreground="Black" Header="Сохранить" Command="{StaticResource SaveProject}"/>
+                        <MenuItem Foreground="Black" Header="Сохранить как..." Command="{StaticResource SaveProjectAs}"/>
                         <Separator/>
-                        <MenuItem Header="Импорт изображения" Click="ImportToProject"/>
-                        <MenuItem Header="Экспортировать как..." Click="ExportProject"/>
+                        <MenuItem Foreground="Black" Header="Импорт изображения" Command="{StaticResource ImportToProject}"/>
+                        <MenuItem Foreground="Black" Header="Экспортировать как..." Command="{StaticResource ExportProject}"/>
                         <Separator/>
-                        <MenuItem Header="Выход" Click="CloseApplication"/>
+                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}"/>
                     </MenuItem>
                     <MenuItem x:Name="mainMenuEdit" Header="Правка" VerticalAlignment="Stretch">
-                        <MenuItem Header="Отменить последнее действие" Click="ClickUndo"/>
-                        <MenuItem Header="Вернуть последнее действие" Click="ClickRedo"/>
+                        <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}"/>
+                        <MenuItem Foreground="Black" Header="Вернуть последнее действие" Command="{StaticResource RedoAction}"/>
                         <Separator/>
-                        <MenuItem Header="Вырезать"/>
-                        <MenuItem Header="Копировать"/>
-                        <MenuItem Header="Вставить"/>
+                        <MenuItem Foreground="Black" Header="Вырезать"/>
+                        <MenuItem Foreground="Black" Header="Копировать"/>
+                        <MenuItem Foreground="Black" Header="Вставить"/>
                     </MenuItem>
                     <MenuItem x:Name="mainMenuSelect" Header="Выделение" VerticalAlignment="Stretch">
-                        <MenuItem Header="Выделить всё" Click="SelectAll"/>
-                        <MenuItem Header="Снять выделение" Click="SelectClear"/>
+                        <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}"/>
+                        <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}"/>
                     </MenuItem>
                 </Menu>
             </Border>

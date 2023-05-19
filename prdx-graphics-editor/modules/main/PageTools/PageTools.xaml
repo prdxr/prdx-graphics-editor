@@ -4,10 +4,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor"
+      xmlns:dt="urn:schemas-microsoft-com:datatypes"
       mc:Ignorable="d" 
       d:DesignHeight="250" d:DesignWidth="200"
       Title="PageTools">
 
+    <Page.Resources>
+        <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
+        <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
+    </Page.Resources>
+
+    <Page.CommandBindings>
+        <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
+        <CommandBinding Command="{StaticResource SwapColors}" Executed="SwitchColors"/>
+    </Page.CommandBindings>
+
+    <Page.InputBindings>
+        <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
+        <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
+        <KeyBinding Key="E" Command="{StaticResource ToolHotkey}" CommandParameter="2"/>
+        <KeyBinding Key="S" Command="{StaticResource ToolHotkey}" CommandParameter="3"/>
+        <KeyBinding Key="F" Command="{StaticResource ToolHotkey}" CommandParameter="4"/>
+        <KeyBinding Key="R" Command="{StaticResource ToolHotkey}" CommandParameter="5"/>
+        <KeyBinding Key="C" Command="{StaticResource ToolHotkey}" CommandParameter="6"/>
+        <KeyBinding Key="T" Command="{StaticResource ToolHotkey}" CommandParameter="7"/>
+        <KeyBinding Key="L" Command="{StaticResource ToolHotkey}" CommandParameter="8"/>
+        <KeyBinding Key="A" Command="{StaticResource ToolHotkey}" CommandParameter="9"/>
+        <KeyBinding Key="X" Command="{StaticResource SwapColors}"/>
+    </Page.InputBindings>
+    
     <Grid>
         <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center" LastChildFill="False">
             <Label x:Name="mainLabel" FontSize="24" FontWeight="Bold" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Top">Инструменты</Label>
@@ -24,34 +49,44 @@
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0" Grid.Column="0" x:Name="ButtonPencil" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Карандаш">
+                <RadioButton Grid.Row="0" Grid.Column="0" x:Name="ButtonPencil" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Карандаш"
+                             Command="{StaticResource ToolHotkey}">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/pencil.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="1" x:Name="ButtonBrush" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Кисть">
+                <RadioButton Grid.Row="0" Grid.Column="1" x:Name="ButtonBrush" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Кисть"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="1">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/brush.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="2" x:Name="ButtonEraser" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Ластик">
+                <RadioButton Grid.Row="0" Grid.Column="2" x:Name="ButtonEraser" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Ластик"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Eraser">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/eraser.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="3" x:Name="ButtonSelect" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Выделение">
+                <RadioButton Grid.Row="0" Grid.Column="3" x:Name="ButtonSelect" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Выделение"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Select">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/selection.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="4" x:Name="ButtonFill" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Заливка">
+                <RadioButton Grid.Row="0" Grid.Column="4" x:Name="ButtonFill" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Заливка"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Fill">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/fill.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="0" x:Name="ButtonSquare" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Прямоугольник">
+                <RadioButton Grid.Row="1" Grid.Column="0" x:Name="ButtonSquare" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Прямоугольник"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Square">
                     <Image Margin="4" Stretch="Fill" Source="/modules/main/PageTools/icons/square.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="1" x:Name="ButtonCircle" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Эллипс">
+                <RadioButton Grid.Row="1" Grid.Column="1" x:Name="ButtonCircle" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Эллипс"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Circle">
                     <Image Margin="3" Stretch="Fill" Source="/modules/main/PageTools/icons/circle.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="2" x:Name="ButtonTriangle" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Треугольник">
+                <RadioButton Grid.Row="1" Grid.Column="2" x:Name="ButtonTriangle" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Треугольник"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Triangle">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/triangle.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="3" x:Name="ButtonLine" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Линия">
+                <RadioButton Grid.Row="1" Grid.Column="3" x:Name="ButtonLine" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Линия"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Line">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/line.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="1" Grid.Column="4" x:Name="ButtonArrow" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" Checked="ChangeTool" ToolTip="Стрелка">
+                <RadioButton Grid.Row="1" Grid.Column="4" x:Name="ButtonArrow" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Стрелка"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="Arrow">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
                 </RadioButton>
             </Grid>
@@ -62,7 +97,7 @@
                 <Border Width="35" Height="35" BorderBrush="#444" BorderThickness="1" Margin="10,4,80,10">
                     <Button x:Name="buttonForegroundColor" BorderBrush="Gray" Click="ChangeForegroundColor"></Button>
                 </Border>
-                <Button x:Name="swapButton" Width="35" Height="35" Click="SwitchColors" Background="Transparent" ToolTip="Поменять основной и фоновый цвета" Margin="60,7,10,8" BorderBrush="#444">
+                <Button x:Name="swapButton" Width="35" Height="35" Command="{StaticResource SwapColors}" Background="Transparent" ToolTip="Поменять основной и фоновый цвета" Margin="60,7,10,8" BorderBrush="#444">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/swap.png"/>
                 </Button>
             </Grid>

@@ -33,8 +33,20 @@ namespace prdx_graphics_editor
             mainLabel.Foreground = Globals.colorTextBright;
         }
 
-        private void ChangeTool(object sender, RoutedEventArgs e)
+        private void ChangeTool(object sender, ExecutedRoutedEventArgs e)
         {
+            string a = (string) e.Parameter;
+
+            int toolType = Convert.ToInt32(e.Parameter.ToString());
+
+            //switch (e.Parameter.)
+            //{
+            //    case "Pencil":
+            //        ButtonPencil.IsChecked = true;
+            //        //toolType = CanvasToolType.ToolPencil;
+            //        break;
+            //}
+
             //List<RadioButton> buttons = new List<RadioButton>();
             RadioButton[] buttons = { 
                 ButtonPencil,
@@ -48,10 +60,13 @@ namespace prdx_graphics_editor
                 ButtonLine,
                 ButtonArrow
             };
-            int index = Array.IndexOf(buttons, sender as RadioButton);
-            CanvasToolType toolType = (CanvasToolType) index;
 
-            Actions.SetActiveTool(toolType);
+            var radioButtons = LogicalTreeHelper.GetChildren(toolGrid).OfType<RadioButton>();
+            var selected = radioButtons.FirstOrDefault(x => (bool)x.IsChecked);
+            int index = Array.IndexOf(buttons, selected as RadioButton);
+            //CanvasToolType toolType = (CanvasToolType) index;
+
+            //Actions.SetActiveTool(toolType);
         }
 
         public void ChangeColorListener()
