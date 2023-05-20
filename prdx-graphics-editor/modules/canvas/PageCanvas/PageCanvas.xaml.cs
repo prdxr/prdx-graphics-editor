@@ -86,7 +86,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Выделение",
                 "Заливка",
                 "Прямоугольник",
-                "Круг",
+                "Эллипс",
                 "Треугольник",
                 "Прямая",
                 "Стрелка"

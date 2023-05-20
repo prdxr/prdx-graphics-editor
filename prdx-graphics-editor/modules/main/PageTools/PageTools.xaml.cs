@@ -35,9 +35,9 @@ namespace prdx_graphics_editor
 
         private void ChangeTool(object sender, ExecutedRoutedEventArgs e)
         {
-            string a = (string) e.Parameter;
+            int a = Convert.ToInt32(e.Parameter);
 
-            int toolType = Convert.ToInt32(e.Parameter.ToString());
+            CanvasToolType toolType = (CanvasToolType) a;
 
             //switch (e.Parameter.)
             //{
@@ -61,12 +61,27 @@ namespace prdx_graphics_editor
                 ButtonArrow
             };
 
-            var radioButtons = LogicalTreeHelper.GetChildren(toolGrid).OfType<RadioButton>();
-            var selected = radioButtons.FirstOrDefault(x => (bool)x.IsChecked);
+
+
+            int count = VisualTreeHelper.GetChildrenCount(toolGrid);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(toolGrid, i);
+
+                if (child is RadioButton radioButton && (Convert.ToInt32((child as RadioButton).CommandParameter) == Convert.ToInt32(e.Parameter)))
+                {
+                    (child as RadioButton).IsChecked = true;
+                    break;
+                }
+            }
+
+
+            var radioButtons = LogicalTreeHelper.GetChildren(toolGrid).OfType<RadioButton>().ToList();
+            var selected = radioButtons.FirstOrDefault(x => x.CommandParameter == e.Parameter);
             int index = Array.IndexOf(buttons, selected as RadioButton);
             //CanvasToolType toolType = (CanvasToolType) index;
 
-            //Actions.SetActiveTool(toolType);
+            Actions.SetActiveTool(toolType);
         }
 
         public void ChangeColorListener()
