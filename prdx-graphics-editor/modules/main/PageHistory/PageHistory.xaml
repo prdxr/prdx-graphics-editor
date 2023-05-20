@@ -8,6 +8,16 @@
       d:DesignHeight="1000" d:DesignWidth="300"
       Title="PageHistory">
 
+    <Page.Resources>
+        <RoutedUICommand x:Key="UndoAction" Text="Отменить действие"/>
+        <RoutedUICommand x:Key="RedoAction" Text="Вернуть действие"/>
+    </Page.Resources>
+
+    <Page.CommandBindings>
+        <CommandBinding Command="{StaticResource RedoAction}" Executed="ClickRedo"/>
+        <CommandBinding Command="{StaticResource UndoAction}" Executed="ClickUndo"/>
+    </Page.CommandBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -19,10 +29,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="buttonUndo" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="ClickUndo" ToolTip="Отменить последнее действие">
+            <Button x:Name="buttonUndo" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Отменить последнее действие" Command="{StaticResource UndoAction}">
                 <Image Margin="2" Stretch="Uniform" Source="/modules/main/PageTools/icons/undo.png"></Image>
             </Button>
-            <Button x:Name="buttonRedo" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="ClickRedo" ToolTip="Восстановить последнее действие">
+            <Button x:Name="buttonRedo" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Восстановить последнее действие" Command="{StaticResource RedoAction}">
                 <Image Margin="2" Stretch="Uniform" Source="/modules/main/PageTools/icons/redo.png"></Image>
             </Button>
         </Grid>

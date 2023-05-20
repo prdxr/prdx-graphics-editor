@@ -44,6 +44,8 @@
         <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource ImportToProject}"/>
         <KeyBinding Key="E" Modifiers="Ctrl" Command="{StaticResource ExportProject}"/>
         <KeyBinding Key="Esc" Modifiers="Shift" Command="{StaticResource ExitApp}"/>
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource UndoAction}"/>
+        <KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource RedoAction}"/>
         <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectAll}"/>
         <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource DeselectAll}"/>
     </Window.InputBindings>

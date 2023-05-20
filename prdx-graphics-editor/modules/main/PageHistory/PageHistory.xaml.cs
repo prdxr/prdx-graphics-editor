@@ -37,11 +37,11 @@ namespace prdx_graphics_editor.modules.main
 
         EventHandler historyChanged;
 
-        private void ClickUndo(object sender, RoutedEventArgs e)
+        private void ClickUndo(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Undo();
         }
-        private void ClickRedo(object sender, RoutedEventArgs e)
+        private void ClickRedo(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Redo();
         }
