@@ -73,28 +73,28 @@
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Menu x:Name="mainMenu" FlowDirection="LeftToRight" HorizontalAlignment="Left">
                     <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Создать проект" Command="{StaticResource CreateProject}"/>
-                        <MenuItem Foreground="Black" Header="Открыть проект" Command="{StaticResource OpenProject}"/>
+                        <MenuItem Foreground="Black" Header="Создать проект" Command="{StaticResource CreateProject}" InputGestureText="ctrl+N"/>
+                        <MenuItem Foreground="Black" Header="Открыть проект" Command="{StaticResource OpenProject}" InputGestureText="ctrl+O"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Сохранить" Command="{StaticResource SaveProject}"/>
-                        <MenuItem Foreground="Black" Header="Сохранить как..." Command="{StaticResource SaveProjectAs}"/>
+                        <MenuItem Foreground="Black" Header="Сохранить" Command="{StaticResource SaveProject}" InputGestureText="ctrl+S"/>
+                        <MenuItem Foreground="Black" Header="Сохранить как..." Command="{StaticResource SaveProjectAs}" InputGestureText="ctrl+shift+N"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Импорт изображения" Command="{StaticResource ImportToProject}"/>
-                        <MenuItem Foreground="Black" Header="Экспортировать как..." Command="{StaticResource ExportProject}"/>
+                        <MenuItem Foreground="Black" Header="Импорт изображения" Command="{StaticResource ImportToProject}" InputGestureText="ctrl+I"/>
+                        <MenuItem Foreground="Black" Header="Экспортировать как..." Command="{StaticResource ExportProject}" InputGestureText="ctrl+E"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}"/>
+                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}" InputGestureText="Esc"/>
                     </MenuItem>
                     <MenuItem x:Name="mainMenuEdit" Header="Правка" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}"/>
-                        <MenuItem Foreground="Black" Header="Вернуть последнее действие" Command="{StaticResource RedoAction}"/>
+                        <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}" InputGestureText="ctrl+Z"/>
+                        <MenuItem Foreground="Black" Header="Вернуть последнее действие" Command="{StaticResource RedoAction}" InputGestureText="ctrl+Y"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Вырезать"/>
-                        <MenuItem Foreground="Black" Header="Копировать"/>
-                        <MenuItem Foreground="Black" Header="Вставить"/>
+                        <MenuItem Foreground="Black" Header="Вырезать" InputGestureText="ctrl+X"/>
+                        <MenuItem Foreground="Black" Header="Копировать" InputGestureText="ctrl+C"/>
+                        <MenuItem Foreground="Black" Header="Вставить" InputGestureText="ctrl+V"/>
                     </MenuItem>
                     <MenuItem x:Name="mainMenuSelect" Header="Выделение" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}"/>
-                        <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}"/>
+                        <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}" InputGestureText="ctrl+A"/>
+                        <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}" InputGestureText="ctrl+shift+A"/>
                     </MenuItem>
                 </Menu>
             </Border>
