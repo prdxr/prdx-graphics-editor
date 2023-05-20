@@ -51,16 +51,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public Line lastLine;
         public Polygon lastTriangle;
 
-        public static void SerializeToXML(Canvas canvas, string filename)
-        {
-            string mystrXAML = XamlWriter.Save(canvas);
-            FileStream filestream = File.Create(filename);
-            StreamWriter streamwriter = new StreamWriter(filestream);
-            streamwriter.Write(mystrXAML);
-            streamwriter.Close();
-            filestream.Close();
-        }
-
         public PageCanvas()
         {
             InitializeComponent();
@@ -132,6 +122,46 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             //canvas1.Children.Add(figureDrawer);
 
             Globals.pageCanvasRef = this;
+        }
+
+        public void SerializeToXML(Canvas canvas, string filename)
+        {
+            string mystrXAML = XamlWriter.Save(canvas);
+            FileStream filestream = File.Create(filename);
+            StreamWriter streamwriter = new StreamWriter(filestream);
+            streamwriter.Write(mystrXAML);
+            streamwriter.Close();
+            filestream.Close();
+        }
+        public void DeserializeFromXML(string filename)
+        {
+            FileStream filestream = File.Open(filename, FileMode.Open);
+            StreamReader streamreader = new StreamReader(filestream);
+            string mystrXAML = streamreader.ReadToEnd();
+
+            Canvas deserializedCanvas = XamlReader.Parse(mystrXAML) as Canvas;
+
+
+            mainCanvas.Children.Clear();
+            //var childrenCopy = mainCanvas.Children.Cast<UIElement>().ToList();
+            var childrenCopy = deserializedCanvas.Children.Cast<UIElement>().ToList();
+            // Добавляем дочерние элементы десериализованного Canvas в mainCanvas
+            foreach (var child in childrenCopy)
+            {
+                //if (child is UIElement)
+                //{
+                //    var parent = LogicalTreeHelper.GetParent(uiElement);
+                //    if (parent is Panel parentPanel)
+                //    {
+                //        parentPanel.Children.Remove(uiElement);
+                //    }
+                //}
+                deserializedCanvas.Children.Remove(child as UIElement);
+                mainCanvas.Children.Add(child as UIElement);
+            }
+
+            streamreader.Close();
+            filestream.Close();
         }
 
         public void SetActiveTool(CanvasToolType toolType)
@@ -458,7 +488,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 this.isEmpty = false;
             }
             IsMouseDown = false;
-            //SerializeToXML(canvas1, AppDomain.CurrentDomain.BaseDirectory + "/cnv.xml");
         }
 
         public void ExportProject(string exportType, string filename)

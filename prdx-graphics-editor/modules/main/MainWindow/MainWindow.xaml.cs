@@ -74,15 +74,15 @@ namespace prdx_graphics_editor
         }
         private void OpenProject(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.CreateProject();
+            Actions.OpenProject();
         }
         private void SaveProject(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.CreateProject();
+            Actions.SaveProject();
         }
         private void SaveProjectAs(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.CreateProject();
+            Actions.SaveProjectAs();
         }
 
         private void ImportToProject(object sender, ExecutedRoutedEventArgs e)

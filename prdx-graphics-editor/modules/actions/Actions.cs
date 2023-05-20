@@ -59,30 +59,23 @@ namespace prdx_graphics_editor.modules.actions
         {
             if (CheckBeforeErasing() == 0)
             {
-                string filename;
                 var dialog = new Microsoft.Win32.SaveFileDialog();
                 
-                string path; // this is the path that you are checking.
-                if (Directory.Exists(Globals.currentFile))
+                if (Directory.Exists(ApplicationSettings.projectspath))
                 {
-                    dialog.InitialDirectory = Globals.currentFile;
+                    dialog.InitialDirectory = ApplicationSettings.projectspath;
                 }
                 else
                 {
                     dialog.InitialDirectory = @"C:\";
                 }
 
-                dialog.Title = "Выбор места проекта";
+                dialog.Title = "Выбор расположения проекта";
                 dialog.Filter = "Файл проекта (*.xml) |*.xml";
                 Nullable<bool> result = dialog.ShowDialog();
                 if (result == true)
                 {
-                    if (CreateProject() == -1)
-                    {
-                        return 1;
-                    }
-                    filename = dialog.FileName;
-                    Globals.pageCanvasRef.ImportToProject(filename);
+                    Globals.currentFile = dialog.FileName;
 
                 }
                 else
@@ -90,10 +83,74 @@ namespace prdx_graphics_editor.modules.actions
                     return 1;
                 }
             }
-
-            
-
             return 0;
+        }
+
+        public static int OpenProject()
+        {
+            if (CheckBeforeErasing() == 0)
+            {
+                var dialog = new Microsoft.Win32.OpenFileDialog();
+
+                if (Directory.Exists(ApplicationSettings.projectspath))
+                {
+                    dialog.InitialDirectory = ApplicationSettings.projectspath;
+                }
+                else
+                {
+                    dialog.InitialDirectory = @"C:\";
+                }
+
+                dialog.Title = "Выбор расположения проекта";
+                dialog.Filter = "Файл проекта (*.xml) |*.xml";
+                Nullable<bool> result = dialog.ShowDialog();
+                if (result == true)
+                {
+                    Globals.currentFile = dialog.FileName;
+                    Globals.pageCanvasRef.DeserializeFromXML(dialog.FileName);
+
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        public static void SaveProject()
+        {
+            if (Globals.currentFile == null)
+            {
+                SaveProjectAs();
+            }
+
+            Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
+        }
+
+        public static void SaveProjectAs()
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+
+            if (Directory.Exists(ApplicationSettings.projectspath))
+            {
+                dialog.InitialDirectory = ApplicationSettings.projectspath;
+            }
+            else
+            {
+                dialog.InitialDirectory = @"C:\";
+            }
+
+            dialog.Title = "Выбор расположения проекта";
+            dialog.Filter = "Файл проекта (*.xml) |*.xml";
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                Globals.currentFile = dialog.FileName;
+
+            }
+
+            Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
         }
 
         public static void ExportProject()
@@ -126,12 +183,10 @@ namespace prdx_graphics_editor.modules.actions
             Nullable<bool> result = dialog.ShowDialog();
             if (result == true)
             {
-                if (CreateProject() == -1) { 
-                    return;
+                if (CheckBeforeErasing() == 0) {
+                    filename = dialog.FileName;
+                    Globals.pageCanvasRef.ImportToProject(filename);
                 }
-                filename = dialog.FileName;
-                Globals.pageCanvasRef.ImportToProject(filename);
-
             }
             else
             {

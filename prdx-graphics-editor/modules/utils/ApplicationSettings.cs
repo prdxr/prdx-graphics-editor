@@ -25,14 +25,12 @@ namespace prdx_graphics_editor.modules.utils
         public CanvasToolType activeTool { get; set; }
         public Canvas canvas { get; set; }
 
-        public string projectsDirectory { get; set; }
-
         //accent1, accent2, accent1Text, accent2Text
         public List<Color> applicationTheme { get; set; }
 
-        public static string applicationpath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/prdx-graphics-editor";
-        public static string filepath = applicationpath + "/settings.json";
-        public static string projectspath = applicationpath + "/projects";
+        public static string applicationpath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\prdx-graphics-editor";
+        public static string filepath = applicationpath + "\\settings.json";
+        public static string projectspath = applicationpath + "\\projects";
 
         public ApplicationSettings()
         {
@@ -46,7 +44,6 @@ namespace prdx_graphics_editor.modules.utils
                 Color.FromRgb(234, 242, 255),
                 Color.FromRgb(0, 0, 0)
             };
-            this.projectsDirectory = projectspath;
         }
         ~ApplicationSettings()
         {
