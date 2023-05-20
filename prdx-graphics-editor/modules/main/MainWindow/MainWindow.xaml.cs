@@ -115,8 +115,7 @@ namespace prdx_graphics_editor
 
         private void ExitApp(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Close();
-            //Actions.CloseApplication();
+            Actions.CloseApplication(this);
         }
     }
 }

@@ -31,21 +31,19 @@ namespace prdx_graphics_editor.modules.actions
 
         private static int CheckBeforeErasing()
         {
-            string boxCaption = "Новый проект";
-            string boxText = "Внимание! Вы собираетесь открыть новый проект, но текущий не был сохранён. Сохранить проект?";
+            string boxCaption = "Несохранённые изменения";
+            string boxText = "Внимание! Есть несохранёные изменения, которые будут утеряны при продолжении. Сохранить проект?";
             MessageBoxButton boxButtons = MessageBoxButton.YesNoCancel;
             MessageBoxImage boxIcon = MessageBoxImage.Warning;
             MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
 
             if (boxResult == MessageBoxResult.Yes)
             {
-                //сохранить
-                //создать проект
+                SaveProject();
                 Globals.pageCanvasRef.ResetCanvas();
             }
             else if (boxResult == MessageBoxResult.No)
             {
-                //создать проект
                 Globals.pageCanvasRef.ResetCanvas();
             }
             else if (boxResult == MessageBoxResult.Cancel)
@@ -210,6 +208,14 @@ namespace prdx_graphics_editor.modules.actions
         public static void SelectClear()
         {
             Globals.pageCanvasRef.SelectClear();
+        }
+
+        public static void CloseApplication(MainWindow caller)
+        {
+            if (CheckBeforeErasing() == 0)
+            {
+                caller.Close();
+            }
         }
     }
 }
