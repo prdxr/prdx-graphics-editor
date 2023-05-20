@@ -29,32 +29,70 @@ namespace prdx_graphics_editor.modules.actions
             Globals.pageCanvasRef.SetActiveTool(toolType);
         }
 
+        private static int CheckBeforeErasing()
+        {
+            string boxCaption = "Новый проект";
+            string boxText = "Внимание! Вы собираетесь открыть новый проект, но текущий не был сохранён. Сохранить проект?";
+            MessageBoxButton boxButtons = MessageBoxButton.YesNoCancel;
+            MessageBoxImage boxIcon = MessageBoxImage.Warning;
+            MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
+
+            if (boxResult == MessageBoxResult.Yes)
+            {
+                //сохранить
+                //создать проект
+                Globals.pageCanvasRef.ResetCanvas();
+            }
+            else if (boxResult == MessageBoxResult.No)
+            {
+                //создать проект
+                Globals.pageCanvasRef.ResetCanvas();
+            }
+            else if (boxResult == MessageBoxResult.Cancel)
+            {
+                return -1;
+            }
+            return 0;
+        }
+
         public static int CreateProject()
         {
-            if (Globals.pageCanvasRef.isEmpty == false)
+            if (CheckBeforeErasing() == 0)
             {
-                string boxCaption = "Новый проект";
-                string boxText = "Внимание! Вы собираетесь открыть новый проект, но текущий не был сохранён. Сохранить проект?";
-                MessageBoxButton boxButtons = MessageBoxButton.YesNoCancel;
-                MessageBoxImage boxIcon = MessageBoxImage.Warning;
-                MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
+                string filename;
+                var dialog = new Microsoft.Win32.SaveFileDialog();
+                
+                string path; // this is the path that you are checking.
+                if (Directory.Exists(Globals.currentFile))
+                {
+                    dialog.InitialDirectory = Globals.currentFile;
+                }
+                else
+                {
+                    dialog.InitialDirectory = @"C:\";
+                }
 
-                if (boxResult == MessageBoxResult.Yes)
+                dialog.Title = "Выбор места проекта";
+                dialog.Filter = "Файл проекта (*.xml) |*.xml";
+                Nullable<bool> result = dialog.ShowDialog();
+                if (result == true)
                 {
-                    //сохранить
-                    //создать проект
-                    Globals.pageCanvasRef.ResetCanvas();
+                    if (CreateProject() == -1)
+                    {
+                        return 1;
+                    }
+                    filename = dialog.FileName;
+                    Globals.pageCanvasRef.ImportToProject(filename);
+
                 }
-                else if (boxResult == MessageBoxResult.No)
+                else
                 {
-                    //создать проект
-                    Globals.pageCanvasRef.ResetCanvas();
-                }
-                else if (boxResult == MessageBoxResult.Cancel)
-                {
-                    return -1;
+                    return 1;
                 }
             }
+
+            
+
             return 0;
         }
 
