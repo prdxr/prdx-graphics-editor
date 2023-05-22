@@ -14,12 +14,15 @@
         <RoutedUICommand x:Key="SaveProject" Text="Сохранить проект"/>
         <RoutedUICommand x:Key="SaveProjectAs" Text="Сохранить проект как..."/>
         <RoutedUICommand x:Key="ImportToProject" Text="Импортировать изображение..."/>
-        <RoutedUICommand x:Key="ExportProject" Text="Экспоритровать..."/>
+        <RoutedUICommand x:Key="ExportProject" Text="Экспортировать..."/>
         <RoutedUICommand x:Key="ExitApp" Text="Выход"/>
         <RoutedUICommand x:Key="UndoAction" Text="Отменить"/>
         <RoutedUICommand x:Key="RedoAction" Text="Вернуть"/>
         <RoutedUICommand x:Key="SelectAll" Text="Выделить всё"/>
         <RoutedUICommand x:Key="DeselectAll" Text="Снять выделение"/>
+        <RoutedUICommand x:Key="Cut" Text="Вырезать"/>
+        <RoutedUICommand x:Key="Copy" Text="Копировать"/>
+        <RoutedUICommand x:Key="Paste" Text="Вставить"/>
     </Window.Resources>
 
     <Window.CommandBindings>
@@ -34,6 +37,9 @@
         <CommandBinding Command="{StaticResource RedoAction}" Executed="RedoAction"/>
         <CommandBinding Command="{StaticResource SelectAll}" Executed="SelectAll"/>
         <CommandBinding Command="{StaticResource DeselectAll}" Executed="DeselectAll"/>
+        <CommandBinding Command="{StaticResource Cut}" Executed="Cut"/>
+        <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
+        <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -48,6 +54,9 @@
         <KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource RedoAction}"/>
         <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectAll}"/>
         <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource DeselectAll}"/>
+        <KeyBinding Key="X" Modifiers="Ctrl" Command="{StaticResource Cut}"/>
+        <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
+        <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
     </Window.InputBindings>
 
     <Grid x:Name="mainGrid">

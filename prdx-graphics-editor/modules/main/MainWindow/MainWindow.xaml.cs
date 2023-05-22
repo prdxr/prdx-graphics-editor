@@ -112,6 +112,18 @@ namespace prdx_graphics_editor
         {
             Actions.SelectClear();
         }
+        private void Cut(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Actions.Cut();
+        }
+        private void Copy(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Actions.Copy();
+        }
+        private void Paste(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Actions.Paste();
+        }
 
         private void ExitApp(object sender, ExecutedRoutedEventArgs e)
         {

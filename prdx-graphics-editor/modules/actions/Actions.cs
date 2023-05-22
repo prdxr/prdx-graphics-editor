@@ -16,8 +16,17 @@ namespace prdx_graphics_editor.modules.actions
 {
     static class Actions
     {
-        public static Color? PickColor()
+        public static Color? PickColor(string changingColor)
         {
+            if (changingColor == "foreground")
+            {
+                Globals.changingColor = Globals.applicationSettings.primaryColor;
+            }
+            else if (changingColor == "background")
+            {
+                Globals.changingColor = Globals.applicationSettings.secondaryColor;
+            }
+
             WindowColorPicker window = new WindowColorPicker();
             window.ShowDialog();
             Color? color = window.color;

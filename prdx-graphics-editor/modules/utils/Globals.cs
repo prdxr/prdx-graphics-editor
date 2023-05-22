@@ -19,6 +19,7 @@ namespace prdx_graphics_editor.modules.utils
         public static PageCanvas pageCanvasRef;
         public static PageHistory pageHistoryRef;
         public static string currentFile;
+        public static Color? changingColor;
         public static Stack<(Shape, string, Point)> changeHistoryBefore = new Stack<(Shape, string, Point)>();
         public static Stack<(Shape, string, Point)> changeHistoryAfter = new Stack<(Shape, string, Point)>();
         public static SolidColorBrush colorAccent1 = new SolidColorBrush(applicationSettings.applicationTheme[0]);

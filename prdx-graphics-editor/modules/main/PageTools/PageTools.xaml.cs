@@ -92,7 +92,7 @@ namespace prdx_graphics_editor
 
         private void ChangeForegroundColor(object sender, RoutedEventArgs e)
         {
-            Color? color = Actions.PickColor();
+            Color? color = Actions.PickColor("foreground");
             if (color != null)
             {
                 Color result = color.GetValueOrDefault();
@@ -102,7 +102,7 @@ namespace prdx_graphics_editor
         }
         private void ChangeBackgroundColor(object sender, RoutedEventArgs e)
         {
-            Color? color = Actions.PickColor();
+            Color? color = Actions.PickColor("background");
             if (color != null)
             {
                 Color result = color.GetValueOrDefault();

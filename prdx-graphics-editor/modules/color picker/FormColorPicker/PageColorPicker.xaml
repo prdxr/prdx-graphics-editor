@@ -30,7 +30,7 @@
                      Height="30" Width="80" 
                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                     FontSize="16">
+                     FontSize="16" MaxLength="6" TextChanged="OnHexKeyPress">
                 </TextBox>
             </DockPanel>
             <Label x:Name="labelHexInput" DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>
@@ -49,15 +49,18 @@
                 <Label x:Name="labelRgbField" Grid.Row="0" HorizontalAlignment="Left" FontWeight="Bold">Задать цвет в RGB</Label>
                 <DockPanel Grid.Row="1">
                     <Label x:Name="labelR" DockPanel.Dock="Left" Width="80">Красный (R)</Label>
-                    <TextBox x:Name="textboxInputR" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
+                    <TextBox x:Name="textboxInputR" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" 
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnRgbKeyPress">255</TextBox>
                 </DockPanel>
                 <DockPanel Grid.Row="2">
                     <Label x:Name="labelG" DockPanel.Dock="Left" Width="80">Зелёный (G)</Label>
-                    <TextBox x:Name="textboxInputG" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
+                    <TextBox x:Name="textboxInputG" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray"
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnRgbKeyPress">255</TextBox>
                 </DockPanel>
                 <DockPanel Grid.Row="3">
                     <Label x:Name="labelB" DockPanel.Dock="Left" Width="80">Синий (B)</Label>
-                    <TextBox x:Name="textboxInputB" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" Width="40" Height="20">255</TextBox>
+                    <TextBox x:Name="textboxInputB" DockPanel.Dock="Right" HorizontalAlignment="Left" Background="DimGray" 
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnRgbKeyPress">255</TextBox>
                 </DockPanel>
 
             </Grid>
