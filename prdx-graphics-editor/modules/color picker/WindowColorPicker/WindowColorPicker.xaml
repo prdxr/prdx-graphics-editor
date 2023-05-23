@@ -13,7 +13,7 @@
                     Click="ButtonApply_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
             </Button>
             <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
-                    Click="ButtonCancel_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
+                    Click="ButtonCancel_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle" IsCancel="true">
             </Button>
         </DockPanel>
         

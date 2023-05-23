@@ -131,8 +131,10 @@ namespace prdx_graphics_editor.modules.actions
             {
                 SaveProjectAs();
             }
-
-            Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
+            else
+            {
+                Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
+            }
         }
 
         public static void SaveProjectAs()
@@ -154,10 +156,8 @@ namespace prdx_graphics_editor.modules.actions
             if (result == true)
             {
                 Globals.currentFile = dialog.FileName;
-
+                Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
             }
-
-            Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
         }
 
         public static void ExportProject()
