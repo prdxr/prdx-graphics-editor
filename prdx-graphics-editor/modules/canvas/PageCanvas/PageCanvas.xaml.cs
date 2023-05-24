@@ -626,9 +626,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
-            //if ((selectionRectangle.Width * selectionRectangle.Height) != 0 && !IsMouseDown){
-            //    OnCanvasMouseUp(sender, null);
-            //}
+            if (IsMouseDown)
+            {
+                OnCanvasMouseUp(sender, null);
+            }
         }
 
 
