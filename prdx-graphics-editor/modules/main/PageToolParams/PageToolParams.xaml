@@ -1,12 +1,12 @@
-﻿<Page x:Class="prdx_graphics_editor.modules.main.ToolParams.ToolParams"
+﻿<Page x:Class="prdx_graphics_editor.modules.main.PageToolParams.PageToolParams"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:prdx_graphics_editor.modules.main.ToolParams"
+      xmlns:local="clr-namespace:prdx_graphics_editor.modules.main.PageToolParams"
       mc:Ignorable="d" 
       d:DesignHeight="1000" d:DesignWidth="200"
-      Title="ToolParams">
+      Title="PageToolParams">
 
     <Grid>
         <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center" LastChildFill="False">

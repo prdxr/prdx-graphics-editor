@@ -70,7 +70,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Frame Grid.Row="0" x:Name="ToolsPage" Source="..\PageTools\PageTools.xaml"/>
-                <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\ToolParams\ToolParams.xaml"/>
+                <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\PageToolParams\PageToolParams.xaml"/>
             </Grid>
         </DockPanel>
         <!--topDockPanel background: accent2-->

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace prdx_graphics_editor.modules.pages
+namespace prdx_graphics_editor.modules.main.Layers
 {
     /// <summary>
     /// Логика взаимодействия для Layers.xaml

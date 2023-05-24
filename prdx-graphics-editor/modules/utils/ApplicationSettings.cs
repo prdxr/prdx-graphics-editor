@@ -24,6 +24,10 @@ namespace prdx_graphics_editor.modules.utils
         public string colorPickerDefaultColor { get; set; }
         public CanvasToolType activeTool { get; set; }
         public Canvas canvas { get; set; }
+        public int brushSize { get; set; }
+        public int borderSize { get; set; }
+        public bool enableFigureBorder { get; set; }
+        public bool enableFigureFill { get; set; }
 
         //accent1, accent2, accent1Text, accent2Text
         public List<Color> applicationTheme { get; set; }
@@ -44,7 +48,12 @@ namespace prdx_graphics_editor.modules.utils
                 Color.FromRgb(234, 242, 255),
                 Color.FromRgb(0, 0, 0)
             };
-        }
+
+            this.brushSize = 10;
+            this.borderSize = 3;
+            this.enableFigureBorder = false;
+            this.enableFigureFill = true;
+    }
         ~ApplicationSettings()
         {
             SaveToFile();

@@ -100,8 +100,8 @@
     <Compile Include="modules\main\Layers\Layers.xaml.cs">
       <DependentUpon>Layers.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\main\ToolParams\ToolParams.xaml.cs">
-      <DependentUpon>ToolParams.xaml</DependentUpon>
+    <Compile Include="modules\main\PageToolParams\PageToolParams.xaml.cs">
+      <DependentUpon>PageToolParams.xaml</DependentUpon>
     </Compile>
     <Compile Include="modules\main\PageTools\PageTools.xaml.cs">
       <DependentUpon>PageTools.xaml</DependentUpon>
@@ -138,7 +138,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="modules\main\ToolParams\ToolParams.xaml">
+    <Page Include="modules\main\PageToolParams\PageToolParams.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

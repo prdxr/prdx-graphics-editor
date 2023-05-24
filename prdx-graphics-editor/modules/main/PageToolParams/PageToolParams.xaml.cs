@@ -14,14 +14,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using prdx_graphics_editor.modules.utils;
 
-namespace prdx_graphics_editor.modules.main.ToolParams
+namespace prdx_graphics_editor.modules.main.PageToolParams
 {
     /// <summary>
     /// Логика взаимодействия для ToolParams.xaml
     /// </summary>
-    public partial class ToolParams : Page
+    public partial class PageToolParams : Page
     {
-        public ToolParams()
+        public PageToolParams()
         {
             InitializeComponent();
             mainLabel.Foreground = Globals.colorTextBright;
