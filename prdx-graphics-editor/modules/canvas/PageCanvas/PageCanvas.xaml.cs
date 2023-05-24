@@ -426,6 +426,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
                 currentLine = new Polyline();
                 currentLine.StrokeLineJoin = PenLineJoin.Round;
+                currentLine.StrokeStartLineCap = PenLineCap.Round;
+                currentLine.StrokeEndLineCap = PenLineCap.Round;
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 AddNewFigure(currentLine, currentToolDescription, new Point(0, 0));
 
