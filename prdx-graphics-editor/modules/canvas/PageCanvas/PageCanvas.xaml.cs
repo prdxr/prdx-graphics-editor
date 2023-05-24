@@ -261,10 +261,31 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             Canvas canvas = (Canvas)sender;
 
+            canvasPointer = GetCanvasPosition(sender, e);
+
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                canvasPointer = GetCanvasPosition(sender, e);
+                //double deltaX, deltaY, fullDelta = 1337;
+                //try
+                //{
+                //    deltaX = line.Points[line.Points.Count - 10].X - canvasPointer.X;
+                //    deltaY = line.Points[line.Points.Count - 10].Y - canvasPointer.Y;
+                //    fullDelta = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+                //}
+                //catch { }
+                
+                //if (fullDelta < 10)
+                //{
+                //    return;
+                //}
+
                 line.Points.Add(canvasPointer);
+                DEBUG.Text = canvasPointer.ToString() + "\n" + DEBUG.Text;
+                if (DEBUG.Text.Split('\n').Length > 20)
+                {
+                    DEBUG.Text = DEBUG.Text.Substring(0, DEBUG.Text.LastIndexOf('\n'));
+                }
             }
         }
 
@@ -404,6 +425,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
 
                 currentLine = new Polyline();
+                currentLine.StrokeLineJoin = PenLineJoin.Round;
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 AddNewFigure(currentLine, currentToolDescription, new Point(0, 0));
 
@@ -626,7 +648,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (IsMouseDown)
+            if (IsMouseDown && activeTool >= CanvasToolType.ToolSquare)
             {
                 OnCanvasMouseUp(sender, null);
             }

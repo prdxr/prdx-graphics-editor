@@ -15,14 +15,17 @@
                 Width="800" 
                 Height="800"
                 x:Name="mainCanvas" 
-                MouseDown="OnCanvasMouseDown" 
-                MouseUp="OnCanvasMouseUp"
+                MouseLeftButtonDown="OnCanvasMouseDown" 
+                MouseLeftButtonUp="OnCanvasMouseUp"
                 MouseMove="OnCanvasMouseMove"
                 Cursor="Cross"
                 ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
             >
         </Canvas>
+        <TextBlock x:Name="DEBUG" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+            
+        </TextBlock>
         <!--</Border>-->
     </Grid>
 </Page>
