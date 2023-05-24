@@ -108,7 +108,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         {
             TextBox trueSender = sender as TextBox;
 
-            if (trueSender.Text.Length == 0)
+            if (trueSender.Text.Length == 0 || trueSender.Text[0] == '0')
             {
                 trueSender.Background = Brushes.DarkRed;
                 return;

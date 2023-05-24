@@ -432,14 +432,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 canvasPointer = GetCanvasPosition(sender, e);
                 currentLine.Points.Add(canvasPointer);
 
+                CheckFigureSettings(currentLine);
+
                 switch (activeTool)
                 {
                     case CanvasToolType.ToolPencil:
-                        currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         break;
                     case CanvasToolType.ToolBrush:
-                        currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         currentLine.SnapsToDevicePixels = false;
                         //currentLine.Stroke = new LinearGradientBrush(Globals.applicationSettings.primaryColor, Colors.Transparent);
@@ -447,7 +447,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         //currentLine.StrokeEndLineCap = PenLineCap.Round;
                         break;
                     case CanvasToolType.ToolEraser:
-                        currentLine.StrokeThickness = 10;
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
                         break;
                 }
@@ -460,6 +459,36 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 FillSelection(sender);
             }
         }
+
+        void CheckFigureSettings(Shape targetShape)
+        {
+            if (targetShape.GetType() == typeof(Polyline))
+            {
+                targetShape.StrokeThickness = Globals.applicationSettings.brushSize;
+                return;
+            }
+
+            targetShape.StrokeDashArray = null;
+            if (Globals.applicationSettings.enableFigureFill)
+            {
+                targetShape.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+            }
+            else
+            {
+                targetShape.Fill = Brushes.Transparent;
+            }
+
+            if (Globals.applicationSettings.enableFigureBorder)
+            {
+                targetShape.StrokeThickness = Globals.applicationSettings.borderSize;
+                targetShape.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+            }
+            else
+            {
+                targetShape.Stroke = null;
+            }
+        }
+
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (this.activeTool < CanvasToolType.ToolSelect)
@@ -470,8 +499,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             if (this.activeTool >= CanvasToolType.ToolSquare && this.activeTool <= CanvasToolType.ToolCircle)
             {
-                lastShape.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                lastShape.Stroke = null;
+                CheckFigureSettings(lastShape);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
@@ -482,7 +510,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             else if (this.activeTool == CanvasToolType.ToolLine)
             {
-                lastLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                CheckFigureSettings(lastLine);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
@@ -494,8 +522,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             else if (this.activeTool == CanvasToolType.ToolTriangle)
             {
-                lastTriangle.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                lastTriangle.Stroke = null;
+                CheckFigureSettings(lastTriangle);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);

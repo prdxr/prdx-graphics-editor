@@ -92,7 +92,7 @@
                         <MenuItem Foreground="Black" Header="Импорт изображения" Command="{StaticResource ImportToProject}" InputGestureText="ctrl+I"/>
                         <MenuItem Foreground="Black" Header="Экспортировать как..." Command="{StaticResource ExportProject}" InputGestureText="ctrl+E"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}" InputGestureText="Esc"/>
+                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}" InputGestureText="Shift+Esc"/>
                     </MenuItem>
                     <MenuItem x:Name="mainMenuEdit" Header="Правка" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}" InputGestureText="ctrl+Z"/>
