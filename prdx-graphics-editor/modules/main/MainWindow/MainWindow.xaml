@@ -63,7 +63,7 @@
     <Grid x:Name="mainGrid">
         <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
         <!--leftDockPanel background: accent2-->
-        <DockPanel x:Name="leftDockPanel" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="200" Margin="0,20" Background="Gray">
+        <DockPanel x:Name="leftDockPanel" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20" Background="Gray">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="250"/>

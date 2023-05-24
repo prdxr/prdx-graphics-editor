@@ -5,22 +5,55 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.main.PageToolParams"
       mc:Ignorable="d" 
-      d:DesignHeight="1000" d:DesignWidth="200"
+      d:DesignHeight="1000" d:DesignWidth="300"
       Title="PageToolParams">
 
     <Grid>
-        <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="200" HorizontalAlignment="Center" LastChildFill="False">
+        <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="300" HorizontalAlignment="Center" LastChildFill="False">
             <TextBlock x:Name="mainLabel" FontSize="24" FontWeight="Bold" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Top" 
                        Text="Параметры инструмента" TextWrapping="Wrap" TextAlignment="Center"/>
 
-            <Grid x:Name="paramGrid" DockPanel.Dock="Top" Width="175" Margin="0,10,0,0" Background="DimGray">
-                <Grid.RowDefinitions>
+            <Grid x:Name="paramGrid" DockPanel.Dock="Top" Width="225" Margin="0,10,0,0" Background="DimGray">
+                <!--<Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
-                </Grid.RowDefinitions>
-                <DockPanel Grid.Row="0">
-                    <Label x:Name="labelThickness" DockPanel.Dock="Left">Толщина (пикс.)</Label>
-                    <TextBlock x:Name="textboxThickness" DockPanel.Dock="Right" Background="Gray" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center">10</TextBlock>
-                </DockPanel>
+                </Grid.RowDefinitions>-->
+                <StackPanel Grid.Row="0">
+                    <DockPanel>
+                        <Label x:Name="labelBrushThickness" DockPanel.Dock="Left">Толщина кисти (px)</Label>
+                        <TextBox x:Name="textboxBrushThickness" DockPanel.Dock="Right" Background="Gray" Width="50" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   TextChanged="ChangeBrushThickness" MaxLength="3"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label x:Name="labelBorderThickness" DockPanel.Dock="Left">Толщина контура фигур (px)</Label>
+                        <TextBox x:Name="textboxBorderThickness" DockPanel.Dock="Right" Background="Gray" Width="50" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   TextChanged="ChangeBorderThickness" MaxLength="3"/>
+                    </DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="25"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label x:Name="labelEnableBorder" Grid.Row="0" Grid.Column="0">Использовать контур</Label>
+                        <RadioButton x:Name="radiobuttonEnableBorder" Grid.Row="0" Grid.Column="1" Background="white" Foreground="Black" 
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                                     Checked="UseOnlyBorder"/>
+                        <Label x:Name="labelEnableFill" Grid.Row="1" Grid.Column="0">Использовать заливку</Label>
+                        <RadioButton x:Name="radiobuttonEnableFill" Grid.Row="1" Grid.Column="1" Background="white" Foreground="Black"
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                                     Checked="UseOnlyFill"/>
+                        <Label x:Name="labelEnableBoth" Grid.Row="2" Grid.Column="0">Использовать контур и заливку</Label>
+                        <RadioButton x:Name="radiobuttonEnableBoth" Grid.Row="2" Grid.Column="1" Background="white" Foreground="Black"
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                                     Checked="UseFillAndBorder"/>
+                    </Grid>
+                </StackPanel>
             </Grid>
         </DockPanel>
     </Grid>
