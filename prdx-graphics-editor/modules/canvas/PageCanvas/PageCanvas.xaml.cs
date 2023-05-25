@@ -245,11 +245,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 line.Points.Add(canvasPointer);
-                DEBUG.Text = canvasPointer.ToString() + "\n" + DEBUG.Text;
-                if (DEBUG.Text.Split('\n').Length > 20)
-                {
-                    DEBUG.Text = DEBUG.Text.Substring(0, DEBUG.Text.LastIndexOf('\n'));
-                }
             }
         }
 

@@ -23,9 +23,6 @@
                 MouseEnter="OnMouseEnter"
             >
         </Canvas>
-        <TextBlock x:Name="DEBUG" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-            
-        </TextBlock>
         <!--</Border>-->
     </Grid>
 </Page>
