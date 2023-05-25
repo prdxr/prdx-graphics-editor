@@ -35,7 +35,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolLine,
         ToolArrow
     }
-    
+
 
     public partial class PageCanvas : Page
     {
@@ -50,6 +50,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         string[] CanvasToolDescription;
         public Line lastLine;
         public Polygon lastTriangle;
+        Polygon arrowPolygon;
+
+        // Константы, определяющие форму и размер стрелок
+        const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
+        const double ARROW_BODY_LENGTH_MIN = 5;     // минимальная длина тела стрелки
+        const double ARROW_CAP_WIDTH = 60;          // ширина наконечника стрелки
+        const double ARROW_CAP_LENGTH = 30;         // длина наконечника стрелки
 
         public PageCanvas()
         {
@@ -180,7 +187,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             mainCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
-            
+
             mainCanvas.Background = new SolidColorBrush(Colors.White);
             this.selectionPoints = (new Point(0, 0), new Point(0, 0));
             Canvas.SetLeft(selectionRectangle, 0);
@@ -274,7 +281,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 //    fullDelta = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
                 //}
                 //catch { }
-                
+
                 //if (fullDelta < 10)
                 //{
                 //    return;
@@ -290,7 +297,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
 
         private void OnCanvasMouseMoveFigureMode(object sender, MouseEventArgs e)
-        { 
+        {
             if (IsMouseDown == true)
             {
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
@@ -300,11 +307,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
                 Canvas.SetLeft(selectionRectangle, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X));
                 Canvas.SetTop(selectionRectangle, Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y));
-                
+
 
                 selectionRectangle.Width = width;
                 selectionRectangle.Height = height;
-                
+
                 if (activeTool == CanvasToolType.ToolSquare || activeTool == CanvasToolType.ToolCircle)
                 {
                     Canvas.SetLeft(lastShape, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X));
@@ -330,6 +337,22 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
                     lastLine.Stroke = new SolidColorBrush(previewColor);
                 }
+                if (activeTool == CanvasToolType.ToolArrow)
+                {
+                    double deltaX = selectionPoints.Item2.X - selectionPoints.Item1.X;
+                    double deltaY = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
+                    double rotateAngleRad = Math.Atan(deltaY / deltaX);
+                    double rotateAngleDeg = rotateAngleRad * 180 / Math.PI;
+                    double arrowFullLength = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+                    double arrowBodyLength = arrowFullLength - ARROW_CAP_LENGTH;
+                    arrowBodyLength = (arrowBodyLength > ARROW_BODY_LENGTH_MIN) ? arrowBodyLength : ARROW_BODY_LENGTH_MIN;
+                    arrowPolygon.Points[2] = new Point(arrowBodyLength, -ARROW_BODY_WIDTH / 2);
+                    arrowPolygon.Points[3] = new Point(arrowBodyLength, -ARROW_CAP_WIDTH / 2);
+                    arrowPolygon.Points[4] = new Point(arrowBodyLength + ARROW_CAP_LENGTH, 0);
+                    arrowPolygon.Points[5] = new Point(arrowBodyLength, ARROW_CAP_WIDTH / 2);
+                    arrowPolygon.Points[6] = new Point(arrowBodyLength, ARROW_BODY_WIDTH / 2);
+                    (arrowPolygon.RenderTransform as RotateTransform).Angle = rotateAngleDeg;
+                }
                 if (activeTool == CanvasToolType.ToolTriangle)
                 {
                     PointCollection updatedPointCollection = new PointCollection();
@@ -353,7 +376,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        
+
 
         public Point GetCanvasPosition(object sender, MouseEventArgs e)
         {
@@ -409,7 +432,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         lastLine.Y1 = GetCanvasPosition(sender, e).Y;
                         break;
                     case CanvasToolType.ToolArrow:
-                        //arrow
+                        arrowPolygon = new Polygon();
+                        Point position = GetCanvasPosition(sender, e);
+                        Canvas.SetLeft(arrowPolygon, position.X);
+                        Canvas.SetTop(arrowPolygon, position.Y);
+                        mainCanvas.Children.Add(arrowPolygon);
+                        arrowPolygon.Fill = new SolidColorBrush(Colors.Transparent);
+                        arrowPolygon.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                        arrowPolygon.RenderTransform = new RotateTransform();
+                        arrowPolygon.Points.Add(new Point(0, ARROW_BODY_WIDTH / 2));
+                        arrowPolygon.Points.Add(new Point(0, -ARROW_BODY_WIDTH / 2));
+                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_BODY_WIDTH / 2));
+                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_CAP_WIDTH / 2));
+                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN + ARROW_CAP_LENGTH, 0));
+                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_CAP_WIDTH / 2));
+                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_BODY_WIDTH / 2));
                         break;
                 }
             }
@@ -533,6 +570,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Children.Remove(lastTriangle);
                 AddNewFigure(lastTriangle, currentToolDescription, topLeftPoint);
             }
+            else if (this.activeTool == CanvasToolType.ToolArrow)
+            {
+            }
 
             if (this.activeTool != CanvasToolType.ToolSelect)
             {
@@ -600,11 +640,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 //throw new Exception("TEMP: Максимальное разрешение - 800x800 пикселей");
             }
-                brush.ImageSource = img;
+            brush.ImageSource = img;
 
-                mainCanvas.Width = img.PixelWidth;
-                mainCanvas.Height = img.PixelHeight;
-                mainCanvas.Background = brush;
+            mainCanvas.Width = img.PixelWidth;
+            mainCanvas.Height = img.PixelHeight;
+            mainCanvas.Background = brush;
         }
 
         public void AddNewFigure(Shape figure, string operationDescription, Point position,  bool isRedo = false)
@@ -634,7 +674,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
             (Shape figure, string operationDescription, Point position) = Globals.changeHistoryBefore.Pop();
-            
+
             selectionRectangle.Width = 0;
             selectionRectangle.Height = 0;
 
