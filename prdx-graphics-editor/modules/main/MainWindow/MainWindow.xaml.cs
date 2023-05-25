@@ -129,5 +129,13 @@ namespace prdx_graphics_editor
         {
             Actions.CloseApplication(this);
         }
+        private void ChangeTool(object sender, ExecutedRoutedEventArgs e)
+        {
+            Actions.ChangeTool(sender,e);
+        }
+        private void SwitchColors(object sender, ExecutedRoutedEventArgs e)
+        {
+            Actions.SwitchColors(sender, e);
+        }
     }
 }

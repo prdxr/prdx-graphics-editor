@@ -35,6 +35,8 @@ namespace prdx_graphics_editor
             colorGrid.Background = Globals.colorAccent1;
             mainLabel.Foreground = Globals.colorTextBright;
 
+            Globals.pageToolsRef = this;
+
             int currentTool = (int)Globals.applicationSettings.activeTool;
             int count = VisualTreeHelper.GetChildrenCount(toolGrid);
             for (int i = 0; i < count; i++)
@@ -48,7 +50,7 @@ namespace prdx_graphics_editor
             }
         }
 
-        private void ChangeTool(object sender, ExecutedRoutedEventArgs e)
+        public void ChangeTool(object sender, ExecutedRoutedEventArgs e)
         {
             int a = Convert.ToInt32(e.Parameter);
 
@@ -114,7 +116,7 @@ namespace prdx_graphics_editor
                 Globals.applicationSettings.secondaryColor = result;
             }
         }
-        private void SwitchColors(object sender, RoutedEventArgs e)
+        public void SwitchColors(object sender, RoutedEventArgs e)
         {
             Color buff = Globals.applicationSettings.secondaryColor;
             Globals.applicationSettings.secondaryColor = Globals.applicationSettings.primaryColor;

@@ -10,6 +10,7 @@ using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
 using System.IO;
 using System.Windows.Shapes;
+using System.Windows.Input;
 
 
 namespace prdx_graphics_editor.modules.actions
@@ -205,6 +206,15 @@ namespace prdx_graphics_editor.modules.actions
             {
                 caller.Close();
             }
+        }
+
+        public static void ChangeTool(object sender, ExecutedRoutedEventArgs e)
+        {
+            Globals.pageToolsRef.ChangeTool(sender, e);
+        }
+        public static void SwitchColors(object sender, ExecutedRoutedEventArgs e)
+        {
+            Globals.pageToolsRef.SwitchColors(sender, e);
         }
     }
 }

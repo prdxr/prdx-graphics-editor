@@ -42,13 +42,17 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
     {
         bool IsMouseDown;
         CanvasToolType activeTool;
-        (Point, Point) selectionPoints;
         Rectangle selectionRectangle;
         public bool isEmpty;
-        Polyline currentLine;
-        public Shape lastShape;
         public event EventHandler OnFiguresChanged;
         string[] CanvasToolDescription;
+
+        // Координаты точек области прямоугольного выделения
+        (Point, Point) selectionPoints;
+        
+        // Указатели на текущие редактируемые элементы каждого типа
+        Polyline currentLine;
+        public Shape lastShape;
         public Line lastLine;
         public Polygon lastTriangle;
         Polygon arrowPolygon;
@@ -63,14 +67,22 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             InitializeComponent();
 
-            this.isEmpty = true;
-            this.activeTool = Globals.applicationSettings.activeTool;
-            this.selectionPoints = (new Point(0, 0), new Point(0, 0));
-            this.selectionRectangle = new Rectangle();
+            isEmpty = true;
+            activeTool = Globals.applicationSettings.activeTool;
+
+            // Инициализация прямоугольника выделения
+            selectionPoints = (new Point(0, 0), new Point(0, 0));
+            selectionRectangle = new Rectangle();
             selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+            Canvas.SetLeft(selectionRectangle, 0);
+            Canvas.SetTop(selectionRectangle, 0);
+            Canvas.SetZIndex(selectionRectangle, 2);
+            mainCanvas.Children.Add(selectionRectangle);
+            
+            Globals.pageCanvasRef = this;
             Globals.currentFile = null;
             currentLine = null;
             lastShape = null;
@@ -89,47 +101,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Прямая",
                 "Стрелка"
             };
-
-
-
-            //var st = new ScaleTransform();
-            //var textBox = new TextBox { Text = "Test" };
-            //mainCanvas.RenderTransform = st;
-            //mainCanvas.Children.Add(textBox);
-            //mainCanvas.MouseWheel += (sender, e) =>
-            //{
-            //    if (e.Delta > 0)
-            //    {
-            //        st.ScaleX *= 2;
-            //        st.ScaleY *= 2;
-            //    }
-            //    else
-            //    {
-            //        st.ScaleX /= 2;
-            //        st.ScaleY /= 2;
-            //    }
-            //};
-
-
-
-
-            //this.figureDrawer = new Rectangle();
-            //figureDrawer.Fill = new SolidColorBrush(Colors.Transparent);
-            //figureDrawer.Stroke = new SolidColorBrush(Colors.Black);
-            //double[] drawerDashes = { 10, 5 };
-            //figureDrawer.StrokeDashArray = new DoubleCollection(drawerDashes);
-
-            Canvas.SetLeft(selectionRectangle, 0);
-            Canvas.SetTop(selectionRectangle, 0);
-            Canvas.SetZIndex(selectionRectangle, 2);
-            mainCanvas.Children.Add(selectionRectangle);
-
-            //Canvas.SetLeft(figureDrawer, 0);
-            //Canvas.SetTop(figureDrawer, 0);
-            //Canvas.SetZIndex(figureDrawer, 1);
-            //canvas1.Children.Add(figureDrawer);
-
-            Globals.pageCanvasRef = this;
         }
 
         public void SerializeToXML(Canvas canvas, string filename)
@@ -149,10 +120,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             Canvas deserializedCanvas = XamlReader.Parse(mystrXAML) as Canvas;
 
-
             mainCanvas.Children.Clear();
             var childrenCopy = deserializedCanvas.Children.Cast<UIElement>().ToList();
-            // Добавляем дочерние элементы десериализованного Canvas в mainCanvas
+            
+            // Поэлементный перенос дочерних элементов из десериализованного холста в mainCanvas
             foreach (var child in childrenCopy)
             {
                 deserializedCanvas.Children.Remove(child);
@@ -165,10 +136,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void SetActiveTool(CanvasToolType toolType)
         {
-            this.activeTool = toolType;
-            Globals.applicationSettings.activeTool = this.activeTool;
+            activeTool = toolType;
+            Globals.applicationSettings.activeTool = activeTool;
 
-            if (activeTool < CanvasToolType.ToolSelect && activeTool > CanvasToolType.ToolFill)
+            if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
                 selectionRectangle.Height = 0;
@@ -181,7 +152,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             ImageBrush brush = new ImageBrush();
 
             mainCanvas.Background = new SolidColorBrush(Colors.White);
-            this.selectionPoints = (new Point(0, 0), new Point(0, 0));
+            selectionPoints = (new Point(0, 0), new Point(0, 0));
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
             mainCanvas.Children.Add(selectionRectangle);
