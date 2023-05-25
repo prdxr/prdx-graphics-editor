@@ -89,6 +89,10 @@
                              Command="{StaticResource ToolHotkey}" CommandParameter="9">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
                 </RadioButton>
+                <RadioButton Grid.Row="2" Grid.Column="0" x:Name="buttonHand" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Стрелка"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="10">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
+                </RadioButton>
             </Grid>
             <Grid x:Name="colorGrid" DockPanel.Dock="Top" Width="125" Height="50" Background="DimGray">
                 <Border Width="35" Height="35" BorderBrush="#444" BorderThickness="1" Margin="0,10,45,5">

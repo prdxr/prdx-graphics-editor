@@ -34,7 +34,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolCircle,
         ToolTriangle,
         ToolLine,
-        ToolArrow
+        ToolArrow,
+        ToolHand
     }
 
 
@@ -46,6 +47,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public bool isEmpty;
         public event EventHandler OnFiguresChanged;
         string[] CanvasToolDescription;
+        Point handOffset;
 
         // Координаты точек области прямоугольного выделения
         (Point, Point) selectionPoints;
@@ -77,6 +79,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+
+            selectionRectangle.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
+            selectionRectangle.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
             Canvas.SetZIndex(selectionRectangle, 2);
@@ -99,8 +105,31 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Эллипс",
                 "Треугольник",
                 "Прямая",
-                "Стрелка"
+                "Стрелка",
+                "Рука"
             };
+        }
+
+        private void FigureMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Захватываем фокус мыши
+            Mouse.Capture((UIElement)sender);
+
+            // Преобразуем координаты относительно Canvas
+            Point startPoint = e.GetPosition(mainCanvas);
+            handOffset = e.GetPosition(sender as Shape);
+
+            // Сохраняем начальные координаты фигуры
+            //Canvas.SetLeft((UIElement)sender, startPoint.X);
+            //Canvas.SetTop((UIElement)sender, startPoint.Y);
+        }
+
+        // Обработчик события отпускания кнопки мыши
+        private void FigureMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            // Освобождаем захваченную мышь
+            Mouse.Capture(null);
+            handOffset = new Point(0, 0);
         }
 
         public void SerializeToXML(Canvas canvas, string filename)
@@ -139,7 +168,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             activeTool = toolType;
             Globals.applicationSettings.activeTool = activeTool;
 
-            if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
+            if (activeTool == CanvasToolType.ToolHand)
+            {
+                mainCanvas.Cursor = Cursors.Hand;
+            }
+            else if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
                 selectionRectangle.Height = 0;
@@ -195,11 +228,26 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
+
+            if (activeTool == CanvasToolType.ToolHand)
+            {
+                // Проверяем, захвачена ли мышь
+                if (Mouse.Captured is UIElement capturedElement)
+                {
+                    // Преобразуем координаты относительно Canvas
+                    Point newPosition = e.GetPosition(mainCanvas);
+
+                    // Обновляем позицию фигуры на Canvas
+                    Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
+                    Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
+                }
+            }
+
             if (!IsMouseDown)
             {
                 return;
             }
-            if (activeTool <= CanvasToolType.ToolEraser)
+            else if (activeTool <= CanvasToolType.ToolEraser)
             {
                 OnCanvasMouseMoveDraw(sender, e, currentLine);
             }
@@ -316,6 +364,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (activeTool == CanvasToolType.ToolHand)
+            {
+                return;
+            }
+
             IsMouseDown = true;
             if (this.activeTool >= CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
             {
