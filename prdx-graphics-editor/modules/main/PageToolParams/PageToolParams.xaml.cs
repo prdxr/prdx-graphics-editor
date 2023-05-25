@@ -22,7 +22,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
     /// </summary>
     public partial class PageToolParams : Page
     {
-        readonly string allowedMask = "^[0-9]+$";
+        private readonly string allowedMask = "^[0-9]+$";
 
         public PageToolParams()
         {
@@ -49,17 +49,17 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
             labelEnableBoth.Foreground = Globals.colorTextBright;
             labelEnableBoth.Background = Brushes.Transparent;
 
-            getParamsData();
+            GetParamsData();
         }
 
-        void getParamsData()
+        private void GetParamsData()
         {
             textboxBorderThickness.Text = Globals.applicationSettings.borderSize.ToString();
             textboxBrushThickness.Text = Globals.applicationSettings.brushSize.ToString();
 
             if (Globals.applicationSettings.enableFigureBorder)
             {
-                if(Globals.applicationSettings.enableFigureFill)
+                if (Globals.applicationSettings.enableFigureFill)
                 {
                     radiobuttonEnableBoth.IsChecked = true;
                 }
@@ -83,7 +83,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         private void ChangeBrushThickness(object sender, TextChangedEventArgs e)
         {
             TextBox trueSender = sender as TextBox;
-            
+
             if (trueSender.Text.Length == 0)
             {
                 trueSender.Background = Brushes.DarkRed;
@@ -100,7 +100,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
             }
 
             int newSize = Convert.ToInt32((sender as TextBox).Text);
-            
+
             Globals.applicationSettings.brushSize = newSize;
             trueSender.Background = Globals.colorAccent1;
         }
@@ -123,8 +123,8 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
                 }
             }
 
-            int newSize = Convert.ToInt32((sender as TextBox).Text); 
-            
+            int newSize = Convert.ToInt32((sender as TextBox).Text);
+
             Globals.applicationSettings.borderSize = newSize;
             trueSender.Background = Globals.colorAccent1;
         }

@@ -27,8 +27,10 @@ namespace prdx_graphics_editor.modules.actions
                 Globals.changingColor = Globals.applicationSettings.secondaryColor;
             }
 
-            WindowColorPicker window = new WindowColorPicker();
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            WindowColorPicker window = new WindowColorPicker
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
             window.ShowDialog();
             Color? color = window.color;
             return color;
@@ -69,22 +71,14 @@ namespace prdx_graphics_editor.modules.actions
             {
                 var dialog = new Microsoft.Win32.SaveFileDialog();
                 
-                if (Directory.Exists(ApplicationSettings.projectspath))
-                {
-                    dialog.InitialDirectory = ApplicationSettings.projectspath;
-                }
-                else
-                {
-                    dialog.InitialDirectory = @"C:\";
-                }
+                dialog.InitialDirectory = Directory.Exists(ApplicationSettings.projectspath) ? ApplicationSettings.projectspath : @"C:\";
 
                 dialog.Title = "Выбор расположения проекта";
                 dialog.Filter = "Файл проекта (*.xml) |*.xml";
-                Nullable<bool> result = dialog.ShowDialog();
+                bool? result = dialog.ShowDialog();
                 if (result == true)
                 {
                     Globals.currentFile = dialog.FileName;
-
                 }
                 else
                 {
@@ -100,18 +94,11 @@ namespace prdx_graphics_editor.modules.actions
             {
                 var dialog = new Microsoft.Win32.OpenFileDialog();
 
-                if (Directory.Exists(ApplicationSettings.projectspath))
-                {
-                    dialog.InitialDirectory = ApplicationSettings.projectspath;
-                }
-                else
-                {
-                    dialog.InitialDirectory = @"C:\";
-                }
+                dialog.InitialDirectory = Directory.Exists(ApplicationSettings.projectspath) ? ApplicationSettings.projectspath : @"C:\";
 
                 dialog.Title = "Выбор расположения проекта";
                 dialog.Filter = "Файл проекта (*.xml) |*.xml";
-                Nullable<bool> result = dialog.ShowDialog();
+                bool? result = dialog.ShowDialog();
                 if (result == true)
                 {
                     Globals.currentFile = dialog.FileName;
@@ -142,18 +129,11 @@ namespace prdx_graphics_editor.modules.actions
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();
 
-            if (Directory.Exists(ApplicationSettings.projectspath))
-            {
-                dialog.InitialDirectory = ApplicationSettings.projectspath;
-            }
-            else
-            {
-                dialog.InitialDirectory = @"C:\";
-            }
+            dialog.InitialDirectory = Directory.Exists(ApplicationSettings.projectspath) ? ApplicationSettings.projectspath : @"C:\";
 
             dialog.Title = "Выбор расположения проекта";
             dialog.Filter = "Файл проекта (*.xml) |*.xml";
-            Nullable<bool> result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
             if (result == true)
             {
                 Globals.currentFile = dialog.FileName;
@@ -166,16 +146,15 @@ namespace prdx_graphics_editor.modules.actions
             string filename;
             var dialog = new Microsoft.Win32.SaveFileDialog();
             dialog.Filter = "Сжатие без потерь (*.png) |*.png; | Высокая степень сжатия (*.jpeg) | *.jpeg; | Битмап без сжатия (*.bmp) | *.bmp";
-            Nullable<bool> result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
             if (result == true)
             {
                 filename = dialog.FileName;
-                var ext = System.IO.Path.GetExtension(filename);
+                string ext = System.IO.Path.GetExtension(filename);
                 if (ext == ".png" || ext == ".jpeg" || ext == ".bmp")
                 {
                     Globals.pageCanvasRef.ExportProject(ext, filename);
                 }
-
             }
             else
             {
@@ -188,7 +167,7 @@ namespace prdx_graphics_editor.modules.actions
             string filename;
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.Filter = "Графические файлы (*.png, *.jpeg, *.jpg, *.bmp) |*.png; *.jpeg; *.jpg; *.bmp";
-            Nullable<bool> result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
             if (result == true)
             {
                 if (CheckBeforeErasing() == 0) {

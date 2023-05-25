@@ -112,18 +112,13 @@
 
         <!--rightDockPanel background: accent2-->
         <DockPanel x:Name="rightDockPanel" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20" Background="Gray">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="0"/>
-                </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
-                <Frame Grid.Row="1" x:Name="LayersPage" Source="..\Layers\Layers.xaml"/>
-            </Grid>
+            <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
         <!--bottomDockPanel background: accent2-->
         <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Bottom" Background="DarkGray">
-            <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent"></Border>
+            <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
+                <Frame x:Name="InfoLinePage" Source="..\PageInfoLine\PageInfoLine.xaml"/>
+            </Border>
         </DockPanel>
     </Grid>
 </Window>

@@ -12,11 +12,7 @@
         <DockPanel VerticalAlignment="Stretch" Grid.Row="0" Width="300" HorizontalAlignment="Center" LastChildFill="False">
             <TextBlock x:Name="mainLabel" FontSize="24" FontWeight="Bold" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Top" 
                        Text="Параметры инструмента" TextWrapping="Wrap" TextAlignment="Center"/>
-
             <Grid x:Name="paramGrid" DockPanel.Dock="Top" Width="225" Margin="0,10,0,0" Background="DimGray">
-                <!--<Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                </Grid.RowDefinitions>-->
                 <StackPanel Grid.Row="0">
                     <DockPanel>
                         <Label x:Name="labelBrushThickness" DockPanel.Dock="Left">Толщина кисти (px)</Label>

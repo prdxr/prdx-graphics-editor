@@ -97,8 +97,8 @@
     <Compile Include="modules\main\PageHistory\PageHistory.xaml.cs">
       <DependentUpon>PageHistory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\main\Layers\Layers.xaml.cs">
-      <DependentUpon>Layers.xaml</DependentUpon>
+    <Compile Include="modules\main\PageInfoLine\PageInfoLine.xaml.cs">
+      <DependentUpon>PageInfoLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="modules\main\PageToolParams\PageToolParams.xaml.cs">
       <DependentUpon>PageToolParams.xaml</DependentUpon>
@@ -134,7 +134,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="modules\main\Layers\Layers.xaml">
+    <Page Include="modules\main\PageInfoLine\PageInfoLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

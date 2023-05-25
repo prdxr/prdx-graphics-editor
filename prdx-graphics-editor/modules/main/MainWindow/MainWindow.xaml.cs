@@ -27,8 +27,8 @@ namespace prdx_graphics_editor
         public MainWindow()
         {
             InitializeComponent();
-            this.FrameCanvas.Content = new PageCanvas();
-            this.FrameHistory.Content = new PageHistory();
+            FrameCanvas.Content = new PageCanvas();
+            FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
             mainMenu.Background = Globals.colorAccent2;
             mainMenuFile.Foreground = Globals.colorTextBright;

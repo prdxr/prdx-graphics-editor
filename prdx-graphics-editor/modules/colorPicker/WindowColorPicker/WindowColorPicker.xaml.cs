@@ -24,31 +24,31 @@ namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
         public WindowColorPicker()
         {
             InitializeComponent();
-            this.Background = Globals.colorAccent2;
+            Background = Globals.colorAccent2;
 
-            this.ButtonApply.Background = Globals.colorAccent1;
-            this.ButtonApply.Foreground = Globals.colorTextBright;
-            this.ButtonCancel.Background = Globals.colorAccent1;
-            this.ButtonCancel.Foreground = Globals.colorTextBright;
+            ButtonApply.Background = Globals.colorAccent1;
+            ButtonApply.Foreground = Globals.colorTextBright;
+            ButtonCancel.Background = Globals.colorAccent1;
+            ButtonCancel.Foreground = Globals.colorTextBright;
         }
 
-        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        private void OnButtonApplyClick(object sender, RoutedEventArgs e)
         {
-            this.color = Globals.pageColorPickerRef.GetColor();
+            color = Globals.pageColorPickerRef.GetColor();
             Close();
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        private void OnButtonCancelClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void onMouseEnterStyle(object sender, MouseEventArgs e)
+        private void OnMouseEnterStyle(object sender, MouseEventArgs e)
         {
             (sender as Button).Foreground = Globals.colorTextDim;
         }
 
-        private void onMouseLeaveStyle(object sender, MouseEventArgs e)
+        private void OnMouseLeaveStyle(object sender, MouseEventArgs e)
         {
             (sender as Button).Foreground = Globals.colorTextBright;
         }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace prdx_graphics_editor.modules.main.Layers
+namespace prdx_graphics_editor.modules.main.PageInfoLine
 {
     /// <summary>
     /// Логика взаимодействия для Layers.xaml
     /// </summary>
-    public partial class Layers : Page
+    public partial class PageInfoLine : Page
     {
-        public Layers()
+        public PageInfoLine()
         {
             InitializeComponent();
         }

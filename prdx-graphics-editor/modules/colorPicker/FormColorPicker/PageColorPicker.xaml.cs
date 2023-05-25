@@ -29,39 +29,39 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
         {
             InitializeComponent();
             Globals.pageColorPickerRef = this;
-            this.color = Globals.changingColor;
+            color = Globals.changingColor;
             textboxHexInput.Text = Globals.applicationSettings.colorPickerDefaultColor;
             PrepareGrid();
             UpdateColors();
 
-            this.Background = Globals.colorAccent1;
+            Background = Globals.colorAccent1;
 
-            this.labelCurrentColor.Foreground = Globals.colorTextBright;
-            this.labelHexInput.Foreground = Globals.colorTextBright;
-            this.labelRgbField.Foreground = Globals.colorTextBright;
-            this.labelR.Foreground = Globals.colorTextBright;
-            this.labelG.Foreground = Globals.colorTextBright;
-            this.labelB.Foreground = Globals.colorTextBright;
+            labelCurrentColor.Foreground = Globals.colorTextBright;
+            labelHexInput.Foreground = Globals.colorTextBright;
+            labelRgbField.Foreground = Globals.colorTextBright;
+            labelR.Foreground = Globals.colorTextBright;
+            labelG.Foreground = Globals.colorTextBright;
+            labelB.Foreground = Globals.colorTextBright;
 
-            this.textboxHexInput.Background = Globals.colorAccent1;
-            this.textboxHexInput.Foreground = Globals.colorTextBright;
-            this.textboxHexSign.Background = Globals.colorAccent2;
-            this.textboxHexSign.Foreground = Globals.colorTextBright;
-            this.textboxInputR.Background = Globals.colorAccent1;
-            this.textboxInputR.Foreground = Globals.colorTextBright;
-            this.textboxInputG.Background = Globals.colorAccent1;
-            this.textboxInputG.Foreground = Globals.colorTextBright;
-            this.textboxInputB.Background = Globals.colorAccent1;
-            this.textboxInputB.Foreground = Globals.colorTextBright;
+            textboxHexInput.Background = Globals.colorAccent1;
+            textboxHexInput.Foreground = Globals.colorTextBright;
+            textboxHexSign.Background = Globals.colorAccent2;
+            textboxHexSign.Foreground = Globals.colorTextBright;
+            textboxInputR.Background = Globals.colorAccent1;
+            textboxInputR.Foreground = Globals.colorTextBright;
+            textboxInputG.Background = Globals.colorAccent1;
+            textboxInputG.Foreground = Globals.colorTextBright;
+            textboxInputB.Background = Globals.colorAccent1;
+            textboxInputB.Foreground = Globals.colorTextBright;
         }
 
         public Color? GetColor()
         {
-            this.color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
-            return this.color;
+            color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
+            return color;
         }
 
-        string[,] colorsTable = new string[,] {
+        private readonly string[,] colorsTable = new string[,] {
             {"#330000", "#331900", "#333300", "#193300", "#003300", "#003319", "#003333", "#001933", "#000033", "#190033", "#330033", "#330019", "#000000"},
             {"#660000", "#663300", "#666600", "#336600", "#006600", "#006633", "#006666", "#003366", "#000066", "#330066", "#660066", "#660033", "#202020"},
             {"#990000", "#994C00", "#999900", "#4C9900", "#009900", "#00994C", "#009999", "#004C99", "#000099", "#4C0099", "#990099", "#99004C", "#404040"},
@@ -72,19 +72,17 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             {"#FF9999", "#FFCC99", "#FFFF99", "#CCFF99", "#99FF99", "#99FFCC", "#99FFFF", "#99CCFF", "#9999FF", "#CC99FF", "#FF99FF", "#FF99CC", "#E0E0E0"},
             {"#FFCCCC", "#FFE5CC", "#FFFFCC", "#E5FFCC", "#CCFFCC", "#CCFFE5", "#CCFFFF", "#CCE5FF", "#CCCCFF", "#E5CCFF", "#FFCCFF", "#FFCCE5", "#FFFFFF"}
         };
-
-        readonly string allowedHex = "^[a-fA-F0-9]+$";
-        readonly string allowedRgb = "^[0-9]+$";
-        //readonly char[] allowedHex = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+        private readonly string allowedHex = "^[a-fA-F0-9]+$";
+        private readonly string allowedRgb = "^[0-9]+$";
 
         private void UpdateColors()
         {
-            this.CurrentColorDisplay.Fill = new SolidColorBrush((Color)this.color);
-            this.textboxHexInput.Text = this.color.ToString().Substring(3);
-            Color newColor = (Color)this.color;
-            this.textboxInputR.Text = newColor.R.ToString();
-            this.textboxInputG.Text = newColor.G.ToString();
-            this.textboxInputB.Text = newColor.B.ToString();
+            CurrentColorDisplay.Fill = new SolidColorBrush((Color)color);
+            textboxHexInput.Text = color.ToString().Substring(3);
+            Color newColor = (Color)color;
+            textboxInputR.Text = newColor.R.ToString();
+            textboxInputG.Text = newColor.G.ToString();
+            textboxInputB.Text = newColor.B.ToString();
         }
 
         private void PrepareGrid()
@@ -107,11 +105,13 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
                 for (int col = 0; col < colsCount; col++)
                 {
                     string color = colorsTable[row, col];
-                    DockPanel panel = new DockPanel();
-                    panel.Background = (Brush)brushConverter.ConvertFrom(color);
+                    DockPanel panel = new DockPanel
+                    {
+                        Background = (Brush)brushConverter.ConvertFrom(color),
+                        Width = 50,
+                        Height = 50,
+                    };
                     panel.MouseDown += SetColorFromTable;
-                    panel.Width = 50;
-                    panel.Height = 50;
                     Grid.SetRow(panel, row);
                     Grid.SetColumn(panel, col);
                     ColorsGrid.Children.Add(panel);
@@ -120,19 +120,17 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
 
         }
 
-        private event Action ColorChangeEvent;
-
         private void SetColorFromTable(object sender, MouseButtonEventArgs e)
         {
             int row = Grid.GetRow((DockPanel)sender);
             int col = Grid.GetColumn((DockPanel)sender);
-            this.color = (Color)ColorConverter.ConvertFromString(colorsTable[row, col]);
-            this.CurrentColorDisplay.Fill = new SolidColorBrush((Color)this.color);
-            this.textboxHexInput.Text = this.color.ToString().Substring(3);
-            Color newColor = (Color) this.color;
-            this.textboxInputR.Text = newColor.R.ToString();
-            this.textboxInputG.Text = newColor.G.ToString();
-            this.textboxInputB.Text = newColor.B.ToString();
+            color = (Color)ColorConverter.ConvertFromString(colorsTable[row, col]);
+            CurrentColorDisplay.Fill = new SolidColorBrush((Color)color);
+            textboxHexInput.Text = color.ToString().Substring(3);
+            Color newColor = (Color)color;
+            textboxInputR.Text = newColor.R.ToString();
+            textboxInputG.Text = newColor.G.ToString();
+            textboxInputB.Text = newColor.B.ToString();
         }
 
         private void OnHexKeyPress(object sender, TextChangedEventArgs e)
@@ -151,7 +149,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
                 if (correctInput)
                 {
                     (sender as TextBox).Background = Globals.colorAccent1;
-                    this.color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
+                    color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
                     UpdateColors();
                 }
             }
@@ -185,16 +183,9 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             if (correctInput)
             {
                 (sender as TextBox).Background = Globals.colorAccent1;
-                this.color = Color.FromRgb(Convert.ToByte(textboxInputR.Text), Convert.ToByte(textboxInputG.Text), Convert.ToByte(textboxInputB.Text));
+                color = Color.FromRgb(Convert.ToByte(textboxInputR.Text), Convert.ToByte(textboxInputG.Text), Convert.ToByte(textboxInputB.Text));
                 UpdateColors();
             }
         }
-
-
-        //private void SelectColorFromDefault(object sender, MouseButtonEventHandler e)
-        //{
-        //    string hex = ((sender as DockPanel).Grid.Row)
-        //    //call actions change color
-        //}
     }
 }

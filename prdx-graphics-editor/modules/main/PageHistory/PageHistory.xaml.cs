@@ -35,8 +35,6 @@ namespace prdx_graphics_editor.modules.main
 
         ObservableCollection<(Shape, string, Point)> historyList = new ObservableCollection<(Shape, string, Point)>();
 
-        EventHandler historyChanged;
-
         private void ClickUndo(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Undo();
@@ -52,24 +50,16 @@ namespace prdx_graphics_editor.modules.main
         }
         public void ShowHistory()
         {
-            //string boxCaption = "a";
-            //string boxText = "a";
-            //MessageBoxButton boxButtons = MessageBoxButton.OK;
-            //MessageBoxImage boxIcon = MessageBoxImage.Warning;
-            //MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
-
             List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>();
             ObservableCollection<string> historyList = new ObservableCollection<string>();
             mergeList = mergeList.Concat(Globals.changeHistoryAfter.Reverse()).ToList();
             mergeList = mergeList.Concat(Globals.changeHistoryBefore).ToList();
-            //mergeList = mergeList.ConvertAll(new Converter<(Shape, string, Point), string>(PointFToPoint));
-            //Concat(Globals.changeHistoryAfter.Reverse()).ToList();
+            
             foreach ((Shape, string, Point) element in mergeList)
             {
                 historyList.Add(element.Item2);
             }
             
-            //historyList = new ObservableCollection<string>(mergeList.);
             HistoryListView.ItemsSource = historyList;
             int currentIndex = Globals.changeHistoryBefore.Count;
             if (currentIndex == 0)

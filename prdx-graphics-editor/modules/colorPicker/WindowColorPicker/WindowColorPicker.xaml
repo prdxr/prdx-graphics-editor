@@ -10,10 +10,10 @@
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
         <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
             <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
-                    Click="ButtonCancel_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle" IsCancel="true">
+                    Click="OnButtonCancelClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle" IsCancel="true">
             </Button>
             <Button x:Name="ButtonApply" DockPanel.Dock="Right" Width="100" Height="40" Content="Применить"
-                    Click="ButtonApply_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
+                    Click="OnButtonApplyClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle">
             </Button>
         </DockPanel>
         

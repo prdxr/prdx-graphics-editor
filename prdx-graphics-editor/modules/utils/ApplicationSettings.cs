@@ -37,21 +37,21 @@ namespace prdx_graphics_editor.modules.utils
 
         public ApplicationSettings()
         {
-            this.primaryColor = Color.FromRgb(0, 0, 0);
-            this.secondaryColor = Color.FromRgb(255, 255, 255);
-            this.colorPickerDefaultColor = "#FFFFFF";
-            this.activeTool = CanvasToolType.ToolPencil;
-            this.applicationTheme = new List<Color> { 
+            primaryColor = Color.FromRgb(0, 0, 0);
+            secondaryColor = Color.FromRgb(255, 255, 255);
+            colorPickerDefaultColor = "#FFFFFF";
+            activeTool = CanvasToolType.ToolPencil;
+            applicationTheme = new List<Color> { 
                 Color.FromRgb(47, 51, 56), 
                 Color.FromRgb(67, 71, 77), 
                 Color.FromRgb(234, 242, 255),
                 Color.FromRgb(0, 0, 0)
             };
 
-            this.brushSize = 10;
-            this.borderSize = 3;
-            this.enableFigureBorder = false;
-            this.enableFigureFill = true;
+            brushSize = 10;
+            borderSize = 3;
+            enableFigureBorder = false;
+            enableFigureFill = true;
     }
         ~ApplicationSettings()
         {
@@ -61,7 +61,7 @@ namespace prdx_graphics_editor.modules.utils
         public void SaveToFile()
         {
             var settings = new JsonSerializerOptions() {
-                WriteIndented = true 
+                WriteIndented = true
             };
 
             string jsonString = JsonSerializer.Serialize(this, settings);
@@ -86,8 +86,6 @@ namespace prdx_graphics_editor.modules.utils
                 {
                     jsonString = stream.ReadToEnd();
                 }
-
-                var obj = JsonSerializer.Deserialize<ApplicationSettings>(jsonString, settings);
 
                 return JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
             }
