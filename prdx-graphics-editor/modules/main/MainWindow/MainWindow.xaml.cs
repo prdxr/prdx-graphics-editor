@@ -122,7 +122,7 @@ namespace prdx_graphics_editor
         }
         private void Paste(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.Paste();
+            Actions.Paste();
         }
 
         private void ExitApp(object sender, ExecutedRoutedEventArgs e)

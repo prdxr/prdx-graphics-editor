@@ -116,7 +116,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Mouse.Capture((UIElement)sender);
 
             // Преобразуем координаты относительно Canvas
-            Point startPoint = e.GetPosition(mainCanvas);
+            //Point startPoint = e.GetPosition(mainCanvas);
             handOffset = e.GetPosition(sender as Shape);
 
             // Сохраняем начальные координаты фигуры
@@ -238,8 +238,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Point newPosition = e.GetPosition(mainCanvas);
 
                     // Обновляем позицию фигуры на Canvas
-                    Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
-                    Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
+                    Canvas.SetLeft(capturedElement, newPosition.X);
+                    Canvas.SetTop(capturedElement, newPosition.Y);
+                    //Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
+                    //Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
                 }
             }
 
@@ -513,6 +515,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
 
+            if(activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
+            {
+                selectionRectangle.Width = 0;
+                selectionRectangle.Height = 0;
+            }
+
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
                 if (currentLine.Points.Count == 0)
@@ -661,6 +669,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Canvas.SetTop(figure, position.Y);
             }
             Globals.changeHistoryBefore.Push((figure, operationDescription, position));
+            figure.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
+            figure.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
             if (!isRedo)
             {
                 Globals.changeHistoryAfter.Clear();
@@ -753,6 +763,28 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         //        mainCanvas.RenderTransform = new ScaleTransform(zoom, zoom); // transform Canvas size
         //    }
         //}
+
+        public void PasteClipboard()
+        {
+            IDataObject myDataObject = Clipboard.GetDataObject();
+            string[] files = (string[])myDataObject.GetData(DataFormats.FileDrop);
+
+            if (files != null)
+            {
+                try
+                {
+                    var imageSource = new BitmapImage(new Uri(files[0], UriKind.Absolute));
+                    Image image = new Image();
+                    Canvas.SetLeft(image, 0);
+                    Canvas.SetTop(image, 0);
+                    image.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
+                    image.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+                    mainCanvas.Children.Add(image);
+                    image.Source = imageSource;
+                }
+                catch { }
+            }
+        }
     }
 }
 

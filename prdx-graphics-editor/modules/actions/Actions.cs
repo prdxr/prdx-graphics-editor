@@ -216,5 +216,10 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageToolsRef.SwitchColors(sender, e);
         }
+
+        public static void Paste()
+        {
+            Globals.pageCanvasRef.PasteClipboard();
+        }
     }
 }
