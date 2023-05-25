@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -150,21 +151,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
 
             mainCanvas.Children.Clear();
-            //var childrenCopy = mainCanvas.Children.Cast<UIElement>().ToList();
             var childrenCopy = deserializedCanvas.Children.Cast<UIElement>().ToList();
             // Добавляем дочерние элементы десериализованного Canvas в mainCanvas
             foreach (var child in childrenCopy)
             {
-                //if (child is UIElement)
-                //{
-                //    var parent = LogicalTreeHelper.GetParent(uiElement);
-                //    if (parent is Panel parentPanel)
-                //    {
-                //        parentPanel.Children.Remove(uiElement);
-                //    }
-                //}
-                deserializedCanvas.Children.Remove(child as UIElement);
-                mainCanvas.Children.Add(child as UIElement);
+                deserializedCanvas.Children.Remove(child);
+                mainCanvas.Children.Add(child);
             }
 
             streamreader.Close();
@@ -198,26 +190,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Globals.changeHistoryBefore.Clear();
             Globals.changeHistoryAfter.Clear();
             OnFiguresChanged.Invoke(this, null);
-        }
-
-        //public void DrawLine()
-        //{
-        //    Line myLine = new Line();
-        //    myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-        //    myLine.X1 = 1;
-        //    myLine.X2 = 50;
-        //    myLine.Y1 = 1;
-        //    myLine.Y2 = 50;
-        //    myLine.HorizontalAlignment = HorizontalAlignment.Left;
-        //    myLine.VerticalAlignment = VerticalAlignment.Center;
-        //    myLine.StrokeThickness = 2;
-        //    //myLine.AddHandler();
-        //    //myLine.MouseMove = this.OnCanvasMouseMove;
-        //    canvas1.Children.Add(myLine);
-        //}
-        public void DrawLine(Polyline currLine)
-        {
-            //currLine.Points.Add
         }
 
         public void FillSelection(object sender)
@@ -263,7 +235,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
 
         Point canvasPointer = new Point();
-        //Point canvasPointer = new Point(canvasGrid.Margin.Left, canvasGrid.Margin.Top);
         private void OnCanvasMouseMoveDraw(object sender, MouseEventArgs e, Polyline line)
         {
             Canvas canvas = (Canvas)sender;
@@ -273,20 +244,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                //double deltaX, deltaY, fullDelta = 1337;
-                //try
-                //{
-                //    deltaX = line.Points[line.Points.Count - 10].X - canvasPointer.X;
-                //    deltaY = line.Points[line.Points.Count - 10].Y - canvasPointer.Y;
-                //    fullDelta = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-                //}
-                //catch { }
-
-                //if (fullDelta < 10)
-                //{
-                //    return;
-                //}
-
                 line.Points.Add(canvasPointer);
                 DEBUG.Text = canvasPointer.ToString() + "\n" + DEBUG.Text;
                 if (DEBUG.Text.Split('\n').Length > 20)
@@ -335,6 +292,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
                 if (activeTool == CanvasToolType.ToolArrow)
                 {
+                    Color previewColor1 = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
+                    Color previewColor2 = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                    arrowPolygon.Fill = new SolidColorBrush(previewColor1);
+                    arrowPolygon.Stroke = new SolidColorBrush(previewColor2);
                     double deltaX = selectionPoints.Item2.X - selectionPoints.Item1.X;
                     double deltaY = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
                     double rotateAngleRad = Math.Atan(deltaY / deltaX);
@@ -342,16 +303,16 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     double arrowFullLength = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
                     double arrowBodyLength = arrowFullLength - ARROW_CAP_LENGTH;
                     arrowBodyLength = (arrowBodyLength > ARROW_BODY_LENGTH_MIN) ? arrowBodyLength : ARROW_BODY_LENGTH_MIN;
-                    arrowPolygon.Points[2] = new Point(arrowBodyLength, -ARROW_BODY_WIDTH / 2);
-                    arrowPolygon.Points[3] = new Point(arrowBodyLength, -ARROW_CAP_WIDTH / 2);
-                    arrowPolygon.Points[4] = new Point(arrowBodyLength + ARROW_CAP_LENGTH, 0);
-                    arrowPolygon.Points[5] = new Point(arrowBodyLength, ARROW_CAP_WIDTH / 2);
-                    arrowPolygon.Points[6] = new Point(arrowBodyLength, ARROW_BODY_WIDTH / 2);
+                    int directionSwitch = (selectionPoints.Item2.X - selectionPoints.Item1.X >= 0) ? 1 : -1;
+                    arrowPolygon.Points[2] = new Point(arrowBodyLength * directionSwitch, -ARROW_BODY_WIDTH / 2);
+                    arrowPolygon.Points[3] = new Point(arrowBodyLength * directionSwitch, -ARROW_CAP_WIDTH / 2);
+                    arrowPolygon.Points[4] = new Point((arrowBodyLength + ARROW_CAP_LENGTH) * directionSwitch, 0);
+                    arrowPolygon.Points[5] = new Point(arrowBodyLength * directionSwitch, ARROW_CAP_WIDTH / 2);
+                    arrowPolygon.Points[6] = new Point(arrowBodyLength * directionSwitch, ARROW_BODY_WIDTH / 2);
                     (arrowPolygon.RenderTransform as RotateTransform).Angle = rotateAngleDeg;
                 }
                 if (activeTool == CanvasToolType.ToolTriangle)
                 {
-                    PointCollection updatedPointCollection = new PointCollection();
                     double xMiddle = Math.Min(GetCanvasPosition(sender, e).X, lastTriangle.Points[0].X) + Math.Abs(GetCanvasPosition(sender, e).X - lastTriangle.Points[0].X) / 2;
 
                     Point point1 = lastTriangle.Points[0];
@@ -433,8 +394,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         Canvas.SetLeft(arrowPolygon, position.X);
                         Canvas.SetTop(arrowPolygon, position.Y);
                         mainCanvas.Children.Add(arrowPolygon);
-                        arrowPolygon.Fill = new SolidColorBrush(Colors.Transparent);
-                        arrowPolygon.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         arrowPolygon.RenderTransform = new RotateTransform();
                         arrowPolygon.Points.Add(new Point(0, ARROW_BODY_WIDTH / 2));
                         arrowPolygon.Points.Add(new Point(0, -ARROW_BODY_WIDTH / 2));
@@ -477,9 +436,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     case CanvasToolType.ToolBrush:
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         currentLine.SnapsToDevicePixels = false;
-                        //currentLine.Stroke = new LinearGradientBrush(Globals.applicationSettings.primaryColor, Colors.Transparent);
-                        //currentLine.StrokeStartLineCap = PenLineCap.Round;
-                        //currentLine.StrokeEndLineCap = PenLineCap.Round;
+                        BlurEffect blurEffect = new BlurEffect();
+                        blurEffect.Radius = 10;
+                        currentLine.Effect = blurEffect;
                         break;
                     case CanvasToolType.ToolEraser:
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
@@ -495,9 +454,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        void CheckFigureSettings(Shape targetShape)
+        void CheckFigureSettings(Shape targetShape, bool arrowCase = false)
         {
-            if (targetShape.GetType() == typeof(Polyline))
+            if (targetShape.GetType() == typeof(Polyline) && !(arrowCase))
             {
                 targetShape.StrokeThickness = Globals.applicationSettings.brushSize;
                 return;
@@ -581,6 +540,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             else if (this.activeTool == CanvasToolType.ToolArrow)
             {
+                CheckFigureSettings(arrowPolygon, true);
+
+                string currentToolDescription = CanvasToolDescription[(int)activeTool];
+                double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
+                double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
+                Point topLeftPoint = new Point(x, y);
+                mainCanvas.Children.Remove(arrowPolygon);
+                AddNewFigure(arrowPolygon, currentToolDescription, topLeftPoint);
             }
 
             if (this.activeTool != CanvasToolType.ToolSelect)
