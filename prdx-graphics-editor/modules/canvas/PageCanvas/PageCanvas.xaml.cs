@@ -312,15 +312,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     lastShape.Width = width;
                     lastShape.Height = height;
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     lastShape.Fill = new SolidColorBrush(previewColor);
                     lastShape.Stroke = new SolidColorBrush(Colors.Black);
                     double[] selectionDashes = { 10, 5 };
                     lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
-                }
-                if (activeTool == CanvasToolType.ToolLine)
-                {
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
                 }
                 if (activeTool == CanvasToolType.ToolLine)
                 {
@@ -344,7 +340,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     lastTriangle.Points.Add(point2);
                     lastTriangle.Points.Add(point3);
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     lastTriangle.Fill = new SolidColorBrush(previewColor);
                     lastTriangle.Stroke = new SolidColorBrush(Colors.Black);
                     double[] selectionDashes = { 10, 5 };
@@ -471,7 +467,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             targetShape.StrokeDashArray = null;
             if (Globals.applicationSettings.enableFigureFill)
             {
-                targetShape.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+                targetShape.Fill = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
             }
             else
             {
@@ -481,7 +477,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             if (Globals.applicationSettings.enableFigureBorder)
             {
                 targetShape.StrokeThickness = Globals.applicationSettings.borderSize;
-                targetShape.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+                targetShape.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
             }
             else
             {
@@ -493,6 +489,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
+                if (currentLine.Points.Count == 0)
+                {
+                    
+                    Ellipse brushPoint = new Ellipse();
+                    brushPoint.Fill = currentLine.Fill;
+                    brushPoint.StrokeThickness = currentLine.StrokeThickness;
+                    Point topLeftPoint = new Point(currentLine.Points[0].X - currentLine.StrokeThickness / 2, currentLine.Points[0].Y - currentLine.StrokeThickness / 2);
+                    Canvas.SetLeft(brushPoint, topLeftPoint.X);
+                    Canvas.SetTop(brushPoint, topLeftPoint.Y);
+
+                    RemoveLastFigure();
+                    AddNewFigure(brushPoint, CanvasToolDescription[(int)activeTool], topLeftPoint);
+                }
                 lastShape = currentLine;
                 currentLine = null;
             }
