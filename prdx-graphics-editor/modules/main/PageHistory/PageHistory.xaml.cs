@@ -23,6 +23,8 @@ namespace prdx_graphics_editor.modules.main
     /// </summary>
     public partial class PageHistory : Page
     {
+        int oldSelection;
+        int targetSelection;
         public PageHistory()
         {
             InitializeComponent();
@@ -68,12 +70,23 @@ namespace prdx_graphics_editor.modules.main
             }
             else
             {
-                HistoryListView.SelectedIndex = Globals.changeHistoryAfter.Count;
+                oldSelection = Globals.changeHistoryAfter.Count;
+                HistoryListView.SelectedIndex = oldSelection;
             }
         }
-        public static string PointFToPoint((Shape, string, Point) element)
+        private void GoToSelectedAction(object sender, MouseButtonEventArgs e)
         {
-            return element.Item2;
+            targetSelection = (sender as ListView).SelectedIndex;
+            while (oldSelection > targetSelection)
+            {
+                Console.WriteLine($"selection > index -- {oldSelection} {targetSelection}");
+                Actions.Redo();
+            }
+            while (oldSelection < targetSelection)
+            {
+                Console.WriteLine($"selection < index -- {oldSelection} {targetSelection}");
+                Actions.Undo();
+            }
         }
     }
 }

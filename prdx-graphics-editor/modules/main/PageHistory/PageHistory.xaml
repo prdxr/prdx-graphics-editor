@@ -36,6 +36,6 @@
                 <Image Margin="2" Stretch="Uniform" Source="/modules/main/PageTools/icons/redo.png"></Image>
             </Button>
         </Grid>
-        <ListView FontSize="16" x:Name="HistoryListView" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
+        <ListView FontSize="16" x:Name="HistoryListView" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent" PreviewMouseDoubleClick="GoToSelectedAction"/>
     </Grid>
 </Page>
