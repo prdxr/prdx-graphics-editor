@@ -195,6 +195,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
+            if (!IsMouseDown)
+            {
+                return;
+            }
             if (activeTool <= CanvasToolType.ToolEraser)
             {
                 OnCanvasMouseMoveDraw(sender, e, currentLine);
@@ -451,6 +455,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (!IsMouseDown)
+            {
+                return;
+            }
+
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
                 if (currentLine.Points.Count == 0)
