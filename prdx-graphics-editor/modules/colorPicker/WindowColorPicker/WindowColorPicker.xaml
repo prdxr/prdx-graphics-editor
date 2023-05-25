@@ -1,19 +1,19 @@
-﻿<Window x:Class="prdx_graphics_editor.modules.color_picker.WindowColorPicker.WindowColorPicker"
+﻿<Window x:Class="prdx_graphics_editor.modules.colorPicker.WindowColorPicker.WindowColorPicker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:prdx_graphics_editor.modules.color_picker.WindowColorPicker"
+        xmlns:local="clr-namespace:prdx_graphics_editor.modules.colorPicker.WindowColorPicker"
         mc:Ignorable="d"
         Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
     <Grid>
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
-        <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
-            <Button x:Name="ButtonApply" DockPanel.Dock="Left" Width="100" Height="40" Content="Применить"
-                    Click="ButtonApply_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
-            </Button>
+        <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
             <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
                     Click="ButtonCancel_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle" IsCancel="true">
+            </Button>
+            <Button x:Name="ButtonApply" DockPanel.Dock="Right" Width="100" Height="40" Content="Применить"
+                    Click="ButtonApply_Click" MouseEnter="onMouseEnterStyle" MouseLeave="onMouseLeaveStyle">
             </Button>
         </DockPanel>
         

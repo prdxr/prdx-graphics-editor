@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using prdx_graphics_editor.modules.color_picker.WindowColorPicker;
+using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
 using System.Windows.Media;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
@@ -28,6 +28,7 @@ namespace prdx_graphics_editor.modules.actions
             }
 
             WindowColorPicker window = new WindowColorPicker();
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             window.ShowDialog();
             Color? color = window.color;
             return color;

@@ -88,10 +88,10 @@
     <Compile Include="modules\canvas\PageCanvas\PageCanvas.xaml.cs">
       <DependentUpon>PageCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\color picker\FormColorPicker\PageColorPicker.xaml.cs">
+    <Compile Include="modules\colorPicker\FormColorPicker\PageColorPicker.xaml.cs">
       <DependentUpon>PageColorPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="modules\color picker\WindowColorPicker\WindowColorPicker.xaml.cs">
+    <Compile Include="modules\colorPicker\WindowColorPicker\WindowColorPicker.xaml.cs">
       <DependentUpon>WindowColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="modules\main\PageHistory\PageHistory.xaml.cs">
@@ -110,11 +110,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="modules\color picker\FormColorPicker\PageColorPicker.xaml">
+    <Page Include="modules\colorPicker\FormColorPicker\PageColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="modules\color picker\WindowColorPicker\WindowColorPicker.xaml">
+    <Page Include="modules\colorPicker\WindowColorPicker\WindowColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

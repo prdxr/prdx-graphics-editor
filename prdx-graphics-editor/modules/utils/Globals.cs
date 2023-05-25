@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using prdx_graphics_editor.modules.color_picker.FormColorPicker;
+using prdx_graphics_editor.modules.colorPicker.FormColorPicker;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.main;
 using System.Windows.Shapes;

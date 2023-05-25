@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using prdx_graphics_editor.modules.utils;
 
-namespace prdx_graphics_editor.modules.color_picker.WindowColorPicker
+namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
 {
     /// <summary>
     /// Логика взаимодействия для WindowColorPicker.xaml

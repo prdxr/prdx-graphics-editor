@@ -31,6 +31,19 @@ namespace prdx_graphics_editor
             toolGrid.Background = Globals.colorAccent1;
             colorGrid.Background = Globals.colorAccent1;
             mainLabel.Foreground = Globals.colorTextBright;
+
+            int currentTool = (int) Globals.applicationSettings.activeTool;
+            int count = VisualTreeHelper.GetChildrenCount(toolGrid);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(toolGrid, i);
+
+                if (child is RadioButton radioButton && (Convert.ToInt32((child as RadioButton).CommandParameter) == currentTool))
+                {
+                    (child as RadioButton).IsChecked = true;
+                    break;
+                }
+            }
         }
 
         private void ChangeTool(object sender, ExecutedRoutedEventArgs e)

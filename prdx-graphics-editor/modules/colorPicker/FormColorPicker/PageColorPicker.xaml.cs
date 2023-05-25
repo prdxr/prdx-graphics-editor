@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using prdx_graphics_editor.modules.utils;
 
-namespace prdx_graphics_editor.modules.color_picker.FormColorPicker
+namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
 {
     /// <summary>
     /// Логика взаимодействия для PageColorPicker.xaml

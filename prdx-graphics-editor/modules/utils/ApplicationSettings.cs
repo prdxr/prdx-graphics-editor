@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.IO;
 using System.Windows.Media;
@@ -61,7 +60,11 @@ namespace prdx_graphics_editor.modules.utils
 
         public void SaveToFile()
         {
-            string jsonString = JsonSerializer.Serialize(this);
+            var settings = new JsonSerializerOptions() {
+                WriteIndented = true 
+            };
+
+            string jsonString = JsonSerializer.Serialize(this, settings);
 
             using (StreamWriter stream = new StreamWriter(filepath))
             {
@@ -71,6 +74,11 @@ namespace prdx_graphics_editor.modules.utils
         public static ApplicationSettings CreateApplicationSettings()
         {
             string jsonString;
+            var settings = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+
 
             if (File.Exists(filepath))
             {
@@ -79,7 +87,7 @@ namespace prdx_graphics_editor.modules.utils
                     jsonString = stream.ReadToEnd();
                 }
 
-                var obj = JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
+                var obj = JsonSerializer.Deserialize<ApplicationSettings>(jsonString, settings);
 
                 return JsonSerializer.Deserialize<ApplicationSettings>(jsonString);
             }
