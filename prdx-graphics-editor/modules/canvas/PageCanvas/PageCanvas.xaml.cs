@@ -17,6 +17,7 @@ using prdx_graphics_editor.modules.utils;
 using System.Windows.Markup;
 using System.Xml;
 using System.IO;
+using System.Runtime.ExceptionServices;
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
 {
@@ -112,16 +113,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
         {
+            UIElement trueSender = sender as UIElement;
+
             // Захватываем фокус мыши
             Mouse.Capture((UIElement)sender);
-
-            // Преобразуем координаты относительно Canvas
-            //Point startPoint = e.GetPosition(mainCanvas);
-            handOffset = e.GetPosition(sender as Shape);
-
-            // Сохраняем начальные координаты фигуры
-            //Canvas.SetLeft((UIElement)sender, startPoint.X);
-            //Canvas.SetTop((UIElement)sender, startPoint.Y);
+            
+            Point cursor = e.GetPosition(mainCanvas);
+            handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
         }
 
         // Обработчик события отпускания кнопки мыши
@@ -238,8 +236,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Point newPosition = e.GetPosition(mainCanvas);
 
                     // Обновляем позицию фигуры на Canvas
-                    Canvas.SetLeft(capturedElement, newPosition.X);
-                    Canvas.SetTop(capturedElement, newPosition.Y);
+                    Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
+                    Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
                     //Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
                     //Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
                 }
@@ -469,8 +467,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
                         break;
                 }
-
-
             }
 
             if (this.activeTool == CanvasToolType.ToolFill)
@@ -523,12 +519,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             if (this.activeTool < CanvasToolType.ToolSelect)
             {
-                if (currentLine.Points.Count == 0)
+                if (currentLine.Points.Count < 2)
                 {
                     
                     Ellipse brushPoint = new Ellipse();
-                    brushPoint.Fill = currentLine.Fill;
-                    brushPoint.StrokeThickness = currentLine.StrokeThickness;
+                    brushPoint.Fill = currentLine.Stroke;
+                    brushPoint.Width = currentLine.StrokeThickness;
+                    brushPoint.Height = currentLine.StrokeThickness;
                     Point topLeftPoint = new Point(currentLine.Points[0].X - currentLine.StrokeThickness / 2, currentLine.Points[0].Y - currentLine.StrokeThickness / 2);
                     Canvas.SetLeft(brushPoint, topLeftPoint.X);
                     Canvas.SetTop(brushPoint, topLeftPoint.Y);

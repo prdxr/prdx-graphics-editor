@@ -52,7 +52,7 @@ namespace prdx_graphics_editor.modules.utils
             borderSize = 3;
             enableFigureBorder = false;
             enableFigureFill = true;
-    }
+        }
         ~ApplicationSettings()
         {
             SaveToFile();

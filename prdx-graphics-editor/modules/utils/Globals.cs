@@ -27,11 +27,5 @@ namespace prdx_graphics_editor.modules.utils
         public static SolidColorBrush colorAccent2 = new SolidColorBrush(applicationSettings.applicationTheme[1]);
         public static SolidColorBrush colorTextBright = new SolidColorBrush(applicationSettings.applicationTheme[2]);
         public static SolidColorBrush colorTextDim = new SolidColorBrush(applicationSettings.applicationTheme[3]);
-
-
-        //public static ApplicationSettings applicationSettings = new ApplicationSettings();
-        //public static CanvasPage canvasPageRef;
-        //public static SettingsPage settingsPageRef;
-
     }
 }
