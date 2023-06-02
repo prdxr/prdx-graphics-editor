@@ -146,8 +146,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="modules\WindowProjectCreator\WindowProjectCreator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="modules\WindowProjectCreator\WindowProjectCreator.xaml.cs">
+      <DependentUpon>WindowProjectCreator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="modules\utils\ApplicationSettings.cs" />
     <Compile Include="modules\utils\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

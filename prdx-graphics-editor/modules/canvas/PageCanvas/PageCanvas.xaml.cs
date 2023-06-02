@@ -141,6 +141,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
         public void DeserializeFromXML(string filename)
         {
+            ResetCanvas();
             FileStream filestream = File.Open(filename, FileMode.Open);
             StreamReader streamreader = new StreamReader(filestream);
             string mystrXAML = streamreader.ReadToEnd();
@@ -177,11 +178,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        public void ResetCanvas()
+        public void ResetCanvas(int width = 800, int height = 800)
         {
             mainCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
 
+            mainCanvas.Width = width;
+            mainCanvas.Height = height;
             mainCanvas.Background = new SolidColorBrush(Colors.White);
             selectionPoints = (new Point(0, 0), new Point(0, 0));
             Canvas.SetLeft(selectionRectangle, 0);
@@ -642,6 +645,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void ImportToProject(string filename)
         {
+            ResetCanvas();
             ImageBrush brush = new ImageBrush();
             BitmapImage img = new BitmapImage(new Uri(@filename, UriKind.Relative));
             //TEMP RESTRICTION TO 800x800
@@ -781,6 +785,20 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
                 catch { }
             }
+        }
+
+        public void CopyToClipboard()
+        {
+            //copy to clipboard
+        }
+        public void CutToClipboard()
+        {
+            //cut to clipboard
+        }
+
+        public void Rastrize()
+        {
+            //rastrize
         }
     }
 }

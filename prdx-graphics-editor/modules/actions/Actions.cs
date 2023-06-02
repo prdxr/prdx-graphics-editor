@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
+using prdx_graphics_editor.modules.WindowProjectCreator;
 using System.Windows.Media;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
@@ -42,7 +43,7 @@ namespace prdx_graphics_editor.modules.actions
             Globals.pageCanvasRef.SetActiveTool(toolType);
         }
 
-        private static int CheckBeforeErasing()
+        private static bool CheckBeforeErasing()
         {
             string boxCaption = "Несохранённые изменения";
             string boxText = "Внимание! Есть несохранёные изменения, которые будут утеряны при продолжении. Сохранить проект?";
@@ -53,22 +54,22 @@ namespace prdx_graphics_editor.modules.actions
             if (boxResult == MessageBoxResult.Yes)
             {
                 SaveProject();
-                Globals.pageCanvasRef.ResetCanvas();
+                return true;
             }
             else if (boxResult == MessageBoxResult.No)
             {
-                Globals.pageCanvasRef.ResetCanvas();
+                return true;
             }
             else if (boxResult == MessageBoxResult.Cancel)
             {
-                return -1;
+                return false;
             }
-            return 0;
+            return false;
         }
 
         public static int CreateProject()
         {
-            if (CheckBeforeErasing() == 0)
+            if (CheckBeforeErasing())
             {
                 var dialog = new Microsoft.Win32.SaveFileDialog();
                 
@@ -85,13 +86,20 @@ namespace prdx_graphics_editor.modules.actions
                 {
                     return 1;
                 }
+                var window = new WindowProjectCreator.WindowProjectCreator();
+                window.Show();
             }
             return 0;
         }
 
+        public static void InitializeProject(int width, int height)
+        {
+            Globals.pageCanvasRef.ResetCanvas(width, height);
+        }
+
         public static int OpenProject()
         {
-            if (CheckBeforeErasing() == 0)
+            if (CheckBeforeErasing())
             {
                 var dialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -171,7 +179,7 @@ namespace prdx_graphics_editor.modules.actions
             bool? result = dialog.ShowDialog();
             if (result == true)
             {
-                if (CheckBeforeErasing() == 0) {
+                if (CheckBeforeErasing()) {
                     filename = dialog.FileName;
                     Globals.pageCanvasRef.ImportToProject(filename);
                 }
@@ -202,7 +210,7 @@ namespace prdx_graphics_editor.modules.actions
 
         public static void CloseApplication(MainWindow caller)
         {
-            if (CheckBeforeErasing() == 0)
+            if (CheckBeforeErasing())
             {
                 caller.Close();
             }
