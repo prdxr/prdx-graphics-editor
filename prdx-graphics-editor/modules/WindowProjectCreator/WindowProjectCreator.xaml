@@ -5,19 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.WindowProjectCreator"
         mc:Ignorable="d"
-        Title="ProjectCreator" Height="300" Width="300">
+        Title="ProjectCreator" Height="300" Width="500">
     <DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-            <Label HorizontalAlignment="Left" Content="Ширина (px)"/>
-            <TextBox x:Name="widthInput" PreviewTextInput="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1920"/>
+            <Label x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>
+            <TextBox x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1920"/>
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-            <Label HorizontalAlignment="Left" Content="Ширина (px)"/>
-            <TextBox x:Name="heightInput" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1080"/>
+            <Label x:Name="labelHeight" HorizontalAlignment="Left" Content="Ширина (px)"/>
+            <TextBox x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1080"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top" Width="300">
+            <TextBox x:Name="textBoxPath" DockPanel.Dock="Left" Width="250" ScrollViewer.CanContentScroll="True" TextWrapping="NoWrap" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+            <Button x:Name="buttonChangePath" Width="50" Content="Обзор" Click="ChangeProjectPath"/>
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Bottom">
-            <Button Width="125" Content="Создать проект" Click="CreateProject"/>
-            <Button Content="Отмена" Click="CancelProjectCreation"/>
+            <Button x:Name="buttonApply" Width="125" Content="Создать проект" Click="CreateProject"/>
+            <Button x:Name="buttonCancel" Content="Отмена" Click="CancelProjectCreation"/>
         </DockPanel>
     </DockPanel>
 </Window>

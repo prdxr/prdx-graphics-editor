@@ -72,8 +72,8 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             {"#FF9999", "#FFCC99", "#FFFF99", "#CCFF99", "#99FF99", "#99FFCC", "#99FFFF", "#99CCFF", "#9999FF", "#CC99FF", "#FF99FF", "#FF99CC", "#E0E0E0"},
             {"#FFCCCC", "#FFE5CC", "#FFFFCC", "#E5FFCC", "#CCFFCC", "#CCFFE5", "#CCFFFF", "#CCE5FF", "#CCCCFF", "#E5CCFF", "#FFCCFF", "#FFCCE5", "#FFFFFF"}
         };
-        private readonly string allowedHex = "^[a-fA-F0-9]+$";
-        private readonly string allowedRgb = "^[0-9]+$";
+        private readonly Regex allowedHex = new Regex("^[a-fA-F0-9]+$");
+        private readonly Regex allowedRgb = new Regex ("^[0-9]+$");
 
         private void UpdateColors()
         {
@@ -135,56 +135,43 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
 
         private void OnHexKeyPress(object sender, TextChangedEventArgs e)
         {
-            bool correctInput = true;
-            if ((sender as TextBox).Text.Length == 6)
+            TextBox trueSender = sender as TextBox;
+            if (trueSender.Text.Length == 6)
             {
-                for (int i = 0; i < 6; i++)
+                if (UtilityFunctions.CheckInputValidity(trueSender, allowedHex, Globals.colorAccent1))
                 {
-                    if (!Regex.IsMatch((sender as TextBox).Text, allowedHex))
-                    {
-                        (sender as TextBox).Background = new SolidColorBrush(Colors.DarkRed);
-                        correctInput = false;
-                    }
-                }
-                if (correctInput)
-                {
-                    (sender as TextBox).Background = Globals.colorAccent1;
                     color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
                     UpdateColors();
                 }
             }
             else
             {
-                (sender as TextBox).Background = Globals.colorAccent1;
+                trueSender.Background = Globals.colorAccent1;
             }
         }
 
         private void OnRgbKeyPress(object sender, TextChangedEventArgs e)
         {
+            TextBox trueSender = sender as TextBox;
             bool correctInput = true;
-            string contents = (sender as TextBox).Text;
-
-            if (!Regex.IsMatch((sender as TextBox).Text, allowedRgb))
-            {
-                (sender as TextBox).Background = new SolidColorBrush(Colors.DarkRed);
-                return;
-            }
-
             if (textboxInputR is null || textboxInputG is null || textboxInputB is null)
             {
                 return;
             }
-            else if (Convert.ToInt32(contents) > 255 || Convert.ToInt32(contents) < 0)
+            else if (trueSender.Text.Length == 0 || !UtilityFunctions.CheckInputValidity(trueSender, allowedRgb, Globals.colorAccent1) || 
+                Convert.ToInt32(trueSender.Text) > 255 || Convert.ToInt32(trueSender.Text) < 0)
             {
-                (sender as TextBox).Background = new SolidColorBrush(Colors.DarkRed);
+                trueSender.Background = Brushes.DarkRed;
                 correctInput = false;
+                Globals.windowColorPickerRef.ButtonApply.IsEnabled = false;
+                return;
             }
-
-            if (correctInput)
+            else
             {
-                (sender as TextBox).Background = Globals.colorAccent1;
                 color = Color.FromRgb(Convert.ToByte(textboxInputR.Text), Convert.ToByte(textboxInputG.Text), Convert.ToByte(textboxInputB.Text));
                 UpdateColors();
+                Globals.windowColorPickerRef.ButtonApply.IsEnabled = true;
+                trueSender.Background = Globals.colorAccent1;
             }
         }
     }

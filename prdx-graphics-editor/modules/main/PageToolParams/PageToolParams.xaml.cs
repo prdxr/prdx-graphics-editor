@@ -22,7 +22,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
     /// </summary>
     public partial class PageToolParams : Page
     {
-        private readonly string allowedMask = "^[0-9]+$";
+        private readonly Regex allowedMask = new Regex(("^[0-9]+$"));
 
         public PageToolParams()
         {
@@ -84,49 +84,28 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         {
             TextBox trueSender = sender as TextBox;
 
-            if (trueSender.Text.Length == 0)
+            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.colorAccent1))
             {
-                trueSender.Background = Brushes.DarkRed;
-                return;
+                int newSize = Convert.ToInt32((sender as TextBox).Text);
+
+                Globals.applicationSettings.brushSize = newSize;
             }
-
-            for (int i = 0; i < trueSender.Text.Length; i++)
-            {
-                if (!Regex.IsMatch(trueSender.Text, allowedMask))
-                {
-                    trueSender.Background = Brushes.DarkRed;
-                    return;
-                }
-            }
-
-            int newSize = Convert.ToInt32((sender as TextBox).Text);
-
-            Globals.applicationSettings.brushSize = newSize;
-            trueSender.Background = Globals.colorAccent1;
         }
         private void ChangeBorderThickness(object sender, TextChangedEventArgs e)
         {
             TextBox trueSender = sender as TextBox;
 
-            if (trueSender.Text.Length == 0 || trueSender.Text[0] == '0')
+            if (trueSender.Text[0] == '0')
             {
                 trueSender.Background = Brushes.DarkRed;
                 return;
             }
 
-            for (int i = 0; i < trueSender.Text.Length; i++)
+            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.colorAccent1))
             {
-                if (!Regex.IsMatch(trueSender.Text, allowedMask))
-                {
-                    trueSender.Background = Brushes.DarkRed;
-                    return;
-                }
+                int newSize = Convert.ToInt32((sender as TextBox).Text);
+                Globals.applicationSettings.borderSize = newSize;
             }
-
-            int newSize = Convert.ToInt32((sender as TextBox).Text);
-
-            Globals.applicationSettings.borderSize = newSize;
-            trueSender.Background = Globals.colorAccent1;
         }
 
         private void UseOnlyBorder(object sender, RoutedEventArgs e)

@@ -71,23 +71,9 @@ namespace prdx_graphics_editor.modules.actions
         {
             if (CheckBeforeErasing())
             {
-                var dialog = new Microsoft.Win32.SaveFileDialog();
                 
-                dialog.InitialDirectory = Directory.Exists(ApplicationSettings.projectspath) ? ApplicationSettings.projectspath : @"C:\";
-
-                dialog.Title = "Выбор расположения проекта";
-                dialog.Filter = "Файл проекта (*.xml) |*.xml";
-                bool? result = dialog.ShowDialog();
-                if (result == true)
-                {
-                    Globals.currentFile = dialog.FileName;
-                }
-                else
-                {
-                    return 1;
-                }
                 var window = new WindowProjectCreator.WindowProjectCreator();
-                window.Show();
+                window.ShowDialog();
             }
             return 0;
         }

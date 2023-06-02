@@ -56,15 +56,15 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         // Указатели на текущие редактируемые элементы каждого типа
         Polyline currentLine;
         public Shape lastShape;
-        public Line lastLine;
-        public Polygon lastTriangle;
-        Polygon arrowPolygon;
 
         // Константы, определяющие форму и размер стрелок
         const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
         const double ARROW_BODY_LENGTH_MIN = 5;     // минимальная длина тела стрелки
         const double ARROW_CAP_WIDTH = 60;          // ширина наконечника стрелки
         const double ARROW_CAP_LENGTH = 30;         // длина наконечника стрелки
+
+        MouseButtonEventHandler OnFigureMouseDown;
+        MouseButtonEventHandler OnFigureMouseUp;
 
         public PageCanvas()
         {
@@ -93,7 +93,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Globals.currentFile = null;
             currentLine = null;
             lastShape = null;
-            lastLine = new Line();
 
             CanvasToolDescription = new string[]
             {
@@ -109,6 +108,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Стрелка",
                 "Рука"
             };
+
+            OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
+            OnFigureMouseUp = new MouseButtonEventHandler(FigureMouseUp);
         }
 
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
@@ -116,10 +118,15 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             UIElement trueSender = sender as UIElement;
 
             // Захватываем фокус мыши
-            Mouse.Capture((UIElement)sender);
+            Mouse.Capture(trueSender);
+
+            handOffset = e.GetPosition(trueSender);
             
-            Point cursor = e.GetPosition(mainCanvas);
-            handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+            if (sender is Polygon && (sender as Polygon).Points.ToList().Count == 7)
+            {
+                Point cursor = e.GetPosition(mainCanvas);
+                handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+            }
         }
 
         // Обработчик события отпускания кнопки мыши
@@ -230,7 +237,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
 
-            if (activeTool == CanvasToolType.ToolHand)
+            if (activeTool == CanvasToolType.ToolHand && e.LeftButton == MouseButtonState.Pressed)
             {
                 // Проверяем, захвачена ли мышь
                 if (Mouse.Captured is UIElement capturedElement)
@@ -241,8 +248,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     // Обновляем позицию фигуры на Canvas
                     Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
                     Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
-                    //Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
-                    //Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
                 }
             }
 
@@ -305,18 +310,18 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
                 if (activeTool == CanvasToolType.ToolLine)
                 {
-                    lastLine.X2 = GetCanvasPosition(sender, e).X;
-                    lastLine.Y2 = GetCanvasPosition(sender, e).Y;
+                    (lastShape as Line).X2 = GetCanvasPosition(sender, e).X;
+                    (lastShape as Line).Y2 = GetCanvasPosition(sender, e).Y;
 
                     Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
-                    lastLine.Stroke = new SolidColorBrush(previewColor);
+                    lastShape.Stroke = new SolidColorBrush(previewColor);
                 }
                 if (activeTool == CanvasToolType.ToolArrow)
                 {
                     Color previewColor1 = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     Color previewColor2 = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
-                    arrowPolygon.Fill = new SolidColorBrush(previewColor1);
-                    arrowPolygon.Stroke = new SolidColorBrush(previewColor2);
+                    lastShape.Fill = new SolidColorBrush(previewColor1);
+                    lastShape.Stroke = new SolidColorBrush(previewColor2);
                     double deltaX = selectionPoints.Item2.X - selectionPoints.Item1.X;
                     double deltaY = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
                     double rotateAngleRad = Math.Atan(deltaY / deltaX);
@@ -325,31 +330,32 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     double arrowBodyLength = arrowFullLength - ARROW_CAP_LENGTH;
                     arrowBodyLength = (arrowBodyLength > ARROW_BODY_LENGTH_MIN) ? arrowBodyLength : ARROW_BODY_LENGTH_MIN;
                     int directionSwitch = (selectionPoints.Item2.X - selectionPoints.Item1.X >= 0) ? 1 : -1;
-                    arrowPolygon.Points[2] = new Point(arrowBodyLength * directionSwitch, -ARROW_BODY_WIDTH / 2);
-                    arrowPolygon.Points[3] = new Point(arrowBodyLength * directionSwitch, -ARROW_CAP_WIDTH / 2);
-                    arrowPolygon.Points[4] = new Point((arrowBodyLength + ARROW_CAP_LENGTH) * directionSwitch, 0);
-                    arrowPolygon.Points[5] = new Point(arrowBodyLength * directionSwitch, ARROW_CAP_WIDTH / 2);
-                    arrowPolygon.Points[6] = new Point(arrowBodyLength * directionSwitch, ARROW_BODY_WIDTH / 2);
-                    (arrowPolygon.RenderTransform as RotateTransform).Angle = rotateAngleDeg;
+                    Polygon lastPolygon = lastShape as Polygon;
+                    lastPolygon.Points[2] = new Point(arrowBodyLength * directionSwitch, -ARROW_BODY_WIDTH / 2);
+                    lastPolygon.Points[3] = new Point(arrowBodyLength * directionSwitch, -ARROW_CAP_WIDTH / 2);
+                    lastPolygon.Points[4] = new Point((arrowBodyLength + ARROW_CAP_LENGTH) * directionSwitch, 0);
+                    lastPolygon.Points[5] = new Point(arrowBodyLength * directionSwitch, ARROW_CAP_WIDTH / 2);
+                    lastPolygon.Points[6] = new Point(arrowBodyLength * directionSwitch, ARROW_BODY_WIDTH / 2);
+                    (lastShape.RenderTransform as RotateTransform).Angle = rotateAngleDeg;
                 }
                 if (activeTool == CanvasToolType.ToolTriangle)
                 {
-                    double xMiddle = Math.Min(GetCanvasPosition(sender, e).X, lastTriangle.Points[0].X) + Math.Abs(GetCanvasPosition(sender, e).X - lastTriangle.Points[0].X) / 2;
-
-                    Point point1 = lastTriangle.Points[0];
-                    Point point2 = new Point(GetCanvasPosition(sender, e).X, lastTriangle.Points[1].Y);
+                    Polygon lastPolygon = lastShape as Polygon;
+                    double xMiddle = Math.Min(GetCanvasPosition(sender, e).X, lastPolygon.Points[0].X) + Math.Abs(GetCanvasPosition(sender, e).X - lastPolygon.Points[0].X) / 2;
+                    Point point1 = lastPolygon.Points[0];
+                    Point point2 = new Point(GetCanvasPosition(sender, e).X, lastPolygon.Points[1].Y);
                     Point point3 = new Point(xMiddle, GetCanvasPosition(sender, e).Y);
 
-                    lastTriangle.Points.Clear();
-                    lastTriangle.Points.Add(point1);
-                    lastTriangle.Points.Add(point2);
-                    lastTriangle.Points.Add(point3);
+                    lastPolygon.Points.Clear();
+                    lastPolygon.Points.Add(point1);
+                    lastPolygon.Points.Add(point2);
+                    lastPolygon.Points.Add(point3);
 
                     Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
-                    lastTriangle.Fill = new SolidColorBrush(previewColor);
-                    lastTriangle.Stroke = new SolidColorBrush(Colors.Black);
+                    lastShape.Fill = new SolidColorBrush(previewColor);
+                    lastShape.Stroke = new SolidColorBrush(Colors.Black);
                     double[] selectionDashes = { 10, 5 };
-                    lastTriangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+                    lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
                 }
             }
         }
@@ -399,35 +405,36 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                         mainCanvas.Children.Add(lastShape);
                         break;
                     case CanvasToolType.ToolTriangle:
-                        lastTriangle = new Polygon();
-                        mainCanvas.Children.Add(lastTriangle);
+                        lastShape = new Polygon();
+                        mainCanvas.Children.Add(lastShape);
                         PointCollection trianglePointCollection = new PointCollection();
                         Point start = GetCanvasPosition(sender, e);
                         trianglePointCollection.Add(start);
                         trianglePointCollection.Add(start);
                         trianglePointCollection.Add(start);
-                        lastTriangle.Points = trianglePointCollection;
+                        (lastShape as Polygon).Points = trianglePointCollection;
                         break;
                     case CanvasToolType.ToolLine:
-                        lastLine = new Line();
-                        mainCanvas.Children.Add(lastLine);
-                        lastLine.X1 = GetCanvasPosition(sender, e).X;
-                        lastLine.Y1 = GetCanvasPosition(sender, e).Y;
+                        lastShape = new Line();
+                        mainCanvas.Children.Add(lastShape);
+                        (lastShape as Line).X1 = GetCanvasPosition(sender, e).X;
+                        (lastShape as Line).Y1 = GetCanvasPosition(sender, e).Y;
                         break;
                     case CanvasToolType.ToolArrow:
-                        arrowPolygon = new Polygon();
+                        lastShape = new Polygon();
                         Point position = GetCanvasPosition(sender, e);
-                        Canvas.SetLeft(arrowPolygon, position.X);
-                        Canvas.SetTop(arrowPolygon, position.Y);
-                        mainCanvas.Children.Add(arrowPolygon);
-                        arrowPolygon.RenderTransform = new RotateTransform();
-                        arrowPolygon.Points.Add(new Point(0, ARROW_BODY_WIDTH / 2));
-                        arrowPolygon.Points.Add(new Point(0, -ARROW_BODY_WIDTH / 2));
-                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_BODY_WIDTH / 2));
-                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_CAP_WIDTH / 2));
-                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN + ARROW_CAP_LENGTH, 0));
-                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_CAP_WIDTH / 2));
-                        arrowPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_BODY_WIDTH / 2));
+                        Canvas.SetLeft(lastShape, position.X);
+                        Canvas.SetTop(lastShape, position.Y);
+                        mainCanvas.Children.Add(lastShape);
+                        Polygon lastPolygon = lastShape as Polygon;
+                        lastPolygon.RenderTransform = new RotateTransform();
+                        lastPolygon.Points.Add(new Point(0, ARROW_BODY_WIDTH / 2));
+                        lastPolygon.Points.Add(new Point(0, -ARROW_BODY_WIDTH / 2));
+                        lastPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_BODY_WIDTH / 2));
+                        lastPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, -ARROW_CAP_WIDTH / 2));
+                        lastPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN + ARROW_CAP_LENGTH, 0));
+                        lastPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_CAP_WIDTH / 2));
+                        lastPolygon.Points.Add(new Point(ARROW_BODY_LENGTH_MIN, ARROW_BODY_WIDTH / 2));
                         break;
                 }
             }
@@ -509,6 +516,16 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (activeTool < CanvasToolType.ToolHand)
+            {
+                //try
+                //{
+                lastShape.MouseDown -= OnFigureMouseDown;
+                lastShape.MouseUp -= OnFigureMouseUp;
+                //}
+                //catch { }
+            }
+
             if (!IsMouseDown)
             {
                 return;
@@ -553,37 +570,37 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             else if (this.activeTool == CanvasToolType.ToolLine)
             {
-                CheckFigureSettings(lastLine);
+                CheckFigureSettings(lastShape);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
-                mainCanvas.Children.Remove(lastLine);
-                AddNewFigure(lastLine, currentToolDescription, topLeftPoint);
+                mainCanvas.Children.Remove(lastShape);
+                AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
 
             else if (this.activeTool == CanvasToolType.ToolTriangle)
             {
-                CheckFigureSettings(lastTriangle);
+                CheckFigureSettings(lastShape);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
-                mainCanvas.Children.Remove(lastTriangle);
-                AddNewFigure(lastTriangle, currentToolDescription, topLeftPoint);
+                mainCanvas.Children.Remove(lastShape);
+                AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
             else if (this.activeTool == CanvasToolType.ToolArrow)
             {
-                CheckFigureSettings(arrowPolygon, true);
+                CheckFigureSettings(lastShape, true);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
-                mainCanvas.Children.Remove(arrowPolygon);
-                AddNewFigure(arrowPolygon, currentToolDescription, topLeftPoint);
+                mainCanvas.Children.Remove(lastShape);
+                AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
 
             if (this.activeTool != CanvasToolType.ToolSelect)
@@ -591,6 +608,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 this.isEmpty = false;
             }
             IsMouseDown = false;
+            if (activeTool < CanvasToolType.ToolHand)
+            {
+                lastShape.MouseDown += OnFigureMouseDown;
+                lastShape.MouseUp += OnFigureMouseUp;
+            }
         }
 
         public void ExportProject(string exportType, string filename)
@@ -670,8 +692,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Canvas.SetTop(figure, position.Y);
             }
             Globals.changeHistoryBefore.Push((figure, operationDescription, position));
-            figure.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
-            figure.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+            
             if (!isRedo)
             {
                 Globals.changeHistoryAfter.Clear();

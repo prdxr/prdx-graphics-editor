@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using prdx_graphics_editor.modules.colorPicker.FormColorPicker;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.main;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
+using prdx_graphics_editor.modules.colorPicker.FormColorPicker;
+using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
 
 namespace prdx_graphics_editor.modules.utils
 {
@@ -16,6 +17,7 @@ namespace prdx_graphics_editor.modules.utils
     {
         public static ApplicationSettings applicationSettings = ApplicationSettings.CreateApplicationSettings();
         public static PageColorPicker pageColorPickerRef;
+        public static WindowColorPicker windowColorPickerRef;
         public static PageTools pageToolsRef;
         public static PageCanvas pageCanvasRef;
         public static PageHistory pageHistoryRef;

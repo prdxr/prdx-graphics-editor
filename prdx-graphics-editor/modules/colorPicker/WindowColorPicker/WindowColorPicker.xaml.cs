@@ -30,6 +30,8 @@ namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
             ButtonApply.Foreground = Globals.colorTextBright;
             ButtonCancel.Background = Globals.colorAccent1;
             ButtonCancel.Foreground = Globals.colorTextBright;
+
+            Globals.windowColorPickerRef = this;
         }
 
         private void OnButtonApplyClick(object sender, RoutedEventArgs e)
