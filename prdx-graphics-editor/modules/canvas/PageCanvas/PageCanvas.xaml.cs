@@ -516,6 +516,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (!IsMouseDown)
+            {
+                return;
+            }
+
             if (activeTool < CanvasToolType.ToolHand)
             {
                 //try
@@ -524,11 +529,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 lastShape.MouseUp -= OnFigureMouseUp;
                 //}
                 //catch { }
-            }
-
-            if (!IsMouseDown)
-            {
-                return;
             }
 
             if(activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
@@ -555,6 +555,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
                 lastShape = currentLine;
                 currentLine = null;
+            }
+            else if (!(lastShape.Width > 0 && lastShape.Height > 0))
+            {
+                mainCanvas.Children.Remove(lastShape);
+                IsMouseDown = false;
+
+                return;
             }
 
             if (this.activeTool >= CanvasToolType.ToolSquare && this.activeTool <= CanvasToolType.ToolCircle)
