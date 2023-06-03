@@ -115,17 +115,20 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
         {
-            UIElement trueSender = sender as UIElement;
-
-            // Захватываем фокус мыши
-            Mouse.Capture(trueSender);
-
-            handOffset = e.GetPosition(trueSender);
-            
-            if (sender is Polygon && (sender as Polygon).Points.ToList().Count == 7)
+            if (sender == lastShape)
             {
-                Point cursor = e.GetPosition(mainCanvas);
-                handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+                UIElement trueSender = sender as UIElement;
+
+                // Захватываем фокус мыши
+                Mouse.Capture(trueSender);
+
+                handOffset = e.GetPosition(trueSender);
+            
+                if (sender is Polygon && (sender as Polygon).Points.ToList().Count == 7)
+                {
+                    Point cursor = e.GetPosition(mainCanvas);
+                    handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+                }
             }
         }
 
@@ -521,16 +524,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
 
-            if (activeTool < CanvasToolType.ToolHand)
-            {
-                //try
-                //{
-                lastShape.MouseDown -= OnFigureMouseDown;
-                lastShape.MouseUp -= OnFigureMouseUp;
-                //}
-                //catch { }
-            }
-
             if(activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
@@ -556,11 +549,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 lastShape = currentLine;
                 currentLine = null;
             }
-            else if (!(lastShape.Width > 0 && lastShape.Height > 0))
+            //else if (!(lastShape is Polygon) && !(lastShape.Width > 0 && lastShape.Height > 0))
+            else if (Canvas.GetRight(lastShape) + Canvas.GetLeft(lastShape) >= mainCanvas.Width || Canvas.GetTop(lastShape) + Canvas.GetBottom(lastShape) >= mainCanvas.Height)
             {
                 mainCanvas.Children.Remove(lastShape);
                 IsMouseDown = false;
-
                 return;
             }
 
@@ -736,7 +729,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
             (Shape figure, string operationDescription, Point position) = Globals.changeHistoryAfter.Pop();
-
+            lastShape = figure;
             AddNewFigure(figure, operationDescription, position, true);
 
             if (OnFiguresChanged != null)
