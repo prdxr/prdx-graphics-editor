@@ -51,6 +51,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         string[] CanvasToolDescription;
         Point handOffset;
         bool isPlacingFigure = false;
+        double[] selectionDashes = { 10, 5 };
 
         // Координаты точек области прямоугольного выделения
         (Point, Point) selectionPoints;
@@ -58,6 +59,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         // Указатели на текущие редактируемые элементы каждого типа
         Polyline currentLine;
         public Shape lastShape;
+        public Shape selectedShape;
 
         // Константы, определяющие форму и размер стрелок
         const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
@@ -80,7 +82,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle = new Rectangle();
             selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
-            double[] selectionDashes = { 10, 5 };
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
 
             selectionRectangle.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
@@ -95,6 +96,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Globals.currentFile = null;
             currentLine = null;
             lastShape = null;
+            selectedShape = null;
 
             CanvasToolDescription = new string[]
             {
@@ -313,7 +315,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     lastShape.Fill = new SolidColorBrush(previewColor);
                     lastShape.Stroke = new SolidColorBrush(Colors.Black);
-                    double[] selectionDashes = { 10, 5 };
                     lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
                 }
                 if (activeTool == CanvasToolType.ToolLine)
@@ -363,7 +364,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     lastShape.Fill = new SolidColorBrush(previewColor);
                     lastShape.Stroke = new SolidColorBrush(Colors.Black);
-                    double[] selectionDashes = { 10, 5 };
                     lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
                 }
             }
@@ -382,8 +382,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (activeTool == CanvasToolType.ToolHand)
+            if (activeTool >= CanvasToolType.ToolHand)
             {
+                if (sender is Canvas)
+                {
+                    return;
+                }
+                selectedShape = sender as Shape;
+                selectedShape.Opacity = 0.5;
                 return;
             }
 
@@ -531,6 +537,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            string currentToolDescription = CanvasToolDescription[(int)activeTool];
+
             if (activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolHand)
             {
                 Globals.isProjectSaved = false;
@@ -556,7 +564,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Canvas.SetTop(brushPoint, topLeftPoint.Y);
 
                     RemoveLastFigure();
-                    AddNewFigure(brushPoint, CanvasToolDescription[(int)activeTool], topLeftPoint);
+                    AddNewFigure(brushPoint, currentToolDescription, topLeftPoint);
                 }
                 lastShape = currentLine;
                 currentLine = null;
@@ -572,7 +580,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 CheckFigureSettings(lastShape);
 
-                string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
@@ -583,7 +590,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 CheckFigureSettings(lastShape);
 
-                string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 Point topLeftPoint = new Point(0,0);
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
@@ -593,7 +599,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 CheckFigureSettings(lastShape);
 
-                string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
@@ -604,7 +609,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 CheckFigureSettings(lastShape, true);
 
-                string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 Point topLeftPoint = new Point(x, y);
@@ -621,6 +625,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 lastShape.MouseDown += OnFigureMouseDown;
                 lastShape.MouseUp += OnFigureMouseUp;
             }
+            else if (!(sender is Canvas))
+            {
+                selectedShape.Opacity = 1;
+            }
+
             isPlacingFigure = false;
         }
 

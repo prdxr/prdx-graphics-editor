@@ -75,8 +75,16 @@
                              Command="{StaticResource ToolHotkey}" CommandParameter="9">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
                 </RadioButton>
-                <RadioButton Grid.Row="2" Grid.Column="0" x:Name="buttonHand" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Стрелка"
+                <RadioButton Grid.Row="2" Grid.Column="0" x:Name="buttonHand" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Рука"
                              Command="{StaticResource ToolHotkey}" CommandParameter="10">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="2" Grid.Column="1" x:Name="buttonRotate" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Вращение"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="11">
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="2" Grid.Column="2" x:Name="buttonSize" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Масштаб"
+                             Command="{StaticResource ToolHotkey}" CommandParameter="12">
                     <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
                 </RadioButton>
             </Grid>

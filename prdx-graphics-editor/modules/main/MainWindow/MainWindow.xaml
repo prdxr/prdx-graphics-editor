@@ -79,7 +79,10 @@
     </Window.InputBindings>
 
     <Grid x:Name="mainGrid" Style="{StaticResource StyleContainersDark}">
-        <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="350,100"
+                      CanContentScroll="True">
+            <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
+        </ScrollViewer>
         <!--leftDockPanel background: accent2-->
         <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Grid>
