@@ -88,6 +88,9 @@
     <Compile Include="modules\canvas\PageCanvas\PageCanvas.xaml.cs">
       <DependentUpon>PageCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="modules\canvas\WindowCanvasSize\WindowCanvasSize.xaml.cs">
+      <DependentUpon>WindowCanvasSize.xaml</DependentUpon>
+    </Compile>
     <Compile Include="modules\colorPicker\FormColorPicker\PageColorPicker.xaml.cs">
       <DependentUpon>PageColorPicker.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
       <DependentUpon>PageTools.xaml</DependentUpon>
     </Compile>
     <Page Include="modules\canvas\PageCanvas\PageCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="modules\canvas\WindowCanvasSize\WindowCanvasSize.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

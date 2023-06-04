@@ -18,6 +18,8 @@ using System.Windows.Markup;
 using System.Xml;
 using System.IO;
 using System.Runtime.ExceptionServices;
+using prdx_graphics_editor.modules.actions;
+
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
 {
@@ -837,6 +839,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void Rastrize()
         {
             //rastrize
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Actions.ChangeCanvasSize(mainCanvas);
         }
     }
 }

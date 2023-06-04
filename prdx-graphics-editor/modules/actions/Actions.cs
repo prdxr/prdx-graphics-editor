@@ -12,7 +12,8 @@ using prdx_graphics_editor.modules.utils;
 using System.IO;
 using System.Windows.Shapes;
 using System.Windows.Input;
-
+using prdx_graphics_editor.modules.canvas;
+using System.Windows.Controls;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -225,5 +226,11 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.PasteClipboard();
         }
+
+        public static void ChangeCanvasSize(Canvas canvas)
+        {
+            WindowCanvasSize.ChangeCanvasSize(canvas);
+        }
+
     }
 }

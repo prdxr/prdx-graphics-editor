@@ -21,6 +21,13 @@
                 ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
                 MouseLeave="OnMouseLeave">
+
+            <Canvas.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Размер холста" Click="MenuItem_Click"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
+
         </Canvas>
     </Grid>
 </Page>
