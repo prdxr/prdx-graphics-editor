@@ -36,19 +36,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolTriangle,
         ToolLine,
         ToolArrow,
-        ToolHand
+        ToolHand,
+        ToolRotate,
+        ToolSize
     }
 
 
     public partial class PageCanvas : Page
     {
-        bool IsMouseDown;
         CanvasToolType activeTool;
         Rectangle selectionRectangle;
         public bool isEmpty;
         public event EventHandler OnFiguresChanged;
         string[] CanvasToolDescription;
         Point handOffset;
+        bool isPlacingFigure = false;
 
         // Координаты точек области прямоугольного выделения
         (Point, Point) selectionPoints;
@@ -106,7 +108,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Треугольник",
                 "Прямая",
                 "Стрелка",
-                "Рука"
+                "Рука",
+                "Вращение",
+                "Масштаб"
             };
 
             OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
@@ -115,7 +119,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender == lastShape)
+            if (true || sender == lastShape)
             {
                 UIElement trueSender = sender as UIElement;
 
@@ -242,7 +246,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Point newPosition = e.GetPosition(mainCanvas);
             Globals.pageInfoLineRef.SetPointerValues(newPosition);
 
-            if (activeTool == CanvasToolType.ToolHand && e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                return;
+            }
+
+            if (activeTool == CanvasToolType.ToolHand)
             {
                 // Проверяем, захвачена ли мышь
                 if (Mouse.Captured is UIElement capturedElement)
@@ -254,10 +263,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
             }
 
-            if (!IsMouseDown)
-            {
-                return;
-            }
             else if (activeTool <= CanvasToolType.ToolEraser)
             {
                 OnCanvasMouseMoveDraw(sender, e, currentLine);
@@ -284,7 +289,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseMoveFigureMode(object sender, MouseEventArgs e)
         {
-            if (IsMouseDown == true)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
 
@@ -316,8 +321,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     (lastShape as Line).X2 = GetCanvasPosition(sender, e).X;
                     (lastShape as Line).Y2 = GetCanvasPosition(sender, e).Y;
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
                     lastShape.Stroke = new SolidColorBrush(previewColor);
+                    lastShape.StrokeThickness = Globals.applicationSettings.brushSize;
                 }
                 if (activeTool == CanvasToolType.ToolArrow)
                 {
@@ -381,7 +387,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
 
-            IsMouseDown = true;
             if (this.activeTool >= CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
             {
                 selectionPoints.Item1 = GetCanvasPosition(sender, e);
@@ -393,6 +398,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             if (this.activeTool >= CanvasToolType.ToolSquare)
             {
+                isPlacingFigure = true;
                 switch (this.activeTool)
                 {
                     case CanvasToolType.ToolSquare:
@@ -495,6 +501,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 targetShape.StrokeThickness = Globals.applicationSettings.brushSize;
                 return;
             }
+            else if (targetShape.GetType() == typeof(Line))
+            {
+                (targetShape as Line).StrokeThickness = Globals.applicationSettings.brushSize;
+                (targetShape as Line).Stroke = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+                return;
+            }
 
             targetShape.StrokeDashArray = null;
             if (Globals.applicationSettings.enableFigureFill)
@@ -524,11 +536,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Globals.isProjectSaved = false;
             }
 
-            if (!IsMouseDown)
-            {
-                return;
-            }
-
             if(activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
@@ -555,12 +562,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 currentLine = null;
             }
             //else if (!(lastShape is Polygon) && !(lastShape.Width > 0 && lastShape.Height > 0))
-            else if (Canvas.GetRight(lastShape) + Canvas.GetLeft(lastShape) >= mainCanvas.Width || Canvas.GetTop(lastShape) + Canvas.GetBottom(lastShape) >= mainCanvas.Height)
-            {
-                mainCanvas.Children.Remove(lastShape);
-                IsMouseDown = false;
-                return;
-            }
+            //else if (Canvas.GetRight(lastShape) + Canvas.GetLeft(lastShape) >= mainCanvas.Width || Canvas.GetTop(lastShape) + Canvas.GetBottom(lastShape) >= mainCanvas.Height)
+            //{
+            //    mainCanvas.Children.Remove(lastShape);
+            //    return;
+            //}
 
             if (this.activeTool >= CanvasToolType.ToolSquare && this.activeTool <= CanvasToolType.ToolCircle)
             {
@@ -578,9 +584,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 CheckFigureSettings(lastShape);
 
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
-                double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
-                double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
-                Point topLeftPoint = new Point(x, y);
+                Point topLeftPoint = new Point(0,0);
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
@@ -612,12 +616,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 this.isEmpty = false;
             }
-            IsMouseDown = false;
             if (activeTool < CanvasToolType.ToolHand)
             {
                 lastShape.MouseDown += OnFigureMouseDown;
                 lastShape.MouseUp += OnFigureMouseUp;
             }
+            isPlacingFigure = false;
         }
 
         public void ExportProject(string exportType, string filename)
@@ -686,7 +690,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             mainCanvas.Children.Add(figure);
 
-            if (!(figure is Line || figure is Polygon))
+            if (!(figure is Polygon))
             {
                 Canvas.SetLeft(figure, position.X);
                 Canvas.SetTop(figure, position.Y);
@@ -753,7 +757,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (IsMouseDown && activeTool >= CanvasToolType.ToolSquare)
+            if (e.LeftButton == MouseButtonState.Released && activeTool >= CanvasToolType.ToolSquare && isPlacingFigure)
             {
                 OnCanvasMouseUp(sender, null);
             }
