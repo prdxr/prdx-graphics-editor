@@ -45,33 +45,36 @@ namespace prdx_graphics_editor.modules.actions
 
         private static bool CheckBeforeErasing()
         {
-            string boxCaption = "Несохранённые изменения";
-            string boxText = "Внимание! Есть несохранёные изменения, которые будут утеряны при продолжении. Сохранить проект?";
-            MessageBoxButton boxButtons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage boxIcon = MessageBoxImage.Warning;
-            MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
+            if (!Globals.isProjectSaved)
+                {
 
-            if (boxResult == MessageBoxResult.Yes)
-            {
-                SaveProject();
-                return true;
+                string boxCaption = "Несохранённые изменения";
+                string boxText = "Внимание! Есть несохранёные изменения, которые будут утеряны при продолжении. Сохранить проект?";
+                MessageBoxButton boxButtons = MessageBoxButton.YesNoCancel;
+                MessageBoxImage boxIcon = MessageBoxImage.Warning;
+                MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
+
+                if (boxResult == MessageBoxResult.Yes)
+                {
+                    SaveProject();
+                    return true;
+                }
+                else if (boxResult == MessageBoxResult.No)
+                {
+                    return true;
+                }
+                else if (boxResult == MessageBoxResult.Cancel)
+                {
+                    return false;
+                }
             }
-            else if (boxResult == MessageBoxResult.No)
-            {
-                return true;
-            }
-            else if (boxResult == MessageBoxResult.Cancel)
-            {
-                return false;
-            }
-            return false;
+            return true;
         }
 
         public static int CreateProject()
         {
             if (CheckBeforeErasing())
             {
-                
                 var window = new WindowProjectCreator.WindowProjectCreator();
                 window.ShowDialog();
             }
@@ -80,7 +83,9 @@ namespace prdx_graphics_editor.modules.actions
 
         public static void InitializeProject(int width, int height)
         {
+            Globals.pageInfoLineRef.SetCurrentProject();
             Globals.pageCanvasRef.ResetCanvas(width, height);
+            Globals.isProjectSaved = true;
         }
 
         public static int OpenProject()
@@ -117,6 +122,7 @@ namespace prdx_graphics_editor.modules.actions
             else
             {
                 Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
+                Globals.isProjectSaved = true;
             }
         }
 
@@ -133,6 +139,7 @@ namespace prdx_graphics_editor.modules.actions
             {
                 Globals.currentFile = dialog.FileName;
                 Globals.pageCanvasRef.SerializeToXML(Globals.pageCanvasRef.mainCanvas, Globals.currentFile);
+                Globals.isProjectSaved = true;
             }
         }
 

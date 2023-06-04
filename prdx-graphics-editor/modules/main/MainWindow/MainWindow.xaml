@@ -133,7 +133,7 @@
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
         <!--bottomDockPanel background: accent2-->
-        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Bottom" Background="DarkGray">
+        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom" Background="DarkGray">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Frame x:Name="InfoLinePage" Source="..\PageInfoLine\PageInfoLine.xaml"/>
             </Border>

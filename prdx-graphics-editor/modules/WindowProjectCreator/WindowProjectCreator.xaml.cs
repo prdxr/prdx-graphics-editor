@@ -23,7 +23,7 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
     /// </summary>
     public partial class WindowProjectCreator : Window
     {
-        private static readonly Regex numbersMask = new Regex("^[0-9]+$"); //regex that matches disallowed text
+        private static readonly Regex numbersMask = new Regex("^[0-9]+$");
 
         public WindowProjectCreator()
         {

@@ -67,11 +67,13 @@ namespace prdx_graphics_editor.modules.main
             if (currentIndex == 0)
             {
                 HistoryListView.UnselectAll();
+                Globals.isProjectSaved = true;
             }
             else
             {
                 oldSelection = Globals.changeHistoryAfter.Count;
                 HistoryListView.SelectedIndex = oldSelection;
+                Globals.isProjectSaved = false;
             }
         }
         private void GoToSelectedAction(object sender, MouseButtonEventArgs e)

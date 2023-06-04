@@ -192,6 +192,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             mainCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
+            Globals.isProjectSaved = true;
 
             mainCanvas.Width = width;
             mainCanvas.Height = height;
@@ -201,7 +202,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Canvas.SetTop(selectionRectangle, 0);
             mainCanvas.Children.Add(selectionRectangle);
 
-            Globals.currentFile = null;
             Globals.changeHistoryBefore.Clear();
             Globals.changeHistoryAfter.Clear();
             OnFiguresChanged.Invoke(this, null);
@@ -239,14 +239,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
+            Point newPosition = e.GetPosition(mainCanvas);
+            Globals.pageInfoLineRef.SetPointerValues(newPosition);
 
             if (activeTool == CanvasToolType.ToolHand && e.LeftButton == MouseButtonState.Pressed)
             {
                 // Проверяем, захвачена ли мышь
                 if (Mouse.Captured is UIElement capturedElement)
                 {
-                    // Преобразуем координаты относительно Canvas
-                    Point newPosition = e.GetPosition(mainCanvas);
 
                     // Обновляем позицию фигуры на Canvas
                     Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
@@ -519,6 +519,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolHand)
+            {
+                Globals.isProjectSaved = false;
+            }
+
             if (!IsMouseDown)
             {
                 return;
@@ -670,11 +675,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             ResetCanvas();
             ImageBrush brush = new ImageBrush();
             BitmapImage img = new BitmapImage(new Uri(@filename, UriKind.Relative));
-            //TEMP RESTRICTION TO 800x800
-            if (img.PixelWidth > 800 || img.PixelHeight > 800)
-            {
-                //throw new Exception("TEMP: Максимальное разрешение - 800x800 пикселей");
-            }
             brush.ImageSource = img;
 
             mainCanvas.Width = img.PixelWidth;
@@ -757,6 +757,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 OnCanvasMouseUp(sender, null);
             }
+        }
+        private void OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Globals.pageInfoLineRef.SetPointerValues(null);
         }
 
 

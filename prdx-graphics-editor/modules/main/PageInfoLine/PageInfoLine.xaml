@@ -5,12 +5,20 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.main"
       mc:Ignorable="d" 
-      d:DesignHeight="1000" d:DesignWidth="200"
+      d:DesignHeight="50"
       Title="Layers">
 
-    <Grid>
-        <DockPanel VerticalAlignment="Stretch" Grid.Row="1" Width="200" HorizontalAlignment="Center">
-            <Label HorizontalAlignment="Center" Height="30" VerticalAlignment="Top">Слои</Label>
+    <DockPanel>
+        <DockPanel Width="200" VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
+            <Label x:Name="labelPointerPosition" DockPanel.Dock="Right" Width="100" VerticalAlignment="Top">Вне холста</Label>
+            <Label DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">Курсор:</Label>
         </DockPanel>
-    </Grid>
+        <DockPanel VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center">Текущий проект:</Label>
+            <TextBlock VerticalAlignment="Center" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                  <TextBlock x:Name="textblockCurrentLocation" Text="[path]"/>
+                  <TextBlock x:Name="textblockUnsavedAsterisk" Text="*" Foreground="Red"/>
+             </TextBlock>
+        </DockPanel>
+    </DockPanel>
 </Page>

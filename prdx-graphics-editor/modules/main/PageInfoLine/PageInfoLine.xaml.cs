@@ -12,17 +12,39 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.main.PageInfoLine
 {
     /// <summary>
-    /// Логика взаимодействия для Layers.xaml
+    /// Логика взаимодействия для PageInfoLine.xaml
     /// </summary>
     public partial class PageInfoLine : Page
     {
         public PageInfoLine()
         {
             InitializeComponent();
+            Globals.pageInfoLineRef = this;
+            SetCurrentProject();
+        }
+
+        public void SetPointerValues(Point? pointer)
+        {
+            if (pointer is null)
+            {
+                labelPointerPosition.Content = "Вне холста";
+            }
+            else
+            {
+                labelPointerPosition.Content = $"{pointer.Value.X}, {pointer.Value.Y}";
+            }
+        }
+
+        public void SetCurrentProject()
+        {
+            textblockCurrentLocation.Text = Globals.currentFile;
+            textblockUnsavedAsterisk.Visibility = Globals.isProjectSaved ? Visibility.Hidden : Visibility.Visible;
+            //textblockUnsavedAsterisk.Visibility = Globals.isProjectSaved ? Visibility.Visible : Visibility.Visible;
         }
     }
 }

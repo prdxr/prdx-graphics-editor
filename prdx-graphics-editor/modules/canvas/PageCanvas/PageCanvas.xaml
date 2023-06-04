@@ -21,6 +21,7 @@
                 Cursor="Cross"
                 ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
+                MouseLeave="OnMouseLeave"
             >
         </Canvas>
         <!--</Border>-->
