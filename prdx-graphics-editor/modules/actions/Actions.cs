@@ -75,7 +75,10 @@ namespace prdx_graphics_editor.modules.actions
         {
             if (CheckBeforeErasing())
             {
-                var window = new WindowProjectCreator.WindowProjectCreator();
+                var window = new WindowProjectCreator.WindowProjectCreator()
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
                 window.ShowDialog();
             }
             return 0;

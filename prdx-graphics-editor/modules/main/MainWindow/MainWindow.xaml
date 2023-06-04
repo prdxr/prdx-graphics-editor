@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor"
-        mc:Ignorable="d"
-        Title="Графический редактор" Width="1920" Height="1080" MinHeight="500" MinWidth="600"
+        mc:Ignorable="d" Icon="../../../chili.ico"
+        Title="Chili DRAW" Width="1920" Height="1080" MinHeight="500" MinWidth="600"
         WindowState="Maximized">
     <!--720x1280-->
     <!--mainGrid background: accent1-->

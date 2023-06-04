@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.WindowProjectCreator"
-        mc:Ignorable="d"
-        Title="ProjectCreator" Height="300" Width="500">
+        mc:Ignorable="d" Icon="../../../chili.ico"
+        Title="Создание проекта" Height="300" Width="500">
     <DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
             <Label x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>

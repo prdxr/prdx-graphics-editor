@@ -208,5 +208,8 @@
     <Resource Include="modules\main\PageTools\icons\redo.png" />
     <Resource Include="modules\main\PageTools\icons\undo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="chili.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
