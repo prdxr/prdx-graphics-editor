@@ -29,21 +29,21 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
         {
             InitializeComponent();
          
-            Background = Globals.colorAccent1;
-            buttonApply.Background = Globals.colorAccent2;
-            buttonApply.Foreground = Globals.colorTextBright;
-            buttonCancel.Background = Globals.colorAccent2;
-            buttonCancel.Foreground = Globals.colorTextBright;
-            widthInput.Background = Globals.colorAccent2;
-            widthInput.Foreground = Globals.colorTextBright;
-            heightInput.Background = Globals.colorAccent2;
-            heightInput.Foreground = Globals.colorTextBright;
-            labelWidth.Foreground = Globals.colorTextBright;
-            labelHeight.Foreground = Globals.colorTextBright;
-            textBoxPath.Background = Globals.colorAccent2;
-            textBoxPath.Foreground = Globals.colorTextBright;
-            buttonChangePath.Background = Globals.colorAccent2;
-            buttonChangePath.Foreground = Globals.colorTextBright;
+            Background = Globals.appcolorAccent1;
+            buttonApply.Background = Globals.appcolorAccent2;
+            buttonApply.Foreground = Globals.appcolorText;
+            buttonCancel.Background = Globals.appcolorAccent2;
+            buttonCancel.Foreground = Globals.appcolorText;
+            widthInput.Background = Globals.appcolorAccent2;
+            widthInput.Foreground = Globals.appcolorText;
+            heightInput.Background = Globals.appcolorAccent2;
+            heightInput.Foreground = Globals.appcolorText;
+            labelWidth.Foreground = Globals.appcolorText;
+            labelHeight.Foreground = Globals.appcolorText;
+            textBoxPath.Background = Globals.appcolorAccent2;
+            textBoxPath.Foreground = Globals.appcolorText;
+            buttonChangePath.Background = Globals.appcolorAccent2;
+            buttonChangePath.Foreground = Globals.appcolorText;
         }
 
         private void CreateProject(object sender, RoutedEventArgs e)
@@ -56,7 +56,7 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
 
         private void checkForNumbers(object sender, TextChangedEventArgs e)
         {
-            if (!UtilityFunctions.CheckInputValidity(sender as TextBox, numbersMask, Globals.colorAccent2))
+            if (!UtilityFunctions.CheckInputValidity(sender as TextBox, numbersMask, Globals.appcolorAccent2))
             {
                 buttonApply.IsEnabled = false;
             }

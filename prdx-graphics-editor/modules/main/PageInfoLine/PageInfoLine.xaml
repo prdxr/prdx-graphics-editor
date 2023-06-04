@@ -10,15 +10,15 @@
 
     <DockPanel>
         <DockPanel Width="200" VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
-            <Label x:Name="labelPointerPosition" DockPanel.Dock="Right" Width="100" VerticalAlignment="Top">Вне холста</Label>
-            <Label DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">Курсор:</Label>
+            <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelPointerPosition" DockPanel.Dock="Right" Width="100" VerticalAlignment="Top">Вне холста</Label>
+            <Label Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">Курсор:</Label>
         </DockPanel>
         <DockPanel VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
-            <Label HorizontalAlignment="Center" VerticalAlignment="Center">Текущий проект:</Label>
-            <TextBlock VerticalAlignment="Center" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                  <TextBlock x:Name="textblockCurrentLocation" Text="[path]"/>
+            <Label Style="{StaticResource StyleDarkNoBackground}" HorizontalAlignment="Center" VerticalAlignment="Center">Текущий проект:</Label>
+            <DockPanel VerticalAlignment="Center">
+                  <TextBox Style="{StaticResource StyleDarkNoBackground}" x:Name="textblockCurrentLocation" Text="[path]" IsReadOnly="True" BorderBrush="Transparent"/>
                   <TextBlock x:Name="textblockUnsavedAsterisk" Text="*" Foreground="Red"/>
-             </TextBlock>
+             </DockPanel>
         </DockPanel>
     </DockPanel>
 </Page>

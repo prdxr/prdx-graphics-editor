@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.colorPicker.WindowColorPicker"
         mc:Ignorable="d"
-        Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300" Background="Gray">
-    <Grid>
+        Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300">
+    <Grid Style="{StaticResource StyleContainersBright}">
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
         <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
-            <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
+            <Button x:Name="ButtonCancel" Style="{StaticResource StyleDarkButton1}" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
                     Click="OnButtonCancelClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle" IsCancel="true">
             </Button>
-            <Button x:Name="ButtonApply" DockPanel.Dock="Right" Width="100" Height="40" Content="Применить"
+            <Button x:Name="ButtonApply" Style="{StaticResource StyleDarkButton1}" DockPanel.Dock="Right" Width="100" Height="40" Content="Применить"
                     Click="OnButtonApplyClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle">
             </Button>
         </DockPanel>

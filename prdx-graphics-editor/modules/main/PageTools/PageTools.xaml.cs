@@ -31,10 +31,6 @@ namespace prdx_graphics_editor
             InitializeComponent();
             ChangeColorListener();
 
-            toolGrid.Background = Globals.colorAccent1;
-            colorGrid.Background = Globals.colorAccent1;
-            mainLabel.Foreground = Globals.colorTextBright;
-
             Globals.pageToolsRef = this;
 
             int currentTool = (int)Globals.applicationSettings.activeTool;

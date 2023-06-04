@@ -78,10 +78,10 @@
         <KeyBinding Key="X" Command="{StaticResource SwapColors}"/>
     </Window.InputBindings>
 
-    <Grid x:Name="mainGrid">
+    <Grid x:Name="mainGrid" Style="{StaticResource StyleContainersDark}">
         <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Margin="200,20"/>
         <!--leftDockPanel background: accent2-->
-        <DockPanel x:Name="leftDockPanel" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20" Background="Gray">
+        <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="250"/>
@@ -92,14 +92,14 @@
             </Grid>
         </DockPanel>
         <!--topDockPanel background: accent2-->
-        <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top" Background="DarkGray">
+        <DockPanel x:Name="topDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="MenuItem">
                     <Setter Property="Background" Value="black" />
                 </Style>                
             </DockPanel.Resources>
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
-                <Menu x:Name="mainMenu" FlowDirection="LeftToRight" HorizontalAlignment="Left">
+                <Menu x:Name="mainMenu" Style="{StaticResource StyleDark2}" FlowDirection="LeftToRight" HorizontalAlignment="Left">
                     <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Header="Создать проект" Command="{StaticResource CreateProject}" InputGestureText="ctrl+N"/>
                         <MenuItem Foreground="Black" Header="Открыть проект" Command="{StaticResource OpenProject}" InputGestureText="ctrl+O"/>
@@ -112,7 +112,7 @@
                         <Separator/>
                         <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}" InputGestureText="Shift+Esc"/>
                     </MenuItem>
-                    <MenuItem x:Name="mainMenuEdit" Header="Правка" VerticalAlignment="Stretch">
+                    <MenuItem x:Name="mainMenuEdit" Style="{StaticResource StyleDark2}" Header="Правка" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}" InputGestureText="ctrl+Z"/>
                         <MenuItem Foreground="Black" Header="Вернуть последнее действие" Command="{StaticResource RedoAction}" InputGestureText="ctrl+Y"/>
                         <Separator/>
@@ -120,7 +120,7 @@
                         <MenuItem Foreground="Black" Header="Копировать" InputGestureText="ctrl+C"/>
                         <MenuItem Foreground="Black" Header="Вставить" InputGestureText="ctrl+V"/>
                     </MenuItem>
-                    <MenuItem x:Name="mainMenuSelect" Header="Выделение" VerticalAlignment="Stretch">
+                    <MenuItem x:Name="mainMenuSelect" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}" InputGestureText="ctrl+A"/>
                         <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}" InputGestureText="ctrl+shift+A"/>
                     </MenuItem>
@@ -129,11 +129,11 @@
         </DockPanel>
 
         <!--rightDockPanel background: accent2-->
-        <DockPanel x:Name="rightDockPanel" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20" Background="Gray">
+        <DockPanel x:Name="rightDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
         <!--bottomDockPanel background: accent2-->
-        <DockPanel x:Name="bottomDockPanel" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom" Background="DarkGray">
+        <DockPanel x:Name="bottomDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Frame x:Name="InfoLinePage" Source="..\PageInfoLine\PageInfoLine.xaml"/>
             </Border>

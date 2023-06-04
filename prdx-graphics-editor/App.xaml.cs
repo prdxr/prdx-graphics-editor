@@ -13,5 +13,13 @@ namespace prdx_graphics_editor
     /// </summary>
     public partial class App : Application
     {
+        private ResourceDictionary themeDictionary => Resources.MergedDictionaries[0];
+
+        public App()
+        {
+            InitializeComponent();
+            
+            themeDictionary.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("modules/utils/StylesDictionary.xaml", UriKind.Relative) });
+        }
     }
 }

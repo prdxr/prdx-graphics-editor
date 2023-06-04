@@ -33,26 +33,6 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             textboxHexInput.Text = Globals.applicationSettings.colorPickerDefaultColor;
             PrepareGrid();
             UpdateColors();
-
-            Background = Globals.colorAccent1;
-
-            labelCurrentColor.Foreground = Globals.colorTextBright;
-            labelHexInput.Foreground = Globals.colorTextBright;
-            labelRgbField.Foreground = Globals.colorTextBright;
-            labelR.Foreground = Globals.colorTextBright;
-            labelG.Foreground = Globals.colorTextBright;
-            labelB.Foreground = Globals.colorTextBright;
-
-            textboxHexInput.Background = Globals.colorAccent1;
-            textboxHexInput.Foreground = Globals.colorTextBright;
-            textboxHexSign.Background = Globals.colorAccent2;
-            textboxHexSign.Foreground = Globals.colorTextBright;
-            textboxInputR.Background = Globals.colorAccent1;
-            textboxInputR.Foreground = Globals.colorTextBright;
-            textboxInputG.Background = Globals.colorAccent1;
-            textboxInputG.Foreground = Globals.colorTextBright;
-            textboxInputB.Background = Globals.colorAccent1;
-            textboxInputB.Foreground = Globals.colorTextBright;
         }
 
         public Color? GetColor()
@@ -138,7 +118,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             TextBox trueSender = sender as TextBox;
             if (trueSender.Text.Length == 6)
             {
-                if (UtilityFunctions.CheckInputValidity(trueSender, allowedHex, Globals.colorAccent1))
+                if (UtilityFunctions.CheckInputValidity(trueSender, allowedHex, Globals.appcolorAccent1))
                 {
                     color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
                     UpdateColors();
@@ -146,7 +126,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             }
             else
             {
-                trueSender.Background = Globals.colorAccent1;
+                trueSender.Background = Globals.appcolorAccent1;
             }
         }
 
@@ -158,7 +138,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             {
                 return;
             }
-            else if (trueSender.Text.Length == 0 || !UtilityFunctions.CheckInputValidity(trueSender, allowedRgb, Globals.colorAccent1) || 
+            else if (trueSender.Text.Length == 0 || !UtilityFunctions.CheckInputValidity(trueSender, allowedRgb, Globals.appcolorAccent1) || 
                 Convert.ToInt32(trueSender.Text) > 255 || Convert.ToInt32(trueSender.Text) < 0)
             {
                 trueSender.Background = Brushes.DarkRed;
@@ -171,7 +151,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
                 color = Color.FromRgb(Convert.ToByte(textboxInputR.Text), Convert.ToByte(textboxInputG.Text), Convert.ToByte(textboxInputB.Text));
                 UpdateColors();
                 Globals.windowColorPickerRef.ButtonApply.IsEnabled = true;
-                trueSender.Background = Globals.colorAccent1;
+                trueSender.Background = Globals.appcolorAccent1;
             }
         }
     }

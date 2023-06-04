@@ -24,12 +24,6 @@ namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
         public WindowColorPicker()
         {
             InitializeComponent();
-            Background = Globals.colorAccent2;
-
-            ButtonApply.Background = Globals.colorAccent1;
-            ButtonApply.Foreground = Globals.colorTextBright;
-            ButtonCancel.Background = Globals.colorAccent1;
-            ButtonCancel.Foreground = Globals.colorTextBright;
 
             Globals.windowColorPickerRef = this;
         }
@@ -52,7 +46,7 @@ namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
 
         private void OnMouseLeaveStyle(object sender, MouseEventArgs e)
         {
-            (sender as Button).Foreground = Globals.colorTextBright;
+            (sender as Button).Foreground = Globals.appcolorText;
         }
     }
 }

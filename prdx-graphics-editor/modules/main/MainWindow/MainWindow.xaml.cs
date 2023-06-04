@@ -30,15 +30,6 @@ namespace prdx_graphics_editor
             FrameCanvas.Content = new PageCanvas();
             FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
-            mainMenu.Background = Globals.colorAccent2;
-            mainMenuFile.Foreground = Globals.colorTextBright;
-            mainMenuEdit.Foreground = Globals.colorTextBright;
-            mainMenuSelect.Foreground = Globals.colorTextBright;
-            mainGrid.Background = Globals.colorAccent1;
-            leftDockPanel.Background = Globals.colorAccent2;
-            topDockPanel.Background = Globals.colorAccent2;
-            rightDockPanel.Background = Globals.colorAccent2;
-            bottomDockPanel.Background = Globals.colorAccent2;
 
             //var setter = (topDockPanel.Resources["MenuStyle"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Property == MenuItem.BackgroundProperty);
             //setter.Value = Globals.colorAccent1;

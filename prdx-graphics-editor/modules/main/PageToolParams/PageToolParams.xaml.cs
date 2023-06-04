@@ -27,28 +27,6 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         public PageToolParams()
         {
             InitializeComponent();
-            mainLabel.Foreground = Globals.colorTextBright;
-            paramGrid.Background = Globals.colorAccent2;
-
-            labelBrushThickness.Foreground = Globals.colorTextBright;
-            labelBrushThickness.Background = Brushes.Transparent;
-            textboxBrushThickness.Foreground = Globals.colorTextBright;
-            textboxBrushThickness.Background = Globals.colorAccent1;
-
-            labelBorderThickness.Foreground = Globals.colorTextBright;
-            labelBorderThickness.Background = Brushes.Transparent;
-            textboxBorderThickness.Foreground = Globals.colorTextBright;
-            textboxBorderThickness.Background = Globals.colorAccent1;
-
-            labelEnableBorder.Foreground = Globals.colorTextBright;
-            labelEnableBorder.Background = Brushes.Transparent;
-            
-            labelEnableFill.Foreground = Globals.colorTextBright;
-            labelEnableFill.Background = Brushes.Transparent;
-            
-            labelEnableBoth.Foreground = Globals.colorTextBright;
-            labelEnableBoth.Background = Brushes.Transparent;
-
             GetParamsData();
         }
 
@@ -84,7 +62,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         {
             TextBox trueSender = sender as TextBox;
 
-            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.colorAccent1))
+            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1))
             {
                 int newSize = Convert.ToInt32((sender as TextBox).Text);
 
@@ -101,7 +79,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
                 return;
             }
 
-            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.colorAccent1))
+            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1))
             {
                 int newSize = Convert.ToInt32((sender as TextBox).Text);
                 Globals.applicationSettings.borderSize = newSize;

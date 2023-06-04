@@ -23,19 +23,19 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="mainLabel" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">История изменений</Label>
+        <Label x:Name="mainLabel" Style="{StaticResource StyleDarkNoBackground}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">История изменений</Label>
         <Grid HorizontalAlignment="Stretch" Grid.Row="0" Height="50" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="buttonUndo" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Отменить последнее действие" Command="{StaticResource UndoAction}">
+            <Button x:Name="buttonUndo" Style="{StaticResource StyleDarkButton1}" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Отменить последнее действие" Command="{StaticResource UndoAction}">
                 <Image Margin="2" Stretch="Uniform" Source="/modules/main/PageTools/icons/undo.png"></Image>
             </Button>
-            <Button x:Name="buttonRedo" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Восстановить последнее действие" Command="{StaticResource RedoAction}">
+            <Button x:Name="buttonRedo" Style="{StaticResource StyleDarkButton1}" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ToolTip="Восстановить последнее действие" Command="{StaticResource RedoAction}">
                 <Image Margin="2" Stretch="Uniform" Source="/modules/main/PageTools/icons/redo.png"></Image>
             </Button>
         </Grid>
-        <ListView FontSize="16" x:Name="HistoryListView" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent" PreviewMouseDoubleClick="GoToSelectedAction"/>
+        <ListView Style="{StaticResource StyleDark1}" FontSize="16" x:Name="HistoryListView" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent" PreviewMouseDoubleClick="GoToSelectedAction"/>
     </Grid>
 </Page>

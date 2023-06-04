@@ -58,9 +58,9 @@ namespace prdx_graphics_editor.modules.utils
         public static Color? changingColor;
         public static Stack<(Shape, string, Point)> changeHistoryBefore = new Stack<(Shape, string, Point)>();
         public static Stack<(Shape, string, Point)> changeHistoryAfter = new Stack<(Shape, string, Point)>();
-        public static SolidColorBrush colorAccent1 = new SolidColorBrush(applicationSettings.applicationTheme[0]);
-        public static SolidColorBrush colorAccent2 = new SolidColorBrush(applicationSettings.applicationTheme[1]);
-        public static SolidColorBrush colorTextBright = new SolidColorBrush(applicationSettings.applicationTheme[2]);
+        public static SolidColorBrush appcolorAccent1 = new SolidColorBrush(applicationSettings.applicationTheme[0]);
+        public static SolidColorBrush appcolorAccent2 = new SolidColorBrush(applicationSettings.applicationTheme[1]);
+        public static SolidColorBrush appcolorText = new SolidColorBrush(applicationSettings.applicationTheme[2]);
         public static SolidColorBrush colorTextDim = new SolidColorBrush(applicationSettings.applicationTheme[3]);
     }
 }

@@ -29,10 +29,6 @@ namespace prdx_graphics_editor.modules.main
         {
             InitializeComponent();
             Globals.pageHistoryRef = this;
-            mainLabel.Foreground = Globals.colorTextBright;
-            buttonUndo.Background = Globals.colorAccent1;
-            buttonRedo.Background = Globals.colorAccent1;
-            HistoryListView.Foreground = Globals.colorTextBright;
         }
 
         ObservableCollection<(Shape, string, Point)> historyList = new ObservableCollection<(Shape, string, Point)>();
