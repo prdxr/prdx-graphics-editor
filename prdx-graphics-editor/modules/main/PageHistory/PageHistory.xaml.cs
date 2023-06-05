@@ -48,12 +48,12 @@ namespace prdx_graphics_editor.modules.main
         }
         public void ShowHistory()
         {
-            List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>();
+            List<(object, string, Point)> mergeList = new List<(object, string, Point)>();
             ObservableCollection<string> historyList = new ObservableCollection<string>();
             mergeList = mergeList.Concat(Globals.changeHistoryAfter.Reverse()).ToList();
             mergeList = mergeList.Concat(Globals.changeHistoryBefore).ToList();
             
-            foreach ((Shape, string, Point) element in mergeList)
+            foreach ((object, string, Point) element in mergeList)
             {
                 historyList.Add(element.Item2);
             }

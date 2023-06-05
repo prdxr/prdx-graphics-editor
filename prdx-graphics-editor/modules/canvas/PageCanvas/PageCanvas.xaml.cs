@@ -224,6 +224,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             Canvas deserializedCanvas = XamlReader.Parse(mystrXAML) as Canvas;
 
+            mainCanvas.Width = deserializedCanvas.Width;
+            mainCanvas.Height = deserializedCanvas.Height;
+
             mainCanvas.Children.Clear();
             var childrenCopy = deserializedCanvas.Children.Cast<UIElement>().ToList();
             
@@ -683,7 +686,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void ExportProject(string exportType, string filename)
         {
-            Globals.currentFile = filename;
             selectionRectangle.Visibility = Visibility.Hidden;
             Rect rect = new Rect(0, 0, mainCanvas.ActualWidth, mainCanvas.ActualHeight);
 
@@ -763,6 +765,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 OnFiguresChanged.Invoke(this, null);
             }
         }
+        public void AddNewFigure(Image image, string operationDescription, Point position, bool isRedo = false)
+        {
+            mainCanvas.Children.Add(image);
+
+            Globals.changeHistoryBefore.Push((image, operationDescription, position));
+
+            if (!isRedo)
+            {
+                Globals.changeHistoryAfter.Clear();
+            }
+            if (OnFiguresChanged != null)
+            {
+                OnFiguresChanged.Invoke(this, null);
+            }
+        }
 
         public void RemoveLastFigure()
         {
@@ -770,12 +787,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 return;
             }
-            (Shape figure, string operationDescription, Point position) = Globals.changeHistoryBefore.Pop();
+            (object figure, string operationDescription, Point position) = Globals.changeHistoryBefore.Pop();
 
             selectionRectangle.Width = 0;
             selectionRectangle.Height = 0;
 
-            mainCanvas.Children.Remove(figure);
+            if (figure is Shape)
+            {
+                mainCanvas.Children.Remove(figure as Shape);
+            }
+            else if (figure is Image)
+            {
+                mainCanvas.Children.Remove(figure as Image);
+            }
             Globals.changeHistoryAfter.Push((figure, operationDescription, position));
 
             if (OnFiguresChanged != null)
@@ -789,9 +813,16 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 return;
             }
-            (Shape figure, string operationDescription, Point position) = Globals.changeHistoryAfter.Pop();
-            lastShape = figure;
-            AddNewFigure(figure, operationDescription, position, true);
+            (object figure, string operationDescription, Point position) = Globals.changeHistoryAfter.Pop();
+            if (figure is Shape)
+            {
+                lastShape = figure as Shape;
+                AddNewFigure(lastShape, operationDescription, position, true);
+            }
+            else if (figure is Image)
+            {
+                AddNewFigure(figure as Image, operationDescription, position, true);
+            }
 
             if (OnFiguresChanged != null)
             {
@@ -866,8 +897,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Canvas.SetTop(image, 0);
                     image.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
                     image.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
-                    mainCanvas.Children.Add(image);
                     image.Source = imageSource;
+                    AddNewFigure(image, "Вставка", new Point(0, 0));
                 }
                 catch { }
             }
