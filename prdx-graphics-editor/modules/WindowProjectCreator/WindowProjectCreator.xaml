@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.WindowProjectCreator"
         mc:Ignorable="d" Icon="../../../chili.ico"
+        ResizeMode="NoResize"
         Title="Создание проекта" Height="300" Width="500">
     <DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">

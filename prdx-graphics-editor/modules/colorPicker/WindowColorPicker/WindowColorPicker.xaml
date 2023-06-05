@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.colorPicker.WindowColorPicker"
         mc:Ignorable="d" Icon="../../../chili.ico"
+        ResizeMode="NoResize"
         Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300">
     <Grid Style="{StaticResource StyleContainersBright}">
         <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
