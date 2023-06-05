@@ -128,5 +128,26 @@ namespace prdx_graphics_editor
         {
             Actions.SwitchColors(sender, e);
         }
+        private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (leftDockPanel.Width == 0)
+            {
+                topDockPanel.Height = 20;
+                leftDockPanel.Width = 300;
+                rightDockPanel.Width = 300;
+                bottomDockPanel.Height = 50;
+
+                CanvasScroll.Margin = new Thickness(350, 100, 350, 100);
+            }
+            else
+            {
+                topDockPanel.Height = 0;
+                leftDockPanel.Width = 0;
+                rightDockPanel.Width = 0;
+                bottomDockPanel.Height = 0;
+
+                CanvasScroll.Margin = new Thickness(20, 20, 20, 20);
+            }
+        }
     }
 }

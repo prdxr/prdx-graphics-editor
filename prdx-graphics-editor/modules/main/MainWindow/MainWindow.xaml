@@ -24,6 +24,7 @@
         <RoutedUICommand x:Key="Cut" Text="Вырезать"/>
         <RoutedUICommand x:Key="Copy" Text="Копировать"/>
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
+        <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
         
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
         <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
@@ -44,6 +45,7 @@
         <CommandBinding Command="{StaticResource Cut}" Executed="Cut"/>
         <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
         <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
+        <CommandBinding Command="{StaticResource TogglePanels}" Executed="TogglePanels"/>
 
         <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
         <CommandBinding Command="{StaticResource SwapColors}" Executed="SwitchColors"/>
@@ -64,6 +66,7 @@
         <KeyBinding Key="X" Modifiers="Ctrl" Command="{StaticResource Cut}"/>
         <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
+        <KeyBinding Key="Tab" Command="{StaticResource TogglePanels}"/>
 
         <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
         <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
@@ -79,9 +82,9 @@
     </Window.InputBindings>
 
     <Grid x:Name="mainGrid" Style="{StaticResource StyleContainersDark}">
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="350,100"
+        <ScrollViewer x:Name="CanvasScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       CanContentScroll="True">
-            <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
+            <Frame x:Name="FrameCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True"/>
         </ScrollViewer>
         <!--leftDockPanel background: accent2-->
         <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
