@@ -54,6 +54,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         Point handOffset;
         bool isPlacingFigure = false;
         double[] selectionDashes = { 10, 5 };
+        bool mousePressedOnCanvas = false;
 
         // Координаты точек области прямоугольного выделения
         (Point, Point) selectionPoints;
@@ -144,6 +145,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 {
                     Point cursor = e.GetPosition(mainCanvas);
                     handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+                }
+
+                if (sender == selectionRectangle && activeTool == CanvasToolType.ToolFill)
+                {
+                    FillSelection(sender);
                 }
             }
         }
@@ -266,36 +272,28 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         public void FillSelection(object sender)
         {
-            if (sender is Shape)
-            {
-                Shape shape = sender as Shape;
-                shape.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                return;
-            }
             if (selectionRectangle.Width > 0 && selectionRectangle.Height > 0)
             {
                 Rectangle rectangle = new Rectangle();
                 rectangle.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                 rectangle.Width = selectionRectangle.Width;
                 rectangle.Height = selectionRectangle.Height;
+                selectionRectangle.Width = 0;
+                selectionRectangle.Height = 0;
 
                 double x = Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X);
                 double y = Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y);
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 AddNewFigure(rectangle, currentToolDescription, new Point(x, y));
             }
-            else
-            {
-                string boxCaption = "Ошибка инструмента fill";
-                string boxText = "Инструмент fill нельзя применить без активного выделения. Сначала воспользуйтесь инструментом select";
-                MessageBoxButton boxButtons = MessageBoxButton.OK;
-                MessageBoxImage boxIcon = MessageBoxImage.Warning;
-                MessageBoxResult boxResult = MessageBox.Show(boxText, boxCaption, boxButtons, boxIcon);
-            }
         }
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
+            if (!mousePressedOnCanvas)
+            {
+                return;
+            }
             Point newPosition = e.GetPosition(mainCanvas);
             Globals.pageInfoLineRef.SetPointerValues(newPosition);
 
@@ -433,6 +431,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            mousePressedOnCanvas = true;
             if (activeTool >= CanvasToolType.ToolHand)
             {
                 if (sender is Canvas)
@@ -545,10 +544,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
             }
 
-            if (this.activeTool == CanvasToolType.ToolFill)
-            {
-                FillSelection(sender);
-            }
         }
 
         void CheckFigureSettings(Shape targetShape, bool arrowCase = false)
@@ -588,6 +583,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (!mousePressedOnCanvas)
+            {
+                return;
+            }
+            mousePressedOnCanvas = false;
             string currentToolDescription = CanvasToolDescription[(int)activeTool];
 
             if (activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolHand)
@@ -671,7 +671,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 this.isEmpty = false;
             }
-            if (activeTool < CanvasToolType.ToolHand && activeTool != CanvasToolType.ToolSelect)
+            if (activeTool < CanvasToolType.ToolHand && activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolFill)
             {
                 lastShape.MouseDown += OnFigureMouseDown;
                 lastShape.MouseUp += OnFigureMouseUp;

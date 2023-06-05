@@ -31,6 +31,13 @@ namespace prdx_graphics_editor
             FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
 
+            topDockPanel.Height = 20;
+            leftDockPanel.Width = 300;
+            rightDockPanel.Width = 300;
+            bottomDockPanel.Height = 50;
+
+            CanvasScroll.Margin = new Thickness(350, 100, 350, 100);
+
             //var setter = (topDockPanel.Resources["MenuStyle"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Property == MenuItem.BackgroundProperty);
             //setter.Value = Globals.colorAccent1;
 
