@@ -38,34 +38,8 @@ namespace prdx_graphics_editor
 
             CanvasScroll.Margin = new Thickness(350, 100, 350, 100);
 
-            //var setter = (topDockPanel.Resources["MenuStyle"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Property == MenuItem.BackgroundProperty);
-            //setter.Value = Globals.colorAccent1;
-
-            //foreach (var menuItem in topDockPanel.Children.OfType<MenuItem>())
-            //{
-            //    if (menuItem == null)
-            //    {
-            //        menuItem.Style = topDockPanel.Resources["MenuStyle"] as Style;
-            //    }
-            //}
-
-            ////var setter = topDockPanel.Resources;
-            ////["Style"] as Style).Setters.OfType<Setter>().FirstOrDefault(s => s.Value == MenuItem.BackgroundProperty) as Setter;
-            //if (setter != null)
-            //{
-            //    setter.Value = Globals.colorTextBright;
-            //}
         }
-
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Color? color = Actions.PickColor();
-        //    if (color != null)
-        //    {
-        //        (sender as Button).Background = new SolidColorBrush(color.GetValueOrDefault());
-        //    }
-        //}
-
+        
         private void CreateProject(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.CreateProject();
@@ -134,6 +108,10 @@ namespace prdx_graphics_editor
         private void SwitchColors(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.SwitchColors(sender, e);
+        }
+        private void ShowHelp(object sender, ExecutedRoutedEventArgs e)
+        {
+            Actions.ShowHelp();
         }
         private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
         {

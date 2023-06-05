@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Input;
 using prdx_graphics_editor.modules.canvas;
 using System.Windows.Controls;
+using prdx_graphics_editor.modules.WindowHelp;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -232,5 +233,13 @@ namespace prdx_graphics_editor.modules.actions
             WindowCanvasSize.ChangeCanvasSize(canvas);
         }
 
+        public static void ShowHelp()
+        {
+            WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            window.ShowDialog();
+        }
     }
 }

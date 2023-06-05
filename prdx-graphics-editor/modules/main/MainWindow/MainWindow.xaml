@@ -25,7 +25,7 @@
         <RoutedUICommand x:Key="Copy" Text="Копировать"/>
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
         <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
-        
+        <RoutedUICommand x:Key="ShowHelp" Text="Вызвать справку"/>
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
         <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
     </Window.Resources>
@@ -46,7 +46,7 @@
         <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
         <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
         <CommandBinding Command="{StaticResource TogglePanels}" Executed="TogglePanels"/>
-
+        <CommandBinding Command="{StaticResource ShowHelp}" Executed="ShowHelp"/>
         <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
         <CommandBinding Command="{StaticResource SwapColors}" Executed="SwitchColors"/>
     </Window.CommandBindings>
@@ -67,6 +67,7 @@
         <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
         <KeyBinding Key="Tab" Command="{StaticResource TogglePanels}"/>
+        <KeyBinding Key="F1" Command="{StaticResource ShowHelp}"/>
 
         <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
         <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
@@ -129,6 +130,9 @@
                     <MenuItem x:Name="mainMenuSelect" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}" InputGestureText="ctrl+A"/>
                         <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}" InputGestureText="ctrl+shift+A"/>
+                    </MenuItem>
+                    <MenuItem x:Name="mainMenuHelp" Style="{StaticResource StyleDark2}" Header="Справка" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Header="Вызвать справку" Command="{StaticResource ShowHelp}" InputGestureText="F1"/>
                     </MenuItem>
                 </Menu>
             </Border>
