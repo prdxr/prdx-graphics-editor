@@ -17,7 +17,6 @@
                 MouseLeftButtonDown="OnCanvasMouseDown" 
                 MouseLeftButtonUp="OnCanvasMouseUp"
                 MouseMove="OnCanvasMouseMove"
-                Cursor="Cross"
                 ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
                 MouseLeave="OnMouseLeave">

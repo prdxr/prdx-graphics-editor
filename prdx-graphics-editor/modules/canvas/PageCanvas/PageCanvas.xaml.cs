@@ -19,7 +19,7 @@ using System.Xml;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using prdx_graphics_editor.modules.actions;
-
+using System.Runtime.Remoting.Channels;
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
 {
@@ -71,6 +71,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         MouseButtonEventHandler OnFigureMouseDown;
         MouseButtonEventHandler OnFigureMouseUp;
+        MouseEventHandler OnFigureMouseEnter;
+        MouseEventHandler OnFigureMouseLeave;
 
         public PageCanvas()
         {
@@ -79,6 +81,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             isEmpty = true;
             activeTool = Globals.applicationSettings.activeTool;
 
+            // Инициализация обработчиков событий мыши для фигур
+            OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
+            OnFigureMouseUp = new MouseButtonEventHandler(FigureMouseUp);
+            OnFigureMouseEnter = new MouseEventHandler(FigureMouseEnter);
+            OnFigureMouseLeave = new MouseEventHandler(FigureMouseLeave);
+
             // Инициализация прямоугольника выделения
             selectionPoints = (new Point(0, 0), new Point(0, 0));
             selectionRectangle = new Rectangle();
@@ -86,8 +94,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
 
-            selectionRectangle.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
-            selectionRectangle.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+            selectionRectangle.MouseDown += OnFigureMouseDown;
+            selectionRectangle.MouseUp += OnFigureMouseUp;
+            selectionRectangle.MouseEnter += OnFigureMouseEnter;
+            selectionRectangle.MouseLeave += OnFigureMouseLeave;
 
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
@@ -116,9 +126,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Вращение",
                 "Масштаб"
             };
-
-            OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
-            OnFigureMouseUp = new MouseButtonEventHandler(FigureMouseUp);
+            SwitchCursor();
         }
 
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
@@ -137,6 +145,50 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Point cursor = e.GetPosition(mainCanvas);
                     handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
                 }
+            }
+        }
+
+        private void FigureMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (activeTool == CanvasToolType.ToolFill && sender == selectionRectangle)
+            {
+                mainCanvas.Cursor = Cursors.Cross;
+            }
+            else if (activeTool >= CanvasToolType.ToolHand)
+            {
+                mainCanvas.Cursor = Cursors.Hand;
+            }
+        }
+        private void FigureMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (activeTool == CanvasToolType.ToolFill && sender == selectionRectangle)
+            {
+                mainCanvas.Cursor = Cursors.No;
+                return;
+            }
+            else if (activeTool >= CanvasToolType.ToolHand)
+            {
+                mainCanvas.Cursor = Cursors.Arrow;
+            }
+        }
+
+        private void SwitchCursor()
+        {
+            if (activeTool <= CanvasToolType.ToolEraser)
+            {
+                mainCanvas.Cursor = Cursors.Pen;
+            }
+            else if (activeTool == CanvasToolType.ToolFill)
+            {
+                mainCanvas.Cursor = Cursors.No;
+            }
+            else if (activeTool <= CanvasToolType.ToolArrow)
+            {
+                mainCanvas.Cursor = Cursors.Cross;
+            }
+            else
+            {
+                mainCanvas.Cursor = Cursors.Arrow;
             }
         }
 
@@ -183,13 +235,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void SetActiveTool(CanvasToolType toolType)
         {
             activeTool = toolType;
+            SwitchCursor();
             Globals.applicationSettings.activeTool = activeTool;
 
-            if (activeTool == CanvasToolType.ToolHand)
-            {
-                mainCanvas.Cursor = Cursors.Hand;
-            }
-            else if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
+            if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
                 selectionRectangle.Height = 0;
@@ -622,10 +671,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 this.isEmpty = false;
             }
-            if (activeTool < CanvasToolType.ToolHand)
+            if (activeTool < CanvasToolType.ToolHand && activeTool != CanvasToolType.ToolSelect)
             {
                 lastShape.MouseDown += OnFigureMouseDown;
                 lastShape.MouseUp += OnFigureMouseUp;
+                lastShape.MouseEnter += OnFigureMouseEnter;
+                lastShape.MouseLeave += OnFigureMouseLeave;
             }
             else if (!(sender is Canvas))
             {
