@@ -901,6 +901,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     AddNewFigure(image, "Вставка", new Point(0, 0));
                 }
                 catch { }
+                return;
             }
             BitmapSource img = Clipboard.GetImage();
             if (img != null)
@@ -923,6 +924,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             else
             {
+                selectionRectangle.Visibility = Visibility.Hidden;
                 Rect rect = new Rect(0, 0, mainCanvas.ActualWidth, mainCanvas.ActualHeight);
 
                 RenderTargetBitmap renderBmp = new RenderTargetBitmap(
@@ -945,6 +947,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 CroppedBitmap crop = new CroppedBitmap(renderBmp, rect2);
 
                 Clipboard.SetImage(crop);
+                selectionRectangle.Visibility = Visibility.Visible;
             }
         }
         public void CutToClipboard()

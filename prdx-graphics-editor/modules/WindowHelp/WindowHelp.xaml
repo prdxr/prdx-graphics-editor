@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.WindowHelp"
         ResizeMode="NoResize"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Icon="../../../chili.ico"
         Title="Справка" Height="600" Width="900">
     <Grid Style="{StaticResource StyleContainersBright}">
         <Grid Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="275"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="10">
                 <DockPanel>

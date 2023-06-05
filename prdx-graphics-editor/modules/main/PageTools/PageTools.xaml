@@ -90,15 +90,7 @@
             </Grid>
             <Grid x:Name="colorGrid" Style="{StaticResource StyleContainersDark}" DockPanel.Dock="Top" Width="125" Height="50" >
                 <Border Width="35" Height="35" BorderBrush="#444" BorderThickness="1" Margin="0,10,45,5">
-                    <Button x:Name="buttonBackgroundColor" BorderBrush="Gray" Click="ChangeBackgroundColor">
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Foreground" Value="Transparent"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button>
+                    <Button x:Name="buttonBackgroundColor" BorderBrush="Gray" Click="ChangeBackgroundColor"/>
                 </Border>
                 <Border Width="35" Height="35" BorderBrush="#444" BorderThickness="1" Margin="10,4,80,10">
                     <Button x:Name="buttonForegroundColor" BorderBrush="Gray" Click="ChangeForegroundColor"></Button>
