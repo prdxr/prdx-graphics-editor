@@ -227,6 +227,10 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.PasteClipboard();
         }
+        public static void Copy()
+        {
+            Globals.pageCanvasRef.CopyToClipboard();
+        }
 
         public static void ChangeCanvasSize(Canvas canvas)
         {

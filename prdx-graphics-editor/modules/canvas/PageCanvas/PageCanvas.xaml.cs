@@ -902,11 +902,50 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
                 catch { }
             }
+            BitmapSource img = Clipboard.GetImage();
+            if (img != null)
+            {
+                Image image = new Image();
+                Canvas.SetLeft(image, 0);
+                Canvas.SetTop(image, 0);
+                image.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
+                image.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+                image.Source = img;
+                AddNewFigure(image, "Вставка", new Point(0, 0));
+            }
         }
 
         public void CopyToClipboard()
         {
-            //copy to clipboard
+            if (selectionRectangle.Width <= 0 && selectionRectangle.Height <= 0)
+            {
+                return;
+            }
+            else
+            {
+                Rect rect = new Rect(0, 0, mainCanvas.ActualWidth, mainCanvas.ActualHeight);
+
+                RenderTargetBitmap renderBmp = new RenderTargetBitmap(
+                    (int)rect.Right,
+                    (int)rect.Bottom,
+                    96d,
+                    96d,
+                    PixelFormats.Default);
+
+                DrawingVisual dv = new DrawingVisual();
+                using (DrawingContext ctx = dv.RenderOpen())
+                {
+                    VisualBrush vb = new VisualBrush(mainCanvas);
+                    ctx.DrawRectangle(vb, null,
+                        new Rect(new Point(mainCanvas.Margin.Left, mainCanvas.Margin.Top), new Point(mainCanvas.ActualWidth + mainCanvas.Margin.Left, mainCanvas.ActualHeight + mainCanvas.Margin.Top)));
+                }
+                renderBmp.Render(dv);
+                Int32Rect rect2 = new Int32Rect(Convert.ToInt32(Canvas.GetLeft(selectionRectangle)), Convert.ToInt32(Canvas.GetTop(selectionRectangle)),
+                                          Convert.ToInt32(selectionRectangle.Width), Convert.ToInt32(selectionRectangle.Height));
+                CroppedBitmap crop = new CroppedBitmap(renderBmp, rect2);
+
+                Clipboard.SetImage(crop);
+            }
         }
         public void CutToClipboard()
         {

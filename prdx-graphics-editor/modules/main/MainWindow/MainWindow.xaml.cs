@@ -90,7 +90,7 @@ namespace prdx_graphics_editor
         }
         private void Copy(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.Copy();
+            Actions.Copy();
         }
         private void Paste(object sender, ExecutedRoutedEventArgs e)
         {
