@@ -290,14 +290,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
-            if (!mousePressedOnCanvas)
-            {
-                return;
-            }
             Point newPosition = e.GetPosition(mainCanvas);
             Globals.pageInfoLineRef.SetPointerValues(newPosition);
-
-            if (e.LeftButton == MouseButtonState.Released)
+            if (!mousePressedOnCanvas || e.LeftButton == MouseButtonState.Released)
             {
                 return;
             }

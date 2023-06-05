@@ -7,22 +7,22 @@
         mc:Ignorable="d" Icon="../../../chili.ico"
         ResizeMode="NoResize"
         Title="Создание проекта" Height="300" Width="500">
-    <DockPanel>
+    <DockPanel Style="{StaticResource StyleContainersBright}">
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-            <Label x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>
-            <TextBox x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1920"/>
+            <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>
+            <TextBox Style="{StaticResource StyleDark2}" x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1920"/>
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-            <Label x:Name="labelHeight" HorizontalAlignment="Left" Content="Ширина (px)"/>
-            <TextBox x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1080"/>
+            <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelHeight" HorizontalAlignment="Left" Content="Ширина (px)"/>
+            <TextBox Style="{StaticResource StyleDark2}" x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1080"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" Width="300">
-            <TextBox x:Name="textBoxPath" DockPanel.Dock="Left" Width="250" ScrollViewer.CanContentScroll="True" TextWrapping="NoWrap" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
-            <Button x:Name="buttonChangePath" Width="50" Content="Обзор" Click="ChangeProjectPath"/>
+            <TextBox Style="{StaticResource StyleDark2}" x:Name="textBoxPath" DockPanel.Dock="Left" Width="250" ScrollViewer.CanContentScroll="True" TextWrapping="NoWrap" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+            <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonChangePath" Width="50" Content="Обзор" Click="ChangeProjectPath"/>
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Bottom">
-            <Button x:Name="buttonApply" Width="125" Content="Создать проект" Click="CreateProject"/>
-            <Button x:Name="buttonCancel" Content="Отмена" Click="CancelProjectCreation"/>
+            <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonApply" Width="125" Content="Создать проект" Click="CreateProject"/>
+            <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Content="Отмена" Click="CancelProjectCreation"/>
         </DockPanel>
     </DockPanel>
 </Window>
