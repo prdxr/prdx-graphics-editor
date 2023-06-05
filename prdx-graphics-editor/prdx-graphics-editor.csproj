@@ -153,6 +153,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="modules\main\PageZoom\PageZoom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="modules\utils\StylesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,6 +167,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="modules\main\PageZoom\PageZoom.xaml.cs">
+      <DependentUpon>PageZoom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="modules\utils\UtilityFunctions.cs" />
     <Compile Include="modules\WindowProjectCreator\WindowProjectCreator.xaml.cs">
       <DependentUpon>WindowProjectCreator.xaml</DependentUpon>

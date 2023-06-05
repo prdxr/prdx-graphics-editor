@@ -232,5 +232,20 @@ namespace prdx_graphics_editor.modules.actions
             WindowCanvasSize.ChangeCanvasSize(canvas);
         }
 
+        public static void CanvasZoomPlus()
+        {
+            Globals.pageCanvasRef.incCanvasZoom();
+        }
+
+        public static void CanvasZoomMinus()
+        {
+            Globals.pageCanvasRef.decCanvasZoom();
+        }
+
+        public static void CanvasZoomActual()
+        {
+            Globals.pageCanvasRef.setCanvasZoom(100);
+        }
+
     }
 }
