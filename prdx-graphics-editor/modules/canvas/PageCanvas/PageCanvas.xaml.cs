@@ -19,6 +19,7 @@ using System.Xml;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using prdx_graphics_editor.modules.actions;
+using System.Diagnostics;
 using System.Runtime.Remoting.Channels;
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
@@ -50,6 +51,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         Rectangle selectionRectangle;
         public bool isEmpty;
         public event EventHandler OnFiguresChanged;
+        public event EventHandler OnZoomChanged;
         string[] CanvasToolDescription;
         Point handOffset;
         bool isPlacingFigure = false;
@@ -64,11 +66,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public Shape lastShape;
         public Shape selectedShape;
 
+        // Константы, определяющие масштабирование холста
+        const int ZOOM_PERCENT_STEP = 25;           // шаг изменения масштаба
+        const int ZOOM_PERCENT_MIN = 25;            // минимальный масштаб
+        const int ZOOM_PERCENT_MAX = 500;           // максимальный масштаб
+
         // Константы, определяющие форму и размер стрелок
         const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
         const double ARROW_BODY_LENGTH_MIN = 5;     // минимальная длина тела стрелки
         const double ARROW_CAP_WIDTH = 60;          // ширина наконечника стрелки
         const double ARROW_CAP_LENGTH = 30;         // длина наконечника стрелки
+
+        double canvasZoom = 100;
+        ScaleTransform canvasScaleTransform = new ScaleTransform();
 
         MouseButtonEventHandler OnFigureMouseDown;
         MouseButtonEventHandler OnFigureMouseUp;
@@ -104,7 +114,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Canvas.SetTop(selectionRectangle, 0);
             Canvas.SetZIndex(selectionRectangle, 2);
             mainCanvas.Children.Add(selectionRectangle);
-            
+
+            mainCanvas.LayoutTransform = canvasScaleTransform;
+
             Globals.pageCanvasRef = this;
             Globals.currentFile = null;
             currentLine = null;
@@ -424,6 +436,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Point canvasPointer = e.GetPosition(this);
             canvasPointer.Y -= canvas.Margin.Top;
             canvasPointer.X -= canvas.Margin.Left;
+            canvasPointer.Y /= canvasZoom / 100;
+            canvasPointer.X /= canvasZoom / 100;
             return canvasPointer;
         }
 
@@ -855,33 +869,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             Globals.pageInfoLineRef.SetPointerValues(null);
         }
 
-
-
-
-
-
-        private Double zoomMax = 5;
-        private Double zoomMin = 0.5;
-        private Double zoomSpeed = 0.001;
-        private Double zoom = 1;
-        //private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    zoom += zoomSpeed * e.Delta; // Ajust zooming speed (e.Delta = Mouse spin value )
-        //    if (zoom < zoomMin) { zoom = zoomMin; } // Limit Min Scale
-        //    if (zoom > zoomMax) { zoom = zoomMax; } // Limit Max Scale
-
-        //    Point mousePos = e.GetPosition(mainCanvas);
-
-        //    if (zoom > 1)
-        //    {
-        //        mainCanvas.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y); // transform Canvas size from mouse position
-        //    }
-        //    else
-        //    {
-        //        mainCanvas.RenderTransform = new ScaleTransform(zoom, zoom); // transform Canvas size
-        //    }
-        //}
-
         public void PasteClipboard()
         {
             IDataObject myDataObject = Clipboard.GetDataObject();
@@ -964,6 +951,48 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         {
             Actions.ChangeCanvasSize(mainCanvas);
         }
+
+        public double getCanvasZoom()
+        {
+            return canvasZoom;
+        }
+
+        public void setCanvasZoom(double canvasZoom)
+        {
+            if (canvasZoom >= ZOOM_PERCENT_MIN && canvasZoom <= ZOOM_PERCENT_MAX) 
+            {
+                this.canvasZoom = canvasZoom;
+                canvasScaleTransform.ScaleX = canvasZoom / 100;
+                canvasScaleTransform.ScaleY = canvasZoom / 100;
+                OnZoomChanged.Invoke(this, null);
+            }
+        }
+
+        public void incCanvasZoom()
+        {
+            setCanvasZoom(canvasZoom + ZOOM_PERCENT_STEP);
+        }
+
+        public void decCanvasZoom()
+        {
+            setCanvasZoom(canvasZoom - ZOOM_PERCENT_STEP);
+        }
+
+        private void OnCanvasMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.GetKeyStates(Key.LeftCtrl) == KeyStates.Down || Keyboard.GetKeyStates(Key.RightCtrl) == KeyStates.Down) 
+            {
+                if (e.Delta > 0)
+                {
+                    incCanvasZoom();
+                }
+                else
+                {
+                    decCanvasZoom();
+                }
+            }
+        }
+
     }
 }
 

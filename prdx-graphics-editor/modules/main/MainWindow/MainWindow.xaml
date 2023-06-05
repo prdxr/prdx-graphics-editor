@@ -26,6 +26,7 @@
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
         <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
         <RoutedUICommand x:Key="ShowHelp" Text="Вызвать справку"/>
+
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
         <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
     </Window.Resources>
@@ -87,24 +88,28 @@
                       CanContentScroll="True">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
-        <!--leftDockPanel background: accent2-->
         <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="250"/>
                     <RowDefinition Height="250"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Frame Grid.Row="0" x:Name="ToolsPage" Source="..\PageTools\PageTools.xaml"/>
                 <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\PageToolParams\PageToolParams.xaml"/>
+                <Frame Grid.Row="2" x:Name="ZoomPage" Source="..\PageZoom\PageZoom.xaml"/>
             </Grid>
         </DockPanel>
-        <!--topDockPanel background: accent2-->
-        <DockPanel x:Name="topDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
+        <!--leftDockPanel background: accent2-->
+        <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
-                <Style x:Key="MenuStyle" TargetType="MenuItem">
+                <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
                     <Setter Property="Background" Value="black" />
-                </Style>                
+                </Style>
             </DockPanel.Resources>
+            <DockPanel.Style>
+                <StaticResource ResourceKey="StyleContainersBright"/>
+            </DockPanel.Style>
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Menu x:Name="mainMenu" Style="{StaticResource StyleDark2}" FlowDirection="LeftToRight" HorizontalAlignment="Left">
                     <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
@@ -137,11 +142,12 @@
                 </Menu>
             </Border>
         </DockPanel>
-
-        <!--rightDockPanel background: accent2-->
+        <!--topDockPanel background: accent2-->
         <DockPanel x:Name="rightDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
+
+        <!--rightDockPanel background: accent2-->
         <!--bottomDockPanel background: accent2-->
         <DockPanel x:Name="bottomDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
