@@ -121,7 +121,7 @@ namespace prdx_graphics_editor
 
         private void ShowHelp(object sender, ExecutedRoutedEventArgs e)
         {
-            Actions.ShowHelp(this);
+            Actions.ShowHelp();
         }
 
         private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
