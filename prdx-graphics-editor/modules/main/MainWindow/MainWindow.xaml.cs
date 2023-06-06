@@ -126,10 +126,10 @@ namespace prdx_graphics_editor
 
         private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
         {
-            if (DockPanelLeft.Width == 0)
+            if (DockPanelLeftScroll.Width == 0)
             {
                 DockPanelTop.Height = 20;
-                DockPanelLeft.Width = 300;
+                DockPanelLeftScroll.Width = 300;
                 DockPanelRight.Width = 300;
                 DockPanelBottom.Height = 50;
                 ScrollViewerCanvas.Margin = new Thickness(350, 100, 350, 100);
@@ -137,7 +137,7 @@ namespace prdx_graphics_editor
             else
             {
                 DockPanelTop.Height = 0;
-                DockPanelLeft.Width = 0;
+                DockPanelLeftScroll.Width = 0;
                 DockPanelRight.Width = 0;
                 DockPanelBottom.Height = 0;
                 ScrollViewerCanvas.Margin = new Thickness(20, 20, 20, 20);

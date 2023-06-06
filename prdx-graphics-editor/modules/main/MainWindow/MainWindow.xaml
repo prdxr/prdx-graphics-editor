@@ -80,7 +80,7 @@
         <KeyBinding Key="F1" Command="{StaticResource ShowHelp}"/>
         <KeyBinding Key="Plus" Modifiers="Ctrl" Command="{StaticResource ZoomIncrease}"/>
         <KeyBinding Key="Minus" Modifiers="Ctrl" Command="{StaticResource ZoomDecrease}"/>
-        <KeyBinding Key="NumPad0" Modifiers="Ctrl" Command="{StaticResource ZoomReset}"/>
+        <KeyBinding Key="D0" Modifiers="Ctrl" Command="{StaticResource ZoomReset}"/>
         <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
         <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
         <KeyBinding Key="E" Command="{StaticResource ToolHotkey}" CommandParameter="2"/>
@@ -126,12 +126,6 @@
                         <Separator/>
                         <MenuItem Foreground="Black" Command="{StaticResource CloseApplication}" InputGestureText="Ctrl+Q"/>
                     </MenuItem>
-                    <MenuItem x:Name="MenuItemView" Style="{StaticResource StyleDark2}" Header="Вид" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Command="{StaticResource ZoomIncrease}" InputGestureText="Ctrl+Плюс"/>
-                        <MenuItem Foreground="Black" Command="{StaticResource ZoomDecrease}" InputGestureText="Ctrl+Минус"/>
-                        <Separator/>
-                        <MenuItem Foreground="Black" Command="{StaticResource ZoomReset}" InputGestureText="Ctrl+Ноль"/>
-                    </MenuItem>
                     <MenuItem x:Name="MenuItemEdit" Style="{StaticResource StyleDark2}" Header="Правка" VerticalAlignment="Stretch">
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryUndo}" InputGestureText="Ctrl+Z"/>
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryRedo}" InputGestureText="Ctrl+Y"/>
@@ -140,16 +134,26 @@
                         <MenuItem Foreground="Black" Command="{StaticResource Copy}" InputGestureText="Ctrl+C"/>
                         <MenuItem Foreground="Black" Command="{StaticResource Paste}" InputGestureText="Ctrl+V"/>
                     </MenuItem>
+                    <MenuItem x:Name="MenuItemView" Style="{StaticResource StyleDark2}" Header="Вид" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomIncrease}" InputGestureText="Ctrl+Плюс"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomDecrease}" InputGestureText="Ctrl+Минус"/>
+                        <Separator/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomReset}" InputGestureText="Ctrl+Ноль"/>
+                    </MenuItem>
+                    <MenuItem x:Name="MenuItemSelection" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource SelectAll}" InputGestureText="Ctrl+A"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource SelectionReset}" InputGestureText="Ctrl+Shift+A"/>
+                    </MenuItem>
                     <MenuItem x:Name="mainMenuHelp" Style="{StaticResource StyleDark2}" Header="Справка" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Вызвать справку" Command="{StaticResource ShowHelp}" InputGestureText="F1"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ShowHelp}" InputGestureText="F1"/>
                     </MenuItem>
                 </Menu>
             </Border>
         </DockPanel>
 
         <!--Левая панель: выбор инструмента, параметры инструмента, параметры приближения холста-->
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Margin="0,20,0,50">
-            <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300">
+        <ScrollViewer x:Name="DockPanelLeftScroll" VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Margin="0,20,0,50" Width="300" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" LastChildFill="False">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="250"/>
