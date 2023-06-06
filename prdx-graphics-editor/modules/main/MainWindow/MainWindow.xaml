@@ -99,7 +99,8 @@
         <ScrollViewer x:Name="ScrollViewerCanvas" Margin="350,100" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
-
+        
+        <!--Верхняя панель: выпадающее меню - файл, правка, выделение и справка-->
         <DockPanel x:Name="DockPanelTop" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
@@ -146,6 +147,7 @@
             </Border>
         </DockPanel>
 
+        <!--Левая панель: выбор инструмента, параметры инструмента, параметры приближения холста-->
         <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -158,11 +160,13 @@
                 <Frame Grid.Row="2" x:Name="FrameZoom" Source="..\PageZoom\PageZoom.xaml"/>
             </Grid>
         </DockPanel>
-        
+
+        <!--Правая панель: история изменений-->
         <DockPanel x:Name="DockPanelRight" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
-        
+
+        <!--Нижняя панель: информационная строка-->
         <DockPanel x:Name="DockPanelBottom" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Frame x:Name="FrameStatusBar" Source="..\PageInfoLine\PageInfoLine.xaml"/>
