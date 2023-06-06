@@ -4,16 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.main.PageZoom"
-      mc:Ignorable="d" d:DesignWidth="250" Height="150" VerticalAlignment="Top">
+      mc:Ignorable="d" d:DesignWidth="250" VerticalAlignment="Top">
 
     <StackPanel>
         <Label x:Name="LabelHeader" Content="Масштаб холста" FontSize="24" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource StyleDarkNoBackground}" />
-        <Label x:Name="LabelZoom" Content="100%" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,32,0,0" Style="{StaticResource StyleDarkNoBackground}" />
+        <Label x:Name="LabelZoom" Content="100%" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource StyleDarkNoBackground}" />
         <DockPanel x:Name="ZoomButtons" HorizontalAlignment="Center">
-            <Button x:Name="ButtonZoomDecrease" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomDecrease_Click" Margin="35,85,0,0" ToolTip="Уменьшить масштаб"/>
-            <Button x:Name="ButtonZoomReset" Content="1:1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="60" FontSize="18" Click="ButtonZoomReset_Click" Margin="91,85,0,0" ToolTip="Актуальный масштаб"/>
-            <Button x:Name="ButtonZoomIncrease" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomIncrease_Click" Margin="166,85,0,0" ToolTip="Увеличить масштаб"/>
-            <Slider x:Name="SliderZoom" Margin="35,153,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="SliderZoom_ValueChanged" ToolTip="Изменить масштаб"/>
+            <Button x:Name="ButtonZoomDecrease" DockPanel.Dock="Left" Content="-" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomDecrease_Click" ToolTip="Уменьшить масштаб"/>
+            <Button x:Name="ButtonZoomReset" DockPanel.Dock="Left" Content="1:1" Height="40" Width="60" FontSize="18" Click="ButtonZoomReset_Click" ToolTip="Актуальный масштаб"/>
+            <Button x:Name="ButtonZoomIncrease" DockPanel.Dock="Left" Content="+" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomIncrease_Click" ToolTip="Увеличить масштаб"/>
         </DockPanel>
+            <Slider x:Name="SliderZoom" DockPanel.Dock="Bottom" Width="171" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="SliderZoom_ValueChanged" ToolTip="Изменить масштаб"/>
     </StackPanel>
 </Page>

@@ -7,7 +7,7 @@
         mc:Ignorable="d" 
         Title="Chili DRAW" Icon="../../../chili.ico"
         Width="1600" Height="1200" 
-        MinWidth="640" MinHeight="480" 
+        MinWidth="800" MinHeight="600" 
         WindowState="Maximized">
     
     <Window.Resources>
@@ -148,21 +148,23 @@
         </DockPanel>
 
         <!--Левая панель: выбор инструмента, параметры инструмента, параметры приближения холста-->
-        <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="250"/>
-                    <RowDefinition Height="250"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="FrameTools" Source="..\PageTools\PageTools.xaml"/>
-                <Frame Grid.Row="1" x:Name="FrameToolParams" Source="..\PageToolParams\PageToolParams.xaml"/>
-                <Frame Grid.Row="2" x:Name="FrameZoom" Source="..\PageZoom\PageZoom.xaml"/>
-            </Grid>
-        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Margin="0,20,0,50">
+            <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Frame Grid.Row="0" x:Name="FrameTools" Source="..\PageTools\PageTools.xaml"/>
+                    <Frame Grid.Row="1" x:Name="FrameToolParams" Source="..\PageToolParams\PageToolParams.xaml"/>
+                    <Frame Grid.Row="2" x:Name="FrameZoom" Source="..\PageZoom\PageZoom.xaml"/>
+                </Grid>
+            </DockPanel>
+        </ScrollViewer>
 
         <!--Правая панель: история изменений-->
-        <DockPanel x:Name="DockPanelRight" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
+        <DockPanel x:Name="DockPanelRight" Style="{StaticResource StyleContainersBright}" Margin="0,20,0,50" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
 

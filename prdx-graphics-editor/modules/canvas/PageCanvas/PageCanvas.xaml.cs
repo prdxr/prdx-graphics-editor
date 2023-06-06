@@ -543,7 +543,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
             }
 
-            }
+        }
 
         void CheckFigureSettings(Shape targetShape, bool arrowCase = false)
         {
@@ -762,18 +762,18 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         }
         public void AddNewFigure(Image image, string operationDescription, Point position, bool isRedo = false)
         {
-            //mainCanvas.Children.Add(image);
+            mainCanvas.Children.Add(image);
 
-            //Globals.changeHistoryBefore.Push((image, operationDescription, position));
+            Globals.changeHistoryBefore.Push((image, operationDescription, position));
 
-            //if (!isRedo)
-            //{
-            //    Globals.changeHistoryAfter.Clear();
-            //}
-            //if (OnFiguresChanged != null)
-            //{
-            //    OnFiguresChanged.Invoke(this, null);
-            //}
+            if (!isRedo)
+            {
+                Globals.changeHistoryAfter.Clear();
+            }
+            if (OnFiguresChanged != null)
+            {
+                OnFiguresChanged.Invoke(this, null);
+            }
         }
 
         public void RemoveLastFigure()
@@ -795,7 +795,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 mainCanvas.Children.Remove(figure as Image);
             }
-            //Globals.changeHistoryAfter.Push((figure, operationDescription, position));
+            Globals.changeHistoryAfter.Push((figure, operationDescription, position));
 
             if (OnFiguresChanged != null)
             {
