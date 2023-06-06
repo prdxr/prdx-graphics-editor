@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.colorPicker.WindowColorPicker"
         mc:Ignorable="d" Icon="../../../chili.ico"
-        Title="Выбор цвета" MinHeight="500" MaxHeight="500" Height="500" MinWidth="300" MaxWidth="300" Width="300">
+        Title="Выбор цвета" 
+        Width="300" Height="500" 
+        MinWidth="300" MaxWidth="300" 
+        MaxHeight="500" MinHeight="500" 
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Style="{StaticResource StyleContainersBright}">
-        <Frame x:Name="ColorPickerFrame" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\FormColorPicker\PageColorPicker.xaml"/>
-        <DockPanel x:Name="buttonsApplyCancel" Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+        <Frame x:Name="FrameColorPicker" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\PageColorPicker\PageColorPicker.xaml"/>
+        <DockPanel Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
             <Button x:Name="ButtonCancel" Style="{StaticResource StyleDarkButton1}" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
                     Click="OnButtonCancelClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle" IsCancel="true">
             </Button>
@@ -16,6 +20,5 @@
                     Click="OnButtonApplyClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle">
             </Button>
         </DockPanel>
-        
     </Grid>
 </Window>

@@ -1,42 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
-using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
-using prdx_graphics_editor.modules.WindowProjectCreator;
 using System.Windows.Media;
-using prdx_graphics_editor.modules.canvas.PageCanvas;
-using prdx_graphics_editor.modules.utils;
-using System.IO;
-using System.Windows.Shapes;
 using System.Windows.Input;
-using prdx_graphics_editor.modules.canvas;
 using System.Windows.Controls;
+using prdx_graphics_editor.modules.canvas;
+using prdx_graphics_editor.modules.utils;
+using prdx_graphics_editor.modules.canvas.PageCanvas;
+using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
+using prdx_graphics_editor.modules.WindowHelp;
 
 namespace prdx_graphics_editor.modules.actions
 {
     static class Actions
     {
-        public static Color? PickColor(string changingColor)
-        {
-            if (changingColor == "foreground")
-            {
-                Globals.changingColor = Globals.applicationSettings.primaryColor;
-            }
-            else if (changingColor == "background")
-            {
-                Globals.changingColor = Globals.applicationSettings.secondaryColor;
-            }
 
-            WindowColorPicker window = new WindowColorPicker
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
+        public static Color? PickForegroundColor()
+        {
+            Globals.changingColor = Globals.applicationSettings.primaryColor;
+            WindowColorPicker window = new WindowColorPicker();
             window.ShowDialog();
-            Color? color = window.color;
-            return color;
+            return window.color;
+        }
+
+        public static Color? PickBackgroundColor()
+        {
+            Globals.changingColor = Globals.applicationSettings.secondaryColor;
+            WindowColorPicker window = new WindowColorPicker();
+            window.ShowDialog();
+            return window.color;
         }
 
         public static void SetActiveTool(CanvasToolType toolType)
@@ -44,7 +35,7 @@ namespace prdx_graphics_editor.modules.actions
             Globals.pageCanvasRef.SetActiveTool(toolType);
         }
 
-        private static bool CheckBeforeErasing()
+        private static bool CheckBeforeReset()
         {
             if (!Globals.isProjectSaved)
                 {
@@ -74,7 +65,7 @@ namespace prdx_graphics_editor.modules.actions
 
         public static int CreateProject()
         {
-            if (CheckBeforeErasing())
+            if (CheckBeforeReset())
             {
                 var window = new WindowProjectCreator.WindowProjectCreator()
                 {
@@ -94,7 +85,7 @@ namespace prdx_graphics_editor.modules.actions
 
         public static int OpenProject()
         {
-            if (CheckBeforeErasing())
+            if (CheckBeforeReset())
             {
                 var dialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -168,7 +159,7 @@ namespace prdx_graphics_editor.modules.actions
             }
         }
 
-        public static void ImportToProject()
+        public static void ImportProject()
         {
             string filename;
             var dialog = new Microsoft.Win32.OpenFileDialog();
@@ -176,7 +167,7 @@ namespace prdx_graphics_editor.modules.actions
             bool? result = dialog.ShowDialog();
             if (result == true)
             {
-                if (CheckBeforeErasing()) {
+                if (CheckBeforeReset()) {
                     filename = dialog.FileName;
                     Globals.pageCanvasRef.ImportToProject(filename);
                 }
@@ -187,11 +178,11 @@ namespace prdx_graphics_editor.modules.actions
             }
         }
 
-        public static void Undo()
+        public static void HistoryUndo()
         {
             Globals.pageCanvasRef.RemoveLastFigure();
         }
-        public static void Redo()
+        public static void HistoryRedo()
         {
             Globals.pageCanvasRef.ReturnLastFigure();
         }
@@ -200,14 +191,14 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.SelectAll();
         }
-        public static void SelectClear()
+        public static void SelectionReset()
         {
             Globals.pageCanvasRef.SelectClear();
         }
 
         public static void CloseApplication(MainWindow caller)
         {
-            if (CheckBeforeErasing())
+            if (CheckBeforeReset())
             {
                 caller.Close();
             }
@@ -217,34 +208,48 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageToolsRef.ChangeTool(sender, e);
         }
-        public static void SwitchColors(object sender, ExecutedRoutedEventArgs e)
+        public static void SwapColors(object sender, ExecutedRoutedEventArgs e)
         {
-            Globals.pageToolsRef.SwitchColors(sender, e);
+            Globals.pageToolsRef.SwapColors(sender, e);
         }
 
         public static void Paste()
         {
             Globals.pageCanvasRef.PasteClipboard();
         }
-
-        public static void ChangeCanvasSize(Canvas canvas)
+        public static void Copy()
         {
+            Globals.pageCanvasRef.CopyToClipboard();
+        }
+
+        public static void CanvasSize()
+        {
+            Canvas canvas = Globals.pageCanvasRef.mainCanvas;
             WindowCanvasSize.ChangeCanvasSize(canvas);
         }
 
-        public static void CanvasZoomPlus()
+        public static void ShowHelp()
         {
-            Globals.pageCanvasRef.incCanvasZoom();
+            WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            window.ShowDialog();
         }
 
-        public static void CanvasZoomMinus()
+        public static void ZoomIncrease()
         {
-            Globals.pageCanvasRef.decCanvasZoom();
+            Globals.pageCanvasRef.ZoomIncrease();
         }
 
-        public static void CanvasZoomActual()
+        public static void ZoomDecrease()
         {
-            Globals.pageCanvasRef.setCanvasZoom(100);
+            Globals.pageCanvasRef.ZoomDecrease();
+        }
+
+        public static void ZoomReset()
+        {
+            Globals.pageCanvasRef.SetCanvasZoom(100);
         }
 
     }

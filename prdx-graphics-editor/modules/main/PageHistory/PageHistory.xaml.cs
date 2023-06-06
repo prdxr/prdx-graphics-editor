@@ -1,58 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.actions;
 
 namespace prdx_graphics_editor.modules.main
 {
-    /// <summary>
-    /// Логика взаимодействия для PageHistory.xaml
-    /// </summary>
+
     public partial class PageHistory : Page
     {
         int oldSelection;
         int targetSelection;
+        ObservableCollection<(Shape, string, Point)> historyList = new ObservableCollection<(Shape, string, Point)>();
+
         public PageHistory()
         {
             InitializeComponent();
             Globals.pageHistoryRef = this;
         }
 
-        ObservableCollection<(Shape, string, Point)> historyList = new ObservableCollection<(Shape, string, Point)>();
-
-        private void ClickUndo(object sender, ExecutedRoutedEventArgs e)
+        private void UndoAction(object sender, ExecutedRoutedEventArgs e)
         {
-            Actions.Undo();
+            Actions.HistoryUndo();
         }
-        private void ClickRedo(object sender, ExecutedRoutedEventArgs e)
+        private void RedoAction(object sender, ExecutedRoutedEventArgs e)
         {
-            Actions.Redo();
+            Actions.HistoryRedo();
         }
 
         public void OnFiguresChanged(object sender, EventArgs e)
         {
             ShowHistory();
         }
+
         public void ShowHistory()
         {
-            List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>();
-            ObservableCollection<string> historyList = new ObservableCollection<string>();
+            //List<(object, string, Point)> mergeList = new List<(object, string, Point)>();
+            List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>(); ObservableCollection<string> historyList = new ObservableCollection<string>();
             mergeList = mergeList.Concat(Globals.changeHistoryAfter.Reverse()).ToList();
             mergeList = mergeList.Concat(Globals.changeHistoryBefore).ToList();
             
+            //foreach ((object, string, Point) element in mergeList)
             foreach ((Shape, string, Point) element in mergeList)
             {
                 historyList.Add(element.Item2);
@@ -72,19 +65,21 @@ namespace prdx_graphics_editor.modules.main
                 Globals.isProjectSaved = false;
             }
         }
+
         private void GoToSelectedAction(object sender, MouseButtonEventArgs e)
         {
             targetSelection = (sender as ListView).SelectedIndex;
             while (oldSelection > targetSelection)
             {
                 Console.WriteLine($"selection > index -- {oldSelection} {targetSelection}");
-                Actions.Redo();
+                Actions.HistoryRedo();
             }
             while (oldSelection < targetSelection)
             {
                 Console.WriteLine($"selection < index -- {oldSelection} {targetSelection}");
-                Actions.Undo();
+                Actions.HistoryUndo();
             }
         }
     }
+
 }

@@ -28,22 +28,6 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
         public WindowProjectCreator()
         {
             InitializeComponent();
-         
-            Background = Globals.appcolorAccent1;
-            buttonApply.Background = Globals.appcolorAccent2;
-            buttonApply.Foreground = Globals.appcolorText;
-            buttonCancel.Background = Globals.appcolorAccent2;
-            buttonCancel.Foreground = Globals.appcolorText;
-            widthInput.Background = Globals.appcolorAccent2;
-            widthInput.Foreground = Globals.appcolorText;
-            heightInput.Background = Globals.appcolorAccent2;
-            heightInput.Foreground = Globals.appcolorText;
-            labelWidth.Foreground = Globals.appcolorText;
-            labelHeight.Foreground = Globals.appcolorText;
-            textBoxPath.Background = Globals.appcolorAccent2;
-            textBoxPath.Foreground = Globals.appcolorText;
-            buttonChangePath.Background = Globals.appcolorAccent2;
-            buttonChangePath.Foreground = Globals.appcolorText;
         }
 
         private void CreateProject(object sender, RoutedEventArgs e)

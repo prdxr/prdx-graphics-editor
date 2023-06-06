@@ -1,28 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 using prdx_graphics_editor.modules.utils;
 
-namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
+namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
 {
-    /// <summary>
-    /// Логика взаимодействия для PageColorPicker.xaml
-    /// </summary>
+
     public partial class PageColorPicker : Page
     {
+
         private Color? color;
 
         public PageColorPicker()
@@ -30,15 +18,14 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             InitializeComponent();
             Globals.pageColorPickerRef = this;
             color = Globals.changingColor;
-            textboxHexInput.Text = Globals.applicationSettings.colorPickerDefaultColor;
+            TextBoxHexInput.Text = Globals.applicationSettings.colorPickerDefaultColor;
             PrepareGrid();
             UpdateColors();
         }
 
         public Color? GetColor()
         {
-            color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
-            return color;
+            return (Color)ColorConverter.ConvertFromString("#" + TextBoxHexInput.Text.ToLower());
         }
 
         private readonly string[,] colorsTable = new string[,] {
@@ -52,17 +39,17 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             {"#FF9999", "#FFCC99", "#FFFF99", "#CCFF99", "#99FF99", "#99FFCC", "#99FFFF", "#99CCFF", "#9999FF", "#CC99FF", "#FF99FF", "#FF99CC", "#E0E0E0"},
             {"#FFCCCC", "#FFE5CC", "#FFFFCC", "#E5FFCC", "#CCFFCC", "#CCFFE5", "#CCFFFF", "#CCE5FF", "#CCCCFF", "#E5CCFF", "#FFCCFF", "#FFCCE5", "#FFFFFF"}
         };
-        private readonly Regex allowedHex = new Regex("^[a-fA-F0-9]+$");
-        private readonly Regex allowedRgb = new Regex ("^[0-9]+$");
+        private readonly Regex RegexHexColorString = new Regex("^[a-fA-F0-9]{6,6}$");
+        private readonly Regex RegexRgbColorNumber = new Regex ("^[0-9]{1,3}$");
 
         private void UpdateColors()
         {
-            CurrentColorDisplay.Fill = new SolidColorBrush((Color)color);
-            textboxHexInput.Text = color.ToString().Substring(3);
+            RectangleCurrentColor.Fill = new SolidColorBrush((Color)color);
+            TextBoxHexInput.Text = color.ToString().Substring(3);
             Color newColor = (Color)color;
-            textboxInputR.Text = newColor.R.ToString();
-            textboxInputG.Text = newColor.G.ToString();
-            textboxInputB.Text = newColor.B.ToString();
+            TextBoxInputR.Text = newColor.R.ToString();
+            TextBoxInputG.Text = newColor.G.ToString();
+            TextBoxInputB.Text = newColor.B.ToString();
         }
 
         private void PrepareGrid()
@@ -72,12 +59,12 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             for (int i = 0; i < colsCount; i++)
             {
                 ColumnDefinition colDefinition = new ColumnDefinition();
-                ColorsGrid.ColumnDefinitions.Add(colDefinition);
+                GridColors.ColumnDefinitions.Add(colDefinition);
             }
             for (int i = 0; i < rowsCount; i++)
             {
                 RowDefinition rowDefinition = new RowDefinition();
-                ColorsGrid.RowDefinitions.Add(rowDefinition);
+                GridColors.RowDefinitions.Add(rowDefinition);
             }
             BrushConverter brushConverter = new BrushConverter();
             for (int row = 0; row < rowsCount; row++)
@@ -94,7 +81,7 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
                     panel.MouseDown += SetColorFromTable;
                     Grid.SetRow(panel, row);
                     Grid.SetColumn(panel, col);
-                    ColorsGrid.Children.Add(panel);
+                    GridColors.Children.Add(panel);
                 }
             }
 
@@ -105,54 +92,49 @@ namespace prdx_graphics_editor.modules.colorPicker.FormColorPicker
             int row = Grid.GetRow((DockPanel)sender);
             int col = Grid.GetColumn((DockPanel)sender);
             color = (Color)ColorConverter.ConvertFromString(colorsTable[row, col]);
-            CurrentColorDisplay.Fill = new SolidColorBrush((Color)color);
-            textboxHexInput.Text = color.ToString().Substring(3);
+            RectangleCurrentColor.Fill = new SolidColorBrush((Color)color);
+            TextBoxHexInput.Text = color.ToString().Substring(3);
             Color newColor = (Color)color;
-            textboxInputR.Text = newColor.R.ToString();
-            textboxInputG.Text = newColor.G.ToString();
-            textboxInputB.Text = newColor.B.ToString();
+            TextBoxInputR.Text = newColor.R.ToString();
+            TextBoxInputG.Text = newColor.G.ToString();
+            TextBoxInputB.Text = newColor.B.ToString();
         }
 
-        private void OnHexKeyPress(object sender, TextChangedEventArgs e)
+        private void SetInputValid(TextBox textBox, bool isValid)
         {
-            TextBox trueSender = sender as TextBox;
-            if (trueSender.Text.Length == 6)
-            {
-                if (UtilityFunctions.CheckInputValidity(trueSender, allowedHex, Globals.appcolorAccent1))
-                {
-                    color = (Color)ColorConverter.ConvertFromString("#" + textboxHexInput.Text.ToLower());
-                    UpdateColors();
-                }
-            }
-            else
-            {
-                trueSender.Background = Globals.appcolorAccent1;
-            }
+            textBox.Background = !isValid ? Brushes.DarkRed : Globals.appcolorAccent1;
+            Globals.windowColorPickerRef.ButtonApply.IsEnabled = isValid;
         }
 
-        private void OnRgbKeyPress(object sender, TextChangedEventArgs e)
+        private void OnKeyPressHex(object sender, TextChangedEventArgs e)
         {
-            TextBox trueSender = sender as TextBox;
-            bool correctInput = true;
-            if (textboxInputR is null || textboxInputG is null || textboxInputB is null)
+            TextBox textBox = sender as TextBox;
+            bool isValid = UtilityFunctions.CheckInputValidity(textBox, RegexHexColorString, Globals.appcolorAccent1);
+            SetInputValid(textBox, isValid);
+            if (isValid) 
             {
-                return;
-            }
-            else if (trueSender.Text.Length == 0 || !UtilityFunctions.CheckInputValidity(trueSender, allowedRgb, Globals.appcolorAccent1) || 
-                Convert.ToInt32(trueSender.Text) > 255 || Convert.ToInt32(trueSender.Text) < 0)
-            {
-                trueSender.Background = Brushes.DarkRed;
-                correctInput = false;
-                Globals.windowColorPickerRef.ButtonApply.IsEnabled = false;
-                return;
-            }
-            else
-            {
-                color = Color.FromRgb(Convert.ToByte(textboxInputR.Text), Convert.ToByte(textboxInputG.Text), Convert.ToByte(textboxInputB.Text));
+                color = (Color)ColorConverter.ConvertFromString("#" + TextBoxHexInput.Text.ToLower());
                 UpdateColors();
-                Globals.windowColorPickerRef.ButtonApply.IsEnabled = true;
-                trueSender.Background = Globals.appcolorAccent1;
+            }
+        }
+
+        private void OnKeyPressRgb(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (TextBoxInputR is null || TextBoxInputG is null || TextBoxInputB is null)
+            {
+                return;
+            }
+            bool isValid = !(textBox.Text.Length == 0 
+                || !UtilityFunctions.CheckInputValidity(textBox, RegexRgbColorNumber, Globals.appcolorAccent1) 
+                || Convert.ToInt32(textBox.Text) > 255 || Convert.ToInt32(textBox.Text) < 0);
+            SetInputValid(textBox, isValid);
+            if (isValid)
+            {
+                color = Color.FromRgb(Convert.ToByte(TextBoxInputR.Text), Convert.ToByte(TextBoxInputG.Text), Convert.ToByte(TextBoxInputB.Text));
+                UpdateColors();
             }
         }
     }
+
 }

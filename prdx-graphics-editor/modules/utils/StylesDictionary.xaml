@@ -20,6 +20,12 @@
     <Style x:Key="StyleContainersBright" TargetType="Panel">
         <Setter Property="Background" Value="{x:Static c:Globals.appcolorAccent2}"/>
     </Style>
+    <Style x:Key="StyleTextblocks" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{x:Static c:Globals.appcolorText}"/>
+    </Style>
+    <Style BasedOn="{StaticResource StyleTextblocks}" x:Key="StyleTextblocksDark" TargetType="TextBlock">
+        <Setter Property="Background" Value="{x:Static c:Globals.appcolorAccent1}"/>
+    </Style>
 
     <Style BasedOn="{StaticResource StyleDark1}" x:Key="StyleDarkButton1" TargetType="Button">
         <Setter Property="Template">
