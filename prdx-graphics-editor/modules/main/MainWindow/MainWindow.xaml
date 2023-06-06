@@ -7,8 +7,7 @@
         mc:Ignorable="d" Icon="../../../chili.ico"
         Title="Chili DRAW" Width="1920" Height="1080" MinHeight="500" MinWidth="600"
         WindowState="Maximized">
-    <!--720x1280-->
-    <!--mainGrid background: accent1-->
+    <!--Инициализация объектов команд-->
     <Window.Resources>
         <RoutedUICommand x:Key="CreateProject" Text="Создать проект"/>
         <RoutedUICommand x:Key="OpenProject" Text="Открыть проект"/>
@@ -26,11 +25,10 @@
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
         <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
         <RoutedUICommand x:Key="ShowHelp" Text="Вызвать справку"/>
-
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
         <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
     </Window.Resources>
-
+    <!--Привязка команд к соответствущим методам-->
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource CreateProject}" Executed="CreateProject"/>
         <CommandBinding Command="{StaticResource OpenProject}" Executed="OpenProject"/>
@@ -51,7 +49,7 @@
         <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
         <CommandBinding Command="{StaticResource SwapColors}" Executed="SwitchColors"/>
     </Window.CommandBindings>
-
+    <!--Установка горячих клавиш для выполнения команд-->
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource CreateProject}"/>
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource OpenProject}"/>
@@ -69,7 +67,7 @@
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
         <KeyBinding Key="Tab" Command="{StaticResource TogglePanels}"/>
         <KeyBinding Key="F1" Command="{StaticResource ShowHelp}"/>
-
+        <!--Горячие клавиши для смнеы инструментов-->
         <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
         <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
         <KeyBinding Key="E" Command="{StaticResource ToolHotkey}" CommandParameter="2"/>
@@ -83,11 +81,13 @@
         <KeyBinding Key="X" Command="{StaticResource SwapColors}"/>
     </Window.InputBindings>
 
+    <!--Общий контейнер окна-->
     <Grid x:Name="mainGrid" Style="{StaticResource StyleContainersDark}">
         <ScrollViewer x:Name="CanvasScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       CanContentScroll="True">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
+        <!--Левая панель: выбор инструмента, параметры инструмента, параметры приближения холста-->
         <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -100,7 +100,7 @@
                 <Frame Grid.Row="2" x:Name="ZoomPage" Source="..\PageZoom\PageZoom.xaml"/>
             </Grid>
         </DockPanel>
-        <!--leftDockPanel background: accent2-->
+        <!--Верхняя панель: выпадающее меню - файл, правка, выделение и справка-->
         <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
@@ -142,13 +142,11 @@
                 </Menu>
             </Border>
         </DockPanel>
-        <!--topDockPanel background: accent2-->
+        <!--Правая панель: история изменений-->
         <DockPanel x:Name="rightDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
-
-        <!--rightDockPanel background: accent2-->
-        <!--bottomDockPanel background: accent2-->
+        <!--Нижняя панель: информационная строка-->
         <DockPanel x:Name="bottomDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Frame x:Name="InfoLinePage" Source="..\PageInfoLine\PageInfoLine.xaml"/>

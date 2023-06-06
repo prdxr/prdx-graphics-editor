@@ -7,6 +7,19 @@
         ResizeMode="NoResize"
         mc:Ignorable="d" Icon="../../../chili.ico"
         Title="Справка" Height="600" Width="900">
+
+    <Window.Resources>
+        <RoutedUICommand x:Key="CloseWindow" Text="Выход"/>
+    </Window.Resources>
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource CloseWindow}" Executed="CloseWindow"/>
+    </Window.CommandBindings>
+    
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{StaticResource CloseWindow}"/>
+    </Window.InputBindings>
+    
     <Grid Style="{StaticResource StyleContainersBright}">
         <Grid Margin="20">
             <Grid.ColumnDefinitions>

@@ -101,6 +101,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             // Инициализация прямоугольника выделения
             selectionPoints = (new Point(0, 0), new Point(0, 0));
             selectionRectangle = new Rectangle();
+            selectionRectangle.Width = 0;
+            selectionRectangle.Height = 0;
             selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
             selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
             selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);

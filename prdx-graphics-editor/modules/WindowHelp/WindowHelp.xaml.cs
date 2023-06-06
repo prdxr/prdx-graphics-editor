@@ -1,4 +1,5 @@
-﻿using prdx_graphics_editor.modules.utils;
+﻿using prdx_graphics_editor.modules.actions;
+using prdx_graphics_editor.modules.utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -70,6 +71,11 @@ namespace prdx_graphics_editor.modules.WindowHelp
         {
             Process.Start(e.Uri.AbsoluteUri);
             e.Handled = true;
+        }
+
+        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

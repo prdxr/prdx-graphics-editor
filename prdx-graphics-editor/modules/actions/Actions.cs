@@ -237,12 +237,13 @@ namespace prdx_graphics_editor.modules.actions
             WindowCanvasSize.ChangeCanvasSize(canvas);
         }
 
-        public static void ShowHelp()
+        public static void ShowHelp(Window windowMain)
         {
             WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
+            window.Owner = windowMain;
             window.ShowDialog();
         }
         public static void CanvasZoomPlus()
