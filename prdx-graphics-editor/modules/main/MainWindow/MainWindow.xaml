@@ -4,29 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor"
-        mc:Ignorable="d" Icon="../../../chili.ico"
-        Title="Chili DRAW" Width="1920" Height="1080" MinHeight="500" MinWidth="600"
+        mc:Ignorable="d" 
+        Title="Chili DRAW" Icon="../../../chili.ico"
+        Width="1600" Height="1200" 
+        MinWidth="640" MinHeight="480" 
         WindowState="Maximized">
-    <!--720x1280-->
-    <!--mainGrid background: accent1-->
+    
     <Window.Resources>
         <RoutedUICommand x:Key="CreateProject" Text="Создать проект"/>
         <RoutedUICommand x:Key="OpenProject" Text="Открыть проект"/>
         <RoutedUICommand x:Key="SaveProject" Text="Сохранить проект"/>
         <RoutedUICommand x:Key="SaveProjectAs" Text="Сохранить проект как..."/>
-        <RoutedUICommand x:Key="ImportToProject" Text="Импортировать изображение..."/>
-        <RoutedUICommand x:Key="ExportProject" Text="Экспортировать..."/>
-        <RoutedUICommand x:Key="ExitApp" Text="Выход"/>
-        <RoutedUICommand x:Key="UndoAction" Text="Отменить"/>
-        <RoutedUICommand x:Key="RedoAction" Text="Вернуть"/>
+        <RoutedUICommand x:Key="ImportProject" Text="Импорт изображения..."/>
+        <RoutedUICommand x:Key="ExportProject" Text="Экспорт изображения..."/>
+        <RoutedUICommand x:Key="CanvasSize" Text="Размер холста"/>
+        <RoutedUICommand x:Key="HistoryUndo" Text="Отменить правки"/>
+        <RoutedUICommand x:Key="HistoryRedo" Text="Вернуть правки"/>
+        <RoutedUICommand x:Key="ZoomIncrease" Text="Увеличить масштаб"/>
+        <RoutedUICommand x:Key="ZoomDecrease" Text="Уменьшить масштаб"/>
+        <RoutedUICommand x:Key="ZoomReset" Text="Актуальный масштаб"/>
         <RoutedUICommand x:Key="SelectAll" Text="Выделить всё"/>
-        <RoutedUICommand x:Key="DeselectAll" Text="Снять выделение"/>
+        <RoutedUICommand x:Key="SelectionReset" Text="Снять выделение"/>
         <RoutedUICommand x:Key="Cut" Text="Вырезать"/>
         <RoutedUICommand x:Key="Copy" Text="Копировать"/>
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
-
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
-        <RoutedUICommand x:Key="SwapColors" Text="Поменять цвета местами"/>
+        <RoutedUICommand x:Key="SwapColors" Text="Поменять местами цвета"/>
+        <RoutedUICommand x:Key="CloseApplication" Text="Выход"/>
     </Window.Resources>
 
     <Window.CommandBindings>
@@ -34,19 +38,22 @@
         <CommandBinding Command="{StaticResource OpenProject}" Executed="OpenProject"/>
         <CommandBinding Command="{StaticResource SaveProject}" Executed="SaveProject"/>
         <CommandBinding Command="{StaticResource SaveProjectAs}" Executed="SaveProjectAs"/>
-        <CommandBinding Command="{StaticResource ImportToProject}" Executed="ImportToProject"/>
+        <CommandBinding Command="{StaticResource ImportProject}" Executed="ImportProject"/>
         <CommandBinding Command="{StaticResource ExportProject}" Executed="ExportProject"/>
-        <CommandBinding Command="{StaticResource ExitApp}" Executed="ExitApp"/>
-        <CommandBinding Command="{StaticResource UndoAction}" Executed="UndoAction"/>
-        <CommandBinding Command="{StaticResource RedoAction}" Executed="RedoAction"/>
+        <CommandBinding Command="{StaticResource CanvasSize}" Executed="CanvasSize"/>
+        <CommandBinding Command="{StaticResource ZoomIncrease}" Executed="ZoomIncrease"/>
+        <CommandBinding Command="{StaticResource ZoomDecrease}" Executed="ZoomDecrease"/>
+        <CommandBinding Command="{StaticResource ZoomReset}" Executed="ZoomReset"/>
+        <CommandBinding Command="{StaticResource HistoryUndo}" Executed="HistoryUndo"/>
+        <CommandBinding Command="{StaticResource HistoryRedo}" Executed="HistoryRedo"/>
         <CommandBinding Command="{StaticResource SelectAll}" Executed="SelectAll"/>
-        <CommandBinding Command="{StaticResource DeselectAll}" Executed="DeselectAll"/>
+        <CommandBinding Command="{StaticResource SelectionReset}" Executed="SelectionReset"/>
         <CommandBinding Command="{StaticResource Cut}" Executed="Cut"/>
         <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
         <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
-
         <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
-        <CommandBinding Command="{StaticResource SwapColors}" Executed="SwitchColors"/>
+        <CommandBinding Command="{StaticResource SwapColors}" Executed="SwapColors"/>
+        <CommandBinding Command="{StaticResource CloseApplication}" Executed="CloseApplication"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -54,17 +61,20 @@
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource OpenProject}"/>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource SaveProject}"/>
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{StaticResource SaveProjectAs}"/>
-        <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource ImportToProject}"/>
+        <KeyBinding Key="I" Modifiers="Ctrl" Command="{StaticResource ImportProject}"/>
         <KeyBinding Key="E" Modifiers="Ctrl" Command="{StaticResource ExportProject}"/>
-        <KeyBinding Key="Esc" Modifiers="Shift" Command="{StaticResource ExitApp}"/>
-        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource UndoAction}"/>
-        <KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource RedoAction}"/>
+        <KeyBinding Key="D" Modifiers="Ctrl" Command="{StaticResource CanvasSize}"/>
+        <KeyBinding Key="Q" Modifiers="Ctrl" Command="{StaticResource CloseApplication}"/>
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource HistoryUndo}"/>
+        <KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource HistoryRedo}"/>
         <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectAll}"/>
-        <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource DeselectAll}"/>
+        <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource SelectionReset}"/>
         <KeyBinding Key="X" Modifiers="Ctrl" Command="{StaticResource Cut}"/>
         <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
-
+        <KeyBinding Key="Plus" Modifiers="Ctrl" Command="{StaticResource ZoomIncrease}"/>
+        <KeyBinding Key="Minus" Modifiers="Ctrl" Command="{StaticResource ZoomDecrease}"/>
+        <KeyBinding Key="NumPad0" Modifiers="Ctrl" Command="{StaticResource ZoomReset}"/>
         <KeyBinding Key="P" Command="{StaticResource ToolHotkey}" CommandParameter="0"/>
         <KeyBinding Key="B" Command="{StaticResource ToolHotkey}" CommandParameter="1"/>
         <KeyBinding Key="E" Command="{StaticResource ToolHotkey}" CommandParameter="2"/>
@@ -78,24 +88,13 @@
         <KeyBinding Key="X" Command="{StaticResource SwapColors}"/>
     </Window.InputBindings>
 
-    <Grid x:Name="mainGrid" Style="{StaticResource StyleContainersDark}">
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="350,100" CanContentScroll="True">
+    <Grid x:Name="GridMain" Style="{StaticResource StyleContainersDark}">
+        
+        <ScrollViewer Margin="350,100" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
-        <DockPanel x:Name="leftDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="250"/>
-                    <RowDefinition Height="250"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="ToolsPage" Source="..\PageTools\PageTools.xaml"/>
-                <Frame Grid.Row="1" x:Name="ToolParamsPage" Source="..\PageToolParams\PageToolParams.xaml"/>
-                <Frame Grid.Row="2" x:Name="ZoomPage" Source="..\PageZoom\PageZoom.xaml"/>
-            </Grid>
-        </DockPanel>
-        <!--leftDockPanel background: accent2-->
-        <DockPanel x:Name="topDockPanel" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
+
+        <DockPanel x:Name="DockPanelMenu" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
                     <Setter Property="Background" Value="black" />
@@ -106,44 +105,64 @@
             </DockPanel.Style>
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
                 <Menu x:Name="mainMenu" Style="{StaticResource StyleDark2}" FlowDirection="LeftToRight" HorizontalAlignment="Left">
-                    <MenuItem x:Name="mainMenuFile" Header="Файл" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Создать проект" Command="{StaticResource CreateProject}" InputGestureText="ctrl+N"/>
-                        <MenuItem Foreground="Black" Header="Открыть проект" Command="{StaticResource OpenProject}" InputGestureText="ctrl+O"/>
+                    <MenuItem x:Name="MenuItemFile" Header="Файл" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource CreateProject}" InputGestureText="Ctrl+N"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource OpenProject}" InputGestureText="Ctrl+O"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Сохранить" Command="{StaticResource SaveProject}" InputGestureText="ctrl+S"/>
-                        <MenuItem Foreground="Black" Header="Сохранить как..." Command="{StaticResource SaveProjectAs}" InputGestureText="ctrl+shift+N"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource SaveProjectAs}" InputGestureText="Ctrl+Shift+N"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Импорт изображения" Command="{StaticResource ImportToProject}" InputGestureText="ctrl+I"/>
-                        <MenuItem Foreground="Black" Header="Экспортировать как..." Command="{StaticResource ExportProject}" InputGestureText="ctrl+E"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ImportProject}" InputGestureText="Ctrl+I"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ExportProject}" InputGestureText="Ctrl+E"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Выход" Command="{StaticResource ExitApp}" InputGestureText="Shift+Esc"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource CanvasSize}" InputGestureText="Ctrl+D"/>
+                        <Separator/>
+                        <MenuItem Foreground="Black" Command="{StaticResource CloseApplication}" InputGestureText="Ctrl+Q"/>
                     </MenuItem>
-                    <MenuItem x:Name="mainMenuEdit" Style="{StaticResource StyleDark2}" Header="Правка" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Отменить последнее действие" Command="{StaticResource UndoAction}" InputGestureText="ctrl+Z"/>
-                        <MenuItem Foreground="Black" Header="Вернуть последнее действие" Command="{StaticResource RedoAction}" InputGestureText="ctrl+Y"/>
+                    <MenuItem x:Name="MenuItemView" Style="{StaticResource StyleDark2}" Header="Вид" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomIncrease}" InputGestureText="Ctrl+Плюс"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomDecrease}" InputGestureText="Ctrl+Минус"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Header="Вырезать" InputGestureText="ctrl+X"/>
-                        <MenuItem Foreground="Black" Header="Копировать" InputGestureText="ctrl+C"/>
-                        <MenuItem Foreground="Black" Header="Вставить" InputGestureText="ctrl+V"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource ZoomReset}" InputGestureText="Ctrl+Ноль"/>
                     </MenuItem>
-                    <MenuItem x:Name="mainMenuSelect" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Header="Выделить всё" Command="{StaticResource SelectAll}" InputGestureText="ctrl+A"/>
-                        <MenuItem Foreground="Black" Header="Снять выделение" Command="{StaticResource DeselectAll}" InputGestureText="ctrl+shift+A"/>
+                    <MenuItem x:Name="MenuItemEdit" Style="{StaticResource StyleDark2}" Header="Правка" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource HistoryUndo}" InputGestureText="Ctrl+Z"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource HistoryRedo}" InputGestureText="Ctrl+Y"/>
+                        <Separator/>
+                        <MenuItem Foreground="Black" InputGestureText="Ctrl+X"/>
+                        <MenuItem Foreground="Black" InputGestureText="Ctrl+C"/>
+                        <MenuItem Foreground="Black" InputGestureText="Ctrl+V"/>
+                    </MenuItem>
+                    <MenuItem x:Name="MenuItemSelect" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Command="{StaticResource SelectAll}" InputGestureText="Ctrl+A"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource SelectionReset}" InputGestureText="Ctrl+Shift+A"/>
                     </MenuItem>
                 </Menu>
             </Border>
         </DockPanel>
-        <!--topDockPanel background: accent2-->
-        <DockPanel x:Name="rightDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
+
+        <DockPanel x:Name="DockPanelLeft" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Stretch" Width="300" Margin="0,20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Frame Grid.Row="0" x:Name="FrameTools" Source="..\PageTools\PageTools.xaml"/>
+                <Frame Grid.Row="1" x:Name="FrameToolParams" Source="..\PageToolParams\PageToolParams.xaml"/>
+                <Frame Grid.Row="2" x:Name="FrameZoom" Source="..\PageZoom\PageZoom.xaml"/>
+            </Grid>
+        </DockPanel>
+        
+        <DockPanel x:Name="DockPanelRight" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Right" LastChildFill="True" VerticalAlignment="Stretch" Width="300" Margin="0,20">
             <Frame x:Name="FrameHistory" Source="..\PageHistory\PageHistory.xaml"/>
         </DockPanel>
-
-        <!--rightDockPanel background: accent2-->
-        <!--bottomDockPanel background: accent2-->
-        <DockPanel x:Name="bottomDockPanel" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
+        
+        <DockPanel x:Name="DockPanelBottom" Style="{StaticResource StyleContainersBright}" HorizontalAlignment="Stretch" Height="50" LastChildFill="True" VerticalAlignment="Bottom">
             <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Background="Transparent">
-                <Frame x:Name="InfoLinePage" Source="..\PageInfoLine\PageInfoLine.xaml"/>
+                <Frame x:Name="FrameStatusBar" Source="..\PageInfoLine\PageInfoLine.xaml"/>
             </Border>
         </DockPanel>
+        
     </Grid>
 </Window>

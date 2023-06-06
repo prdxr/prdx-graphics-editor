@@ -1,0 +1,64 @@
+﻿<Page x:Class="prdx_graphics_editor.modules.colorPicker.PageColorPicker.PageColorPicker"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:prdx_graphics_editor.modules.colorPicker.PageColorPicker"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="300">
+    <Grid x:Name="GridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="GridColors" Style="{StaticResource StyleContainersDark}"></Grid>
+        <DockPanel Width="110" Height="140" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Grid.Row="1">
+            <Label x:Name="LabelHeaderCurrentColor" Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Top" HorizontalAlignment="Center" FontWeight="Bold">Текущий цвет</Label>
+            <Border DockPanel.Dock="Top" BorderBrush="Black" Width="50" Height="50" VerticalAlignment="Top" BorderThickness="2">
+                <Rectangle x:Name="RectangleCurrentColor" Fill="White"/>
+            </Border>
+            <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                <TextBox x:Name="TextBoxHexSign" Style="{StaticResource StyleDark1}" DockPanel.Dock="Left" 
+                     Height="30" Width="30" 
+                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     IsReadOnly="True" SelectionOpacity="0" Text="#" FontSize="16">
+                </TextBox>
+                <TextBox x:Name="TextBoxHexInput" Style="{StaticResource StyleDark1}" DockPanel.Dock="Left"
+                     Height="30" Width="80" 
+                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                     FontSize="16" MaxLength="6" TextChanged="OnKeyPressHex">
+                </TextBox>
+            </DockPanel>
+            <Label x:Name="LabelHexInput" Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Код hex</Label>
+        </DockPanel>
+        <Border Grid.Row="1" Height="140" VerticalAlignment="Top" Width="150" HorizontalAlignment="Right" Margin="10" BorderThickness="2">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="LabelHeaderRgbColor" Style="{StaticResource StyleDarkNoBackground}" Grid.Row="0" HorizontalAlignment="Left" FontWeight="Bold">Задать цвет в RGB</Label>
+                <DockPanel Grid.Row="1">
+                    <Label x:Name="LabelR" Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Left" Width="80">Красный (R)</Label>
+                    <TextBox x:Name="TextBoxInputR" Style="{StaticResource StyleDark1}" DockPanel.Dock="Right" HorizontalAlignment="Left"
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnKeyPressRgb">255</TextBox>
+                </DockPanel>
+                <DockPanel Grid.Row="2">
+                    <Label x:Name="LabelG" Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Left" Width="80">Зелёный (G)</Label>
+                    <TextBox x:Name="TextBoxInputG" Style="{StaticResource StyleDark1}" DockPanel.Dock="Right" HorizontalAlignment="Left"
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnKeyPressRgb">255</TextBox>
+                </DockPanel>
+                <DockPanel Grid.Row="3">
+                    <Label x:Name="LabelB" Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Left" Width="80">Синий (B)</Label>
+                    <TextBox x:Name="TextBoxInputB" Style="{StaticResource StyleDark1}" DockPanel.Dock="Right" HorizontalAlignment="Left"
+                             Width="40" Height="20" MaxLength="3" TextChanged="OnKeyPressRgb">255</TextBox>
+                </DockPanel>
+
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

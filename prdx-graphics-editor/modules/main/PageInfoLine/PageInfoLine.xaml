@@ -5,11 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:prdx_graphics_editor.modules.main"
       mc:Ignorable="d" 
-      d:DesignHeight="50"
-      Title="Layers">
-
+      d:DesignHeight="50">
     <DockPanel>
-        <DockPanel Width="200" VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
+        <DockPanel Width="200" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelPointerPosition" DockPanel.Dock="Right" Width="100" VerticalAlignment="Top">Вне холста</Label>
             <Label Style="{StaticResource StyleDarkNoBackground}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">Курсор:</Label>
         </DockPanel>

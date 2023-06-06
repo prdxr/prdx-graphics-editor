@@ -4,19 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections.Generic;
 using prdx_graphics_editor.modules.actions;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.utils;
-
-//не используются, после релиза удалить.
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace prdx_graphics_editor
@@ -24,6 +15,7 @@ namespace prdx_graphics_editor
     /// <summary>
     /// Логика взаимодействия для tools.xaml
     /// </summary>
+
     public partial class PageTools : Page
     {
         public PageTools()
@@ -34,10 +26,10 @@ namespace prdx_graphics_editor
             Globals.pageToolsRef = this;
 
             int currentTool = (int)Globals.applicationSettings.activeTool;
-            int count = VisualTreeHelper.GetChildrenCount(toolGrid);
+            int count = VisualTreeHelper.GetChildrenCount(GridTools);
             for (int i = 0; i < count; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(toolGrid, i);
+                DependencyObject child = VisualTreeHelper.GetChild(GridTools, i);
                 if (child is RadioButton && (Convert.ToInt32((child as RadioButton).CommandParameter) == currentTool))
                 {
                     (child as RadioButton).IsChecked = true;
@@ -65,10 +57,10 @@ namespace prdx_graphics_editor
                 ButtonArrow
             };
 
-            int count = VisualTreeHelper.GetChildrenCount(toolGrid);
+            int count = VisualTreeHelper.GetChildrenCount(GridTools);
             for (int i = 0; i < count; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(toolGrid, i);
+                DependencyObject child = VisualTreeHelper.GetChild(GridTools, i);
 
                 if (child is RadioButton && (Convert.ToInt32((child as RadioButton).CommandParameter) == Convert.ToInt32(e.Parameter)))
                 {
@@ -77,24 +69,24 @@ namespace prdx_graphics_editor
                 }
             }
 
-
-            List<RadioButton> radioButtons = LogicalTreeHelper.GetChildren(toolGrid).OfType<RadioButton>().ToList();
+            List<RadioButton> radioButtons = LogicalTreeHelper.GetChildren(GridTools).OfType<RadioButton>().ToList();
             RadioButton selected = radioButtons.FirstOrDefault(x => x.CommandParameter == e.Parameter);
             int index = Array.IndexOf(buttons, selected);
-            //CanvasToolType toolType = (CanvasToolType) index;
 
             Actions.SetActiveTool(toolType);
         }
 
         public void ChangeColorListener()
         {
-            buttonForegroundColor.Background = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-            buttonBackgroundColor.Background = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+            ButtonColorForeground.Background = new SolidColorBrush(Globals.applicationSettings.primaryColor);
+            ButtonColorBackground.Background = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
+            ButtonColorForeground.ToolTip = "Основной цвет: #" + Globals.applicationSettings.primaryColor.ToString().Substring(3);
+            ButtonColorBackground.ToolTip = "Фоновый цвет: #" + Globals.applicationSettings.secondaryColor.ToString().Substring(3);
         }
 
         private void ChangeForegroundColor(object sender, RoutedEventArgs e)
         {
-            Color? color = Actions.PickColor("foreground");
+            Color? color = Actions.PickForegroundColor();
             if (color != null)
             {
                 Color result = color.GetValueOrDefault();
@@ -104,7 +96,7 @@ namespace prdx_graphics_editor
         }
         private void ChangeBackgroundColor(object sender, RoutedEventArgs e)
         {
-            Color? color = Actions.PickColor("background");
+            Color? color = Actions.PickBackgroundColor();
             if (color != null)
             {
                 Color result = color.GetValueOrDefault();
@@ -112,7 +104,7 @@ namespace prdx_graphics_editor
                 Globals.applicationSettings.secondaryColor = result;
             }
         }
-        public void SwitchColors(object sender, RoutedEventArgs e)
+        public void SwapColors(object sender, RoutedEventArgs e)
         {
             Color buff = Globals.applicationSettings.secondaryColor;
             Globals.applicationSettings.secondaryColor = Globals.applicationSettings.primaryColor;

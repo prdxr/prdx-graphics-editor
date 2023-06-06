@@ -10,22 +10,19 @@
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <!--<Border Background="Aqua" BorderThickness="2"> -->
         <Canvas
-                Background="white" 
-                Width="800" 
-                Height="800"
                 x:Name="mainCanvas" 
+                Width="800" Height="800"
+                Background="white" Cursor="Cross" ClipToBounds="True"
                 MouseLeftButtonDown="OnCanvasMouseDown" 
                 MouseLeftButtonUp="OnCanvasMouseUp"
                 MouseMove="OnCanvasMouseMove"
                 MouseWheel="OnCanvasMouseWheel"
-                Cursor="Cross"
-                ClipToBounds="True"
                 MouseEnter="OnMouseEnter"
                 MouseLeave="OnMouseLeave">
 
             <Canvas.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Размер холста" Click="MenuItem_Click"/>
+                    <MenuItem Name="MenuItemCanvasSize" Header="Размер холста" Click="OnClickMenuItemCanvasSize"/>
                 </ContextMenu>
             </Canvas.ContextMenu>
 

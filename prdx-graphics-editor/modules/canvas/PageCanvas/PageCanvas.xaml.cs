@@ -1,31 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using prdx_graphics_editor.modules.utils;
 using System.Windows.Markup;
-using System.Xml;
-using System.IO;
-using System.Runtime.ExceptionServices;
+using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.actions;
-using System.Diagnostics;
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
 {
-    /// <summary>
-    /// Логика взаимодействия для MainCanvas.xaml
-    /// </summary>
+
     public enum CanvasToolType
     {
         ToolPencil,
@@ -43,7 +32,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolSize
     }
 
-
     public partial class PageCanvas : Page
     {
         CanvasToolType activeTool;
@@ -51,10 +39,25 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public bool isEmpty;
         public event EventHandler OnFiguresChanged;
         public event EventHandler OnZoomChanged;
-        string[] CanvasToolDescription;
         Point handOffset;
         bool isPlacingFigure = false;
         double[] selectionDashes = { 10, 5 };
+        string[] CanvasToolDescription = new string[]
+            {
+                "Карандаш",
+                "Кисть",
+                "Ластик",
+                "Выделение",
+                "Заливка",
+                "Прямоугольник",
+                "Эллипс",
+                "Треугольник",
+                "Прямая",
+                "Стрелка",
+                "Рука",
+                "Вращение",
+                "Масштаб"
+            };
 
         // Координаты точек области прямоугольного выделения
         (Point, Point) selectionPoints;
@@ -65,9 +68,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public Shape selectedShape;
 
         // Константы, определяющие масштабирование холста
-        const int ZOOM_PERCENT_STEP = 25;           // шаг изменения масштаба
-        const int ZOOM_PERCENT_MIN = 25;            // минимальный масштаб
-        const int ZOOM_PERCENT_MAX = 500;           // максимальный масштаб
+        public const int ZOOM_PERCENT_STEP = 25;            // шаг изменения масштаба
+        public const int ZOOM_PERCENT_MIN = 25;             // минимальный масштаб
+        public const int ZOOM_PERCENT_MAX = 500;            // максимальный масштаб
+        public const int ZOOM_PERCENT_DEFAULT = 100;        // значение масштаба по умолчанию
 
         // Константы, определяющие форму и размер стрелок
         const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
@@ -110,23 +114,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             currentLine = null;
             lastShape = null;
             selectedShape = null;
-
-            CanvasToolDescription = new string[]
-            {
-                "Карандаш",
-                "Кисть",
-                "Ластик",
-                "Выделение",
-                "Заливка",
-                "Прямоугольник",
-                "Эллипс",
-                "Треугольник",
-                "Прямая",
-                "Стрелка",
-                "Рука",
-                "Вращение",
-                "Масштаб"
-            };
 
             OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
             OnFigureMouseUp = new MouseButtonEventHandler(FigureMouseUp);
@@ -382,8 +369,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-
-
         public Point GetCanvasPosition(object sender, MouseEventArgs e)
         {
             Canvas canvas = (Canvas)sender;
@@ -584,12 +569,6 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 lastShape = currentLine;
                 currentLine = null;
             }
-            //else if (!(lastShape is Polygon) && !(lastShape.Width > 0 && lastShape.Height > 0))
-            //else if (Canvas.GetRight(lastShape) + Canvas.GetLeft(lastShape) >= mainCanvas.Width || Canvas.GetTop(lastShape) + Canvas.GetBottom(lastShape) >= mainCanvas.Height)
-            //{
-            //    mainCanvas.Children.Remove(lastShape);
-            //    return;
-            //}
 
             if (this.activeTool >= CanvasToolType.ToolSquare && this.activeTool <= CanvasToolType.ToolCircle)
             {
@@ -827,35 +806,38 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             //rastrize
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void OnClickMenuItemCanvasSize(object sender, RoutedEventArgs e)
         {
-            Actions.ChangeCanvasSize(mainCanvas);
+            Actions.CanvasSize();
         }
 
-        public double getCanvasZoom()
+        public double GetCanvasZoom()
         {
             return canvasZoom;
         }
 
-        public void setCanvasZoom(double canvasZoom)
+        public void SetCanvasZoom(double canvasZoom)
         {
             if (canvasZoom >= ZOOM_PERCENT_MIN && canvasZoom <= ZOOM_PERCENT_MAX) 
             {
                 this.canvasZoom = canvasZoom;
                 canvasScaleTransform.ScaleX = canvasZoom / 100;
                 canvasScaleTransform.ScaleY = canvasZoom / 100;
-                OnZoomChanged.Invoke(this, null);
+                if (OnZoomChanged != null)
+                {
+                    OnZoomChanged.Invoke(this, null);
+                }
             }
         }
 
-        public void incCanvasZoom()
+        public void ZoomIncrease()
         {
-            setCanvasZoom(canvasZoom + ZOOM_PERCENT_STEP);
+            SetCanvasZoom(canvasZoom + ZOOM_PERCENT_STEP);
         }
 
-        public void decCanvasZoom()
+        public void ZoomDecrease()
         {
-            setCanvasZoom(canvasZoom - ZOOM_PERCENT_STEP);
+            SetCanvasZoom(canvasZoom - ZOOM_PERCENT_STEP);
         }
 
         private void OnCanvasMouseWheel(object sender, MouseWheelEventArgs e)
@@ -864,11 +846,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 if (e.Delta > 0)
                 {
-                    incCanvasZoom();
+                    ZoomIncrease();
                 }
                 else
                 {
-                    decCanvasZoom();
+                    ZoomDecrease();
                 }
             }
         }

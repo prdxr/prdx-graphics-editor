@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.main.PageToolParams
@@ -20,6 +10,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
     /// <summary>
     /// Логика взаимодействия для ToolParams.xaml
     /// </summary>
+
     public partial class PageToolParams : Page
     {
         private readonly Regex allowedMask = new Regex(("^[0-9]+$"));
