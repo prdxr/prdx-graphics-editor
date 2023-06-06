@@ -7,9 +7,7 @@ using System.Windows.Input;
 
 namespace prdx_graphics_editor
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
 
@@ -19,6 +17,11 @@ namespace prdx_graphics_editor
             FrameCanvas.Content = new PageCanvas();
             FrameHistory.Content = new PageHistory();
             Globals.pageCanvasRef.OnFiguresChanged += Globals.pageHistoryRef.OnFiguresChanged;
+            DockPanelTop.Height = 20;
+            DockPanelLeft.Width = 300;
+            DockPanelRight.Width = 300;
+            DockPanelBottom.Height = 50;
+            ScrollViewerCanvas.Margin = new Thickness(350, 100, 350, 100);
         }
 
         private void CreateProject(object sender, ExecutedRoutedEventArgs e)
@@ -88,7 +91,7 @@ namespace prdx_graphics_editor
 
         private void Copy(object sender, ExecutedRoutedEventArgs e)
         {
-            //Actions.Copy();
+            Actions.Copy();
         }
 
         private void Paste(object sender, ExecutedRoutedEventArgs e)
@@ -114,6 +117,31 @@ namespace prdx_graphics_editor
         private void SwapColors(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.SwapColors(sender, e);
+        }
+
+        private void ShowHelp(object sender, ExecutedRoutedEventArgs e)
+        {
+            Actions.ShowHelp();
+        }
+
+        private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (DockPanelLeft.Width == 0)
+            {
+                DockPanelTop.Height = 20;
+                DockPanelLeft.Width = 300;
+                DockPanelRight.Width = 300;
+                DockPanelBottom.Height = 50;
+                ScrollViewerCanvas.Margin = new Thickness(350, 100, 350, 100);
+            }
+            else
+            {
+                DockPanelTop.Height = 0;
+                DockPanelLeft.Width = 0;
+                DockPanelRight.Width = 0;
+                DockPanelBottom.Height = 0;
+                ScrollViewerCanvas.Margin = new Thickness(20, 20, 20, 20);
+            }
         }
 
         private void CloseApplication(object sender, ExecutedRoutedEventArgs e)

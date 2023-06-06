@@ -7,6 +7,7 @@ using prdx_graphics_editor.modules.canvas;
 using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
+using prdx_graphics_editor.modules.WindowHelp;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -216,11 +217,24 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.PasteClipboard();
         }
+        public static void Copy()
+        {
+            Globals.pageCanvasRef.CopyToClipboard();
+        }
 
         public static void CanvasSize()
         {
             Canvas canvas = Globals.pageCanvasRef.mainCanvas;
             WindowCanvasSize.ChangeCanvasSize(canvas);
+        }
+
+        public static void ShowHelp()
+        {
+            WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            window.ShowDialog();
         }
 
         public static void ZoomIncrease()

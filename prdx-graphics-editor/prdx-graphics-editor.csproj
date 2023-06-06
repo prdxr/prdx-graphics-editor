@@ -161,6 +161,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="modules\WindowHelp\WindowHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="modules\WindowProjectCreator\WindowProjectCreator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +175,9 @@
       <DependentUpon>PageZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="modules\utils\UtilityFunctions.cs" />
+    <Compile Include="modules\WindowHelp\WindowHelp.xaml.cs">
+      <DependentUpon>WindowHelp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="modules\WindowProjectCreator\WindowProjectCreator.xaml.cs">
       <DependentUpon>WindowProjectCreator.xaml</DependentUpon>
     </Compile>

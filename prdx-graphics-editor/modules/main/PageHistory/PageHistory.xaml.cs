@@ -11,9 +11,7 @@ using prdx_graphics_editor.modules.actions;
 
 namespace prdx_graphics_editor.modules.main
 {
-    /// <summary>
-    /// Логика взаимодействия для PageHistory.xaml
-    /// </summary>
+
     public partial class PageHistory : Page
     {
         int oldSelection;
@@ -42,11 +40,12 @@ namespace prdx_graphics_editor.modules.main
 
         public void ShowHistory()
         {
-            List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>();
-            ObservableCollection<string> historyList = new ObservableCollection<string>();
+            //List<(object, string, Point)> mergeList = new List<(object, string, Point)>();
+            List<(Shape, string, Point)> mergeList = new List<(Shape, string, Point)>(); ObservableCollection<string> historyList = new ObservableCollection<string>();
             mergeList = mergeList.Concat(Globals.changeHistoryAfter.Reverse()).ToList();
             mergeList = mergeList.Concat(Globals.changeHistoryBefore).ToList();
             
+            //foreach ((object, string, Point) element in mergeList)
             foreach ((Shape, string, Point) element in mergeList)
             {
                 historyList.Add(element.Item2);

@@ -28,6 +28,8 @@
         <RoutedUICommand x:Key="Cut" Text="Вырезать"/>
         <RoutedUICommand x:Key="Copy" Text="Копировать"/>
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
+        <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
+        <RoutedUICommand x:Key="ShowHelp" Text="Вызвать справку"/>
         <RoutedUICommand x:Key="ToolHotkey" Text="Смена инструмента"/>
         <RoutedUICommand x:Key="SwapColors" Text="Поменять местами цвета"/>
         <RoutedUICommand x:Key="CloseApplication" Text="Выход"/>
@@ -51,6 +53,8 @@
         <CommandBinding Command="{StaticResource Cut}" Executed="Cut"/>
         <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
         <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
+        <CommandBinding Command="{StaticResource TogglePanels}" Executed="TogglePanels"/>
+        <CommandBinding Command="{StaticResource ShowHelp}" Executed="ShowHelp"/>
         <CommandBinding Command="{StaticResource ToolHotkey}" Executed="ChangeTool"/>
         <CommandBinding Command="{StaticResource SwapColors}" Executed="SwapColors"/>
         <CommandBinding Command="{StaticResource CloseApplication}" Executed="CloseApplication"/>
@@ -72,6 +76,8 @@
         <KeyBinding Key="X" Modifiers="Ctrl" Command="{StaticResource Cut}"/>
         <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
+        <KeyBinding Key="Tab" Command="{StaticResource TogglePanels}"/>
+        <KeyBinding Key="F1" Command="{StaticResource ShowHelp}"/>
         <KeyBinding Key="Plus" Modifiers="Ctrl" Command="{StaticResource ZoomIncrease}"/>
         <KeyBinding Key="Minus" Modifiers="Ctrl" Command="{StaticResource ZoomDecrease}"/>
         <KeyBinding Key="NumPad0" Modifiers="Ctrl" Command="{StaticResource ZoomReset}"/>
@@ -89,12 +95,12 @@
     </Window.InputBindings>
 
     <Grid x:Name="GridMain" Style="{StaticResource StyleContainersDark}">
-        
-        <ScrollViewer Margin="350,100" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+        <ScrollViewer x:Name="ScrollViewerCanvas" Margin="350,100" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
 
-        <DockPanel x:Name="DockPanelMenu" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
+        <DockPanel x:Name="DockPanelTop" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
                     <Setter Property="Background" Value="black" />
@@ -129,13 +135,12 @@
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryUndo}" InputGestureText="Ctrl+Z"/>
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryRedo}" InputGestureText="Ctrl+Y"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" InputGestureText="Ctrl+X"/>
-                        <MenuItem Foreground="Black" InputGestureText="Ctrl+C"/>
-                        <MenuItem Foreground="Black" InputGestureText="Ctrl+V"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource Cut}" InputGestureText="Ctrl+X"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource Copy}" InputGestureText="Ctrl+C"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource Paste}" InputGestureText="Ctrl+V"/>
                     </MenuItem>
-                    <MenuItem x:Name="MenuItemSelect" Style="{StaticResource StyleDark2}" Header="Выделение" VerticalAlignment="Stretch">
-                        <MenuItem Foreground="Black" Command="{StaticResource SelectAll}" InputGestureText="Ctrl+A"/>
-                        <MenuItem Foreground="Black" Command="{StaticResource SelectionReset}" InputGestureText="Ctrl+Shift+A"/>
+                    <MenuItem x:Name="mainMenuHelp" Style="{StaticResource StyleDark2}" Header="Справка" VerticalAlignment="Stretch">
+                        <MenuItem Foreground="Black" Header="Вызвать справку" Command="{StaticResource ShowHelp}" InputGestureText="F1"/>
                     </MenuItem>
                 </Menu>
             </Border>
