@@ -28,15 +28,5 @@ namespace prdx_graphics_editor.modules.colorPicker.WindowColorPicker
         {
             Close();
         }
-
-        private void OnMouseEnterStyle(object sender, MouseEventArgs e)
-        {
-            (sender as Button).Foreground = Globals.colorTextDim;
-        }
-
-        private void OnMouseLeaveStyle(object sender, MouseEventArgs e)
-        {
-            (sender as Button).Foreground = Globals.appcolorText;
-        }
     }
 }

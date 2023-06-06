@@ -13,7 +13,7 @@ namespace prdx_graphics_editor.modules.actions
 {
     static class Actions
     {
-
+        // Методы установки основного цвета и цвета фона
         public static Color? PickForegroundColor()
         {
             Globals.changingColor = Globals.applicationSettings.primaryColor;
@@ -29,12 +29,12 @@ namespace prdx_graphics_editor.modules.actions
             window.ShowDialog();
             return window.color;
         }
-
+        // Установка активного инструмента
         public static void SetActiveTool(CanvasToolType toolType)
         {
             Globals.pageCanvasRef.SetActiveTool(toolType);
         }
-
+        // Оповещение пользователя в случае наличия несохранённых изменений и ожидание подтверждения/отмены операции
         private static bool CheckBeforeReset()
         {
             if (!Globals.isProjectSaved)
@@ -62,7 +62,7 @@ namespace prdx_graphics_editor.modules.actions
             }
             return true;
         }
-
+        // Создание проекта
         public static int CreateProject()
         {
             if (CheckBeforeReset())
@@ -75,14 +75,14 @@ namespace prdx_graphics_editor.modules.actions
             }
             return 0;
         }
-
+        // Инициализация проекта, вызывается из окна создания проекта
         public static void InitializeProject(int width, int height)
         {
             Globals.pageInfoLineRef.SetCurrentProject();
             Globals.pageCanvasRef.ResetCanvas(width, height);
             Globals.isProjectSaved = true;
         }
-
+        // Открытие проекта, расположение по умолчанию - <папка приложения>/<папка проектов> (задаётся в Globals.cs)
         public static int OpenProject()
         {
             if (CheckBeforeReset())
@@ -107,7 +107,7 @@ namespace prdx_graphics_editor.modules.actions
             }
             return 0;
         }
-
+        // Сохранение проекта. Если проект не найден, вызывается SaveProjectAs()
         public static void SaveProject()
         {
             if (Globals.currentFile == null)
@@ -120,7 +120,7 @@ namespace prdx_graphics_editor.modules.actions
                 Globals.isProjectSaved = true;
             }
         }
-
+        // Сохранение проекта с выбором расположения
         public static void SaveProjectAs()
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();
@@ -137,7 +137,7 @@ namespace prdx_graphics_editor.modules.actions
                 Globals.isProjectSaved = true;
             }
         }
-
+        // Экспорт проекта с выбором расположения
         public static void ExportProject()
         {
             string filename;
@@ -158,7 +158,7 @@ namespace prdx_graphics_editor.modules.actions
                 return;
             }
         }
-
+        // Импорт изображения в качестве проекта
         public static void ImportProject()
         {
             string filename;
@@ -177,7 +177,7 @@ namespace prdx_graphics_editor.modules.actions
                 return;
             }
         }
-
+        // Методы работы с историей изменений
         public static void HistoryUndo()
         {
             Globals.pageCanvasRef.RemoveLastFigure();
@@ -186,7 +186,7 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.ReturnLastFigure();
         }
-
+        // Методы работы с выделением
         public static void SelectAll()
         {
             Globals.pageCanvasRef.SelectAll();
@@ -195,7 +195,7 @@ namespace prdx_graphics_editor.modules.actions
         {
             Globals.pageCanvasRef.SelectClear();
         }
-
+        // Выход из приложения
         public static void CloseApplication(MainWindow caller)
         {
             if (CheckBeforeReset())
@@ -203,31 +203,33 @@ namespace prdx_graphics_editor.modules.actions
                 caller.Close();
             }
         }
-
+        // Установка выбранного инструмента на панели инструментов
         public static void ChangeTool(object sender, ExecutedRoutedEventArgs e)
         {
             Globals.pageToolsRef.ChangeTool(sender, e);
         }
+        // Смена цветов (основной цвет <-> цвет фона)
         public static void SwapColors(object sender, ExecutedRoutedEventArgs e)
         {
             Globals.pageToolsRef.SwapColors(sender, e);
         }
-
+        // Вставка изображения
         public static void Paste()
         {
             Globals.pageCanvasRef.PasteClipboard();
         }
+        // Копирование выделенной области
         public static void Copy()
         {
             Globals.pageCanvasRef.CopyToClipboard();
         }
-
+        // Изменение размеров холста
         public static void CanvasSize()
         {
             Canvas canvas = Globals.pageCanvasRef.mainCanvas;
             WindowCanvasSize.ChangeCanvasSize(canvas);
         }
-
+        // Отображение справки
         public static void ShowHelp()
         {
             WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
@@ -236,17 +238,17 @@ namespace prdx_graphics_editor.modules.actions
             };
             window.ShowDialog();
         }
-
+        // Увеличение коэффициента приближения холста
         public static void ZoomIncrease()
         {
             Globals.pageCanvasRef.ZoomIncrease();
         }
-
+        // Уменьшение коэффициента приближения холста
         public static void ZoomDecrease()
         {
             Globals.pageCanvasRef.ZoomDecrease();
         }
-
+        // Сброс коэффициента приближения холста до 100%
         public static void ZoomReset()
         {
             Globals.pageCanvasRef.SetCanvasZoom(100);

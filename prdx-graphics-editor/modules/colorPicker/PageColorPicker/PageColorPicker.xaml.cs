@@ -7,10 +7,8 @@ using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
 {
-
     public partial class PageColorPicker : Page
     {
-
         private Color? color;
 
         public PageColorPicker()
@@ -22,12 +20,12 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
             PrepareGrid();
             UpdateColors();
         }
-
+        // Получение итогового цвета из HEX поля, вызывается в конце работы окна выбора цвета
         public Color? GetColor()
         {
             return (Color)ColorConverter.ConvertFromString("#" + TextBoxHexInput.Text.ToLower());
         }
-
+        // Матрица стандартных цветов
         private readonly string[,] colorsTable = new string[,] {
             {"#330000", "#331900", "#333300", "#193300", "#003300", "#003319", "#003333", "#001933", "#000033", "#190033", "#330033", "#330019", "#000000"},
             {"#660000", "#663300", "#666600", "#336600", "#006600", "#006633", "#006666", "#003366", "#000066", "#330066", "#660066", "#660033", "#202020"},
@@ -39,9 +37,11 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
             {"#FF9999", "#FFCC99", "#FFFF99", "#CCFF99", "#99FF99", "#99FFCC", "#99FFFF", "#99CCFF", "#9999FF", "#CC99FF", "#FF99FF", "#FF99CC", "#E0E0E0"},
             {"#FFCCCC", "#FFE5CC", "#FFFFCC", "#E5FFCC", "#CCFFCC", "#CCFFE5", "#CCFFFF", "#CCE5FF", "#CCCCFF", "#E5CCFF", "#FFCCFF", "#FFCCE5", "#FFFFFF"}
         };
+        // Маски допустимых символов для HEX и RGB полей
         private readonly Regex RegexHexColorString = new Regex("^[a-fA-F0-9]{6,6}$");
         private readonly Regex RegexRgbColorNumber = new Regex ("^[0-9]{1,3}$");
 
+        // Обновление значений всех элементов, отображающих текущий цвет, в соответствии с сохранённым значением цвета
         private void UpdateColors()
         {
             RectangleCurrentColor.Fill = new SolidColorBrush((Color)color);
@@ -52,6 +52,7 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
             TextBoxInputB.Text = newColor.B.ToString();
         }
 
+        // Инициализация палитры стандартных цветов
         private void PrepareGrid()
         {
             int rowsCount = colorsTable.GetLength(0);
@@ -87,6 +88,7 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
 
         }
 
+        // Установка цвета из палитры стандартных цветов
         private void SetColorFromTable(object sender, MouseButtonEventArgs e)
         {
             int row = Grid.GetRow((DockPanel)sender);
@@ -99,13 +101,13 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
             TextBoxInputG.Text = newColor.G.ToString();
             TextBoxInputB.Text = newColor.B.ToString();
         }
-
+        // Проверка ввода, установка красного фона у поля с некорректным значением, запрет или разрешение изменений
         private void SetInputValid(TextBox textBox, bool isValid)
         {
             textBox.Background = !isValid ? Brushes.DarkRed : Globals.appcolorAccent1;
             Globals.windowColorPickerRef.ButtonApply.IsEnabled = isValid;
         }
-
+        // Проверка значений в поле HEX при любом изменении
         private void OnKeyPressHex(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
@@ -117,7 +119,7 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
                 UpdateColors();
             }
         }
-
+        // Проверка значений в полях RGB при любом изменении
         private void OnKeyPressRgb(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = sender as TextBox;

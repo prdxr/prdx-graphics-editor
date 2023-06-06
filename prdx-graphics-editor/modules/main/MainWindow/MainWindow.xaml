@@ -10,6 +10,7 @@
         MinWidth="800" MinHeight="600" 
         WindowState="Maximized">
     
+    <!--Создание объектов команд-->
     <Window.Resources>
         <RoutedUICommand x:Key="CreateProject" Text="Создать проект"/>
         <RoutedUICommand x:Key="OpenProject" Text="Открыть проект"/>
@@ -25,7 +26,6 @@
         <RoutedUICommand x:Key="ZoomReset" Text="Актуальный масштаб"/>
         <RoutedUICommand x:Key="SelectAll" Text="Выделить всё"/>
         <RoutedUICommand x:Key="SelectionReset" Text="Снять выделение"/>
-        <RoutedUICommand x:Key="Cut" Text="Вырезать"/>
         <RoutedUICommand x:Key="Copy" Text="Копировать"/>
         <RoutedUICommand x:Key="Paste" Text="Вставить"/>
         <RoutedUICommand x:Key="TogglePanels" Text="Скрыть/показать боковые панели"/>
@@ -35,6 +35,7 @@
         <RoutedUICommand x:Key="CloseApplication" Text="Выход"/>
     </Window.Resources>
 
+    <!--Привязка объектам команд соответствующих методов-->
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource CreateProject}" Executed="CreateProject"/>
         <CommandBinding Command="{StaticResource OpenProject}" Executed="OpenProject"/>
@@ -50,7 +51,6 @@
         <CommandBinding Command="{StaticResource HistoryRedo}" Executed="HistoryRedo"/>
         <CommandBinding Command="{StaticResource SelectAll}" Executed="SelectAll"/>
         <CommandBinding Command="{StaticResource SelectionReset}" Executed="SelectionReset"/>
-        <CommandBinding Command="{StaticResource Cut}" Executed="Cut"/>
         <CommandBinding Command="{StaticResource Copy}" Executed="Copy"/>
         <CommandBinding Command="{StaticResource Paste}" Executed="Paste"/>
         <CommandBinding Command="{StaticResource TogglePanels}" Executed="TogglePanels"/>
@@ -60,6 +60,7 @@
         <CommandBinding Command="{StaticResource CloseApplication}" Executed="CloseApplication"/>
     </Window.CommandBindings>
 
+    <!--Привязка объектам команд сочетаний горячих клавиш-->
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource CreateProject}"/>
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource OpenProject}"/>
@@ -73,7 +74,6 @@
         <KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource HistoryRedo}"/>
         <KeyBinding Key="A" Modifiers="Ctrl" Command="{StaticResource SelectAll}"/>
         <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{StaticResource SelectionReset}"/>
-        <KeyBinding Key="X" Modifiers="Ctrl" Command="{StaticResource Cut}"/>
         <KeyBinding Key="C" Modifiers="Ctrl" Command="{StaticResource Copy}"/>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource Paste}"/>
         <KeyBinding Key="Tab" Command="{StaticResource TogglePanels}"/>
@@ -91,16 +91,18 @@
         <KeyBinding Key="T" Command="{StaticResource ToolHotkey}" CommandParameter="7"/>
         <KeyBinding Key="L" Command="{StaticResource ToolHotkey}" CommandParameter="8"/>
         <KeyBinding Key="A" Command="{StaticResource ToolHotkey}" CommandParameter="9"/>
+        <KeyBinding Key="H" Command="{StaticResource ToolHotkey}" CommandParameter="10"/>
         <KeyBinding Key="X" Command="{StaticResource SwapColors}"/>
     </Window.InputBindings>
 
+    <!--Главный контейнер страницы-->
     <Grid x:Name="GridMain" Style="{StaticResource StyleContainersDark}">
 
         <ScrollViewer x:Name="ScrollViewerCanvas" Margin="350,100" CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Frame x:Name="FrameCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True"/>
         </ScrollViewer>
         
-        <!--Верхняя панель: выпадающее меню - файл, правка, выделение и справка-->
+        <!--Верхняя панель: выпадающее меню - файл, правка, вид, выделение и справка-->
         <DockPanel x:Name="DockPanelTop" HorizontalAlignment="Stretch" Height="20" LastChildFill="True" VerticalAlignment="Top">
             <DockPanel.Resources>
                 <Style x:Key="MenuStyle" TargetType="{x:Type MenuItem}">
@@ -117,7 +119,7 @@
                         <MenuItem Foreground="Black" Command="{StaticResource OpenProject}" InputGestureText="Ctrl+O"/>
                         <Separator/>
                         <MenuItem Foreground="Black" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S"/>
-                        <MenuItem Foreground="Black" Command="{StaticResource SaveProjectAs}" InputGestureText="Ctrl+Shift+N"/>
+                        <MenuItem Foreground="Black" Command="{StaticResource SaveProjectAs}" InputGestureText="Ctrl+Shift+S"/>
                         <Separator/>
                         <MenuItem Foreground="Black" Command="{StaticResource ImportProject}" InputGestureText="Ctrl+I"/>
                         <MenuItem Foreground="Black" Command="{StaticResource ExportProject}" InputGestureText="Ctrl+E"/>
@@ -130,7 +132,6 @@
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryUndo}" InputGestureText="Ctrl+Z"/>
                         <MenuItem Foreground="Black" Command="{StaticResource HistoryRedo}" InputGestureText="Ctrl+Y"/>
                         <Separator/>
-                        <MenuItem Foreground="Black" Command="{StaticResource Cut}" InputGestureText="Ctrl+X"/>
                         <MenuItem Foreground="Black" Command="{StaticResource Copy}" InputGestureText="Ctrl+C"/>
                         <MenuItem Foreground="Black" Command="{StaticResource Paste}" InputGestureText="Ctrl+V"/>
                     </MenuItem>

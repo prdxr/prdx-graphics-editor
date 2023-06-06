@@ -84,11 +84,6 @@ namespace prdx_graphics_editor
             Actions.HistoryRedo();
         }
 
-        private void Cut(object sender, ExecutedRoutedEventArgs e)
-        {
-            //Actions.Cut();
-        }
-
         private void Copy(object sender, ExecutedRoutedEventArgs e)
         {
             Actions.Copy();
@@ -124,6 +119,7 @@ namespace prdx_graphics_editor
             Actions.ShowHelp();
         }
 
+        // Сокрытие или отображение боковых панелей. Режим скрытых панелей удобнее при низком разрешении монитора
         private void TogglePanels(object sender, ExecutedRoutedEventArgs e)
         {
             if (DockPanelLeftScroll.Width == 0)

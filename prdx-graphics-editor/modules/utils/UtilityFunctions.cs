@@ -9,6 +9,7 @@ using System.Windows.Media;
 
 namespace prdx_graphics_editor.modules.utils
 {
+    // Статический класс, содержащий функции, часто используемые в множестве классов
     public static class UtilityFunctions
     {
         public static bool CheckInputValidity(TextBox sender, Regex mask, SolidColorBrush baseColor)

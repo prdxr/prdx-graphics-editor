@@ -11,11 +11,11 @@ using System.Windows.Shapes;
 using System.Windows.Markup;
 using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.actions;
-using System.Runtime.Remoting.Channels;
+using System.Collections.Generic;
 
 namespace prdx_graphics_editor.modules.canvas.PageCanvas
 {
-
+    // Перечисляемый тип для инструментов
     public enum CanvasToolType
     {
         ToolPencil,
@@ -28,23 +28,25 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         ToolTriangle,
         ToolLine,
         ToolArrow,
-        ToolHand,
-        ToolRotate,
-        ToolSize
+        ToolHand
     }
 
     public partial class PageCanvas : Page
     {
-        CanvasToolType activeTool;
-        Rectangle selectionRectangle;
+        private CanvasToolType activeTool;
+        private readonly Rectangle selectionRectangle;
         public bool isEmpty;
         public event EventHandler OnFiguresChanged;
         public event EventHandler OnZoomChanged;
-        Point handOffset;
-        bool isPlacingFigure = false;
-        double[] selectionDashes = { 10, 5 };
-        bool mousePressedOnCanvas = false;
-        string[] CanvasToolDescription = new string[]
+
+        private Point handOffset;
+        private bool isPlacingFigure = false;
+        private readonly double[] selectionDashes = { 10, 5 };
+        private Point canvasPointer = new Point();
+        private bool mousePressedOnCanvas = false;
+
+        // Названия инструментов
+        readonly string[] CanvasToolDescription = new string[]
             {
                 "Карандаш",
                 "Кисть",
@@ -56,9 +58,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 "Треугольник",
                 "Прямая",
                 "Стрелка",
-                "Рука",
-                "Вращение",
-                "Масштаб"
+                "Рука"
             };
 
         // Координаты точек области прямоугольного выделения
@@ -76,23 +76,25 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public const int ZOOM_PERCENT_DEFAULT = 100;        // значение масштаба по умолчанию
 
         // Константы, определяющие форму и размер стрелок
-        const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
-        const double ARROW_BODY_LENGTH_MIN = 5;     // минимальная длина тела стрелки
-        const double ARROW_CAP_WIDTH = 60;          // ширина наконечника стрелки
-        const double ARROW_CAP_LENGTH = 30;         // длина наконечника стрелки
+        private const double ARROW_BODY_WIDTH = 20;         // ширина тела стрелки
+        private const double ARROW_BODY_LENGTH_MIN = 5;     // минимальная длина тела стрелки
+        private const double ARROW_CAP_WIDTH = 60;          // ширина наконечника стрелки
+        private const double ARROW_CAP_LENGTH = 30;         // длина наконечника стрелки
 
         double canvasZoom = 100;
-        ScaleTransform canvasScaleTransform = new ScaleTransform();
+        readonly ScaleTransform canvasScaleTransform = new ScaleTransform();
 
-        MouseButtonEventHandler OnFigureMouseDown;
-        MouseButtonEventHandler OnFigureMouseUp;
-        MouseEventHandler OnFigureMouseEnter;
-        MouseEventHandler OnFigureMouseLeave;
+        // Обработчики событий для фигур
+        readonly MouseButtonEventHandler OnFigureMouseDown;
+        readonly MouseButtonEventHandler OnFigureMouseUp;
+        readonly MouseEventHandler OnFigureMouseEnter;
+        readonly MouseEventHandler OnFigureMouseLeave;
 
         public PageCanvas()
         {
             InitializeComponent();
-
+            
+            //При запуске холст пуст
             isEmpty = true;
             activeTool = Globals.applicationSettings.activeTool;
 
@@ -104,10 +106,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             // Инициализация прямоугольника выделения
             selectionPoints = (new Point(0, 0), new Point(0, 0));
-            selectionRectangle = new Rectangle();
-            selectionRectangle.Fill = new SolidColorBrush(Colors.Transparent);
-            selectionRectangle.Stroke = new SolidColorBrush(Colors.Black);
-            selectionRectangle.StrokeDashArray = new DoubleCollection(selectionDashes);
+            selectionRectangle = new Rectangle
+            {
+                Fill = new SolidColorBrush(Colors.Transparent),
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeDashArray = new DoubleCollection(selectionDashes)
+            };
 
             selectionRectangle.MouseDown += OnFigureMouseDown;
             selectionRectangle.MouseUp += OnFigureMouseUp;
@@ -126,35 +130,40 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             currentLine = null;
             lastShape = null;
             selectedShape = null;
-
-            OnFigureMouseDown = new MouseButtonEventHandler(FigureMouseDown);
-            OnFigureMouseUp = new MouseButtonEventHandler(FigureMouseUp);
         }
 
+        // Событие нажатия ЛКМ по фигуре
         private void FigureMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (true || sender == lastShape)
-            {
-                UIElement trueSender = sender as UIElement;
+            UIElement trueSender = sender as UIElement;
 
-                // Захватываем фокус мыши
-                Mouse.Capture(trueSender);
-
-                handOffset = e.GetPosition(trueSender);
+            // Захват фокуса мыши
+            Mouse.Capture(trueSender);
             
-                if (sender is Polygon && (sender as Polygon).Points.ToList().Count == 7)
-                {
-                    Point cursor = e.GetPosition(mainCanvas);
-                    handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
-                }
+            // При использовании инструмента "Рука" объект становится полупрозрачным для большего удобства пользователя
+            if (activeTool == CanvasToolType.ToolHand)
+            {
+                trueSender.Opacity = 0.5;
+            }
 
-                if (sender == selectionRectangle && activeTool == CanvasToolType.ToolFill)
-                {
-                    FillSelection(sender);
+            // Отступ относительно начала координат фигуры - для перетаскивания рукой за место захвата
+            handOffset = e.GetPosition(trueSender);
+
+            // Особый случай для стрелок
+            if (sender is Polygon && (sender as Polygon).Points.ToList().Count == 7)
+            {
+                Point cursor = e.GetPosition(mainCanvas);
+                handOffset = new Point(cursor.X - Canvas.GetLeft(trueSender), cursor.Y - Canvas.GetTop(trueSender));
+            }
+
+            // Заливка области выделения
+            if (sender == selectionRectangle && activeTool == CanvasToolType.ToolFill)
+            {
+                FillSelection();
             }
         }
-        }
 
+        // Событие захода мыши на фигуру, смена курсора в зависимости от инструмента
         private void FigureMouseEnter(object sender, MouseEventArgs e)
         {
             if (activeTool == CanvasToolType.ToolFill && sender == selectionRectangle)
@@ -166,6 +175,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Cursor = Cursors.Hand;
             }
         }
+        // Событие выхода мыши с фигуры, смена курсора в зависимости от инструмента
         private void FigureMouseLeave(object sender, MouseEventArgs e)
         {
             if (activeTool == CanvasToolType.ToolFill && sender == selectionRectangle)
@@ -173,12 +183,25 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Cursor = Cursors.No;
                 return;
             }
-            else if (activeTool >= CanvasToolType.ToolHand)
+            else if (activeTool == CanvasToolType.ToolHand)
             {
                 mainCanvas.Cursor = Cursors.Arrow;
             }
         }
+        // Событие отпускания ЛКМ с фигуры, очистка захвата мыши и сброс 
+        private void FigureMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
+            handOffset = new Point(0, 0);
 
+            // Сброс прозрачности
+            if (activeTool == CanvasToolType.ToolHand)
+            {
+                (sender as UIElement).Opacity = 1;
+            }
+        }
+
+        // Смена курсора в зависимости от текущего инструмента
         private void SwitchCursor()
         {
             if (activeTool <= CanvasToolType.ToolEraser)
@@ -199,14 +222,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
-        // Обработчик события отпускания кнопки мыши
-        private void FigureMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            // Освобождаем захваченную мышь
-            Mouse.Capture(null);
-            handOffset = new Point(0, 0);
-        }
 
+        // Сохранение проекта в файл XML с помощью сериализации
         public void SerializeToXML(Canvas canvas, string filename)
         {
             string mystrXAML = XamlWriter.Save(canvas);
@@ -216,6 +233,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             streamwriter.Close();
             filestream.Close();
         }
+        // Открытие проекта в формате XML с помощью десериализации
         public void DeserializeFromXML(string filename)
         {
             ResetCanvas();
@@ -225,6 +243,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
             Canvas deserializedCanvas = XamlReader.Parse(mystrXAML) as Canvas;
 
+            // Изменение размеров mainCanvas в соответствии с размерами десериализованного холста
             mainCanvas.Width = deserializedCanvas.Width;
             mainCanvas.Height = deserializedCanvas.Height;
 
@@ -242,12 +261,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             filestream.Close();
         }
 
+        // Установка текущего инструмента
         public void SetActiveTool(CanvasToolType toolType)
         {
             activeTool = toolType;
             SwitchCursor();
             Globals.applicationSettings.activeTool = activeTool;
 
+            // Выделение сбрасывается при выборе любого инструмента, кроме "Выделение" и "Заливка"
             if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
@@ -255,6 +276,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
+        // Сброс холста
         public void ResetCanvas(int width = 800, int height = 800)
         {
             mainCanvas.Children.Clear();
@@ -274,14 +296,17 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             OnFiguresChanged.Invoke(this, null);
         }
 
-        public void FillSelection(object sender)
+        // Заливка выделенной области
+        public void FillSelection()
         {
             if (selectionRectangle.Width > 0 && selectionRectangle.Height > 0)
             {
-                Rectangle rectangle = new Rectangle();
-                rectangle.Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor);
-                rectangle.Width = selectionRectangle.Width;
-                rectangle.Height = selectionRectangle.Height;
+                Rectangle rectangle = new Rectangle
+                {
+                    Fill = new SolidColorBrush(Globals.applicationSettings.primaryColor),
+                    Width = selectionRectangle.Width,
+                    Height = selectionRectangle.Height
+                };
                 selectionRectangle.Width = 0;
                 selectionRectangle.Height = 0;
 
@@ -292,67 +317,75 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
             }
 
+        // Событие движения мыши по холсту
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
         {
             Point newPosition = e.GetPosition(mainCanvas);
+            // Отображение текущей позиции курсора на информационной строке
             Globals.pageInfoLineRef.SetPointerValues(newPosition);
-            if (!mousePressedOnCanvas || e.LeftButton == MouseButtonState.Released)
+            // Если ЛКМ не нажата, выбран инструмент "Заливка" или в данный момент не производится рисование фигуры, выход из метода
+            if (!mousePressedOnCanvas || e.LeftButton == MouseButtonState.Released || activeTool == CanvasToolType.ToolFill)
             {
                 return;
             }
 
             if (activeTool == CanvasToolType.ToolHand)
             {
-                // Проверяем, захвачена ли мышь
+                // Проверка захвата мыши
                 if (Mouse.Captured is UIElement capturedElement)
                 {
-
-                    // Обновляем позицию фигуры на Canvas
+                    // Обновление позиции фигуры относительно холста
                     Canvas.SetLeft(capturedElement, newPosition.X - handOffset.X);
                     Canvas.SetTop(capturedElement, newPosition.Y - handOffset.Y);
                 }
             }
-
             else if (activeTool <= CanvasToolType.ToolEraser)
             {
+                // Отдельный метод для инструментов рисования от руки: "Карандаш", "Кисть", "Ластик"
                 OnCanvasMouseMoveDraw(sender, e, currentLine);
             }
             else
             {
+                // Отдельный метод для инструментов работы с фигурами
                 OnCanvasMouseMoveFigureMode(sender, e);
             }
         }
 
-        Point canvasPointer = new Point();
+        // Метод обработки движения мыши по холсту при рисовании от руки
         private void OnCanvasMouseMoveDraw(object sender, MouseEventArgs e, Polyline line)
         {
-            Canvas canvas = (Canvas)sender;
-
             canvasPointer = GetCanvasPosition(sender, e);
 
-
+            // Если зажата ЛКМ, текущая точка добавляется к линии
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 line.Points.Add(canvasPointer);
             }
         }
-
+        // Метод обработки движения мыши по холсту при работе с фигурами
         private void OnCanvasMouseMoveFigureMode(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
 
+                // Размеры области выделения
                 double width = Math.Abs(selectionPoints.Item2.X - selectionPoints.Item1.X);
                 double height = Math.Abs(selectionPoints.Item2.Y - selectionPoints.Item1.Y);
 
+                // Сдвиг прямоугольника выделения относительно холста на расстояние до ближайшей точки, позволяет вести выделение в любую сторону
                 Canvas.SetLeft(selectionRectangle, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X));
                 Canvas.SetTop(selectionRectangle, Math.Min(selectionPoints.Item1.Y, selectionPoints.Item2.Y));
-
-
                 selectionRectangle.Width = width;
                 selectionRectangle.Height = height;
 
+                // Цвет предпросмотра - результирующий цвет фигуры с коэффициентом прозрачности 127/255. Позволяет видеть занимаемую область под размещаемой фигурой
+                Color previewColorSecondary = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
+                Color previewColorPrimary = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
+                SolidColorBrush previewBrushSecondary = new SolidColorBrush(previewColorSecondary);
+                SolidColorBrush previewBrushPrimary = new SolidColorBrush(previewColorPrimary);
+
+                // Логика работы для прямоугольников и эллипсов
                 if (activeTool == CanvasToolType.ToolSquare || activeTool == CanvasToolType.ToolCircle)
                 {
                     Canvas.SetLeft(lastShape, Math.Min(selectionPoints.Item1.X, selectionPoints.Item2.X));
@@ -360,26 +393,27 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     lastShape.Width = width;
                     lastShape.Height = height;
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
-                    lastShape.Fill = new SolidColorBrush(previewColor);
-                    lastShape.Stroke = new SolidColorBrush(Colors.Black);
+                    lastShape.Fill = previewBrushSecondary;
+                    lastShape.Stroke = previewBrushPrimary;
+                    lastShape.StrokeThickness = Globals.applicationSettings.borderSize;
                     lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
                 }
+                // Логика работы для прямых линий
                 if (activeTool == CanvasToolType.ToolLine)
                 {
                     (lastShape as Line).X2 = GetCanvasPosition(sender, e).X;
                     (lastShape as Line).Y2 = GetCanvasPosition(sender, e).Y;
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
-                    lastShape.Stroke = new SolidColorBrush(previewColor);
+                    lastShape.Fill = previewBrushPrimary;
+                    lastShape.Stroke = previewBrushSecondary;
                     lastShape.StrokeThickness = Globals.applicationSettings.brushSize;
                 }
+                // Логика работы для стрелок
                 if (activeTool == CanvasToolType.ToolArrow)
                 {
-                    Color previewColor1 = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
-                    Color previewColor2 = Color.FromArgb(127, Globals.applicationSettings.primaryColor.R, Globals.applicationSettings.primaryColor.G, Globals.applicationSettings.primaryColor.B);
-                    lastShape.Fill = new SolidColorBrush(previewColor1);
-                    lastShape.Stroke = new SolidColorBrush(previewColor2);
+                    lastShape.Fill = previewBrushSecondary;
+                    lastShape.Stroke = previewBrushPrimary;
+                    lastShape.StrokeThickness = Globals.applicationSettings.borderSize;
                     double deltaX = selectionPoints.Item2.X - selectionPoints.Item1.X;
                     double deltaY = selectionPoints.Item2.Y - selectionPoints.Item1.Y;
                     double rotateAngleRad = Math.Atan(deltaY / deltaX);
@@ -396,6 +430,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     lastPolygon.Points[6] = new Point(arrowBodyLength * directionSwitch, ARROW_BODY_WIDTH / 2);
                     (lastShape.RenderTransform as RotateTransform).Angle = rotateAngleDeg;
                 }
+                // Логика работы для треугольников
                 if (activeTool == CanvasToolType.ToolTriangle)
                 {
                     Polygon lastPolygon = lastShape as Polygon;
@@ -409,14 +444,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     lastPolygon.Points.Add(point2);
                     lastPolygon.Points.Add(point3);
 
-                    Color previewColor = Color.FromArgb(127, Globals.applicationSettings.secondaryColor.R, Globals.applicationSettings.secondaryColor.G, Globals.applicationSettings.secondaryColor.B);
-                    lastShape.Fill = new SolidColorBrush(previewColor);
-                    lastShape.Stroke = new SolidColorBrush(Colors.Black);
+                    lastShape.Fill = previewBrushSecondary;
+                    lastShape.Stroke = previewBrushPrimary;
                     lastShape.StrokeDashArray = new DoubleCollection(selectionDashes);
+                    lastShape.StrokeThickness = Globals.applicationSettings.borderSize;
                 }
             }
         }
-
+        // Получение положения курсора относительно холста
         public Point GetCanvasPosition(object sender, MouseEventArgs e)
         {
             Canvas canvas = (Canvas)sender;
@@ -427,22 +462,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             canvasPointer.X /= canvasZoom / 100;
             return canvasPointer;
         }
-
+        // Событие нажатия ЛКМ по холсту
         private void OnCanvasMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            // ЛКМ нажата в границах холста, позволяет в дальнейшем продолжить или закончить рисование фигуры при выходе мыши с холста
             mousePressedOnCanvas = true;
-            if (activeTool >= CanvasToolType.ToolHand)
+            // Движение холста инструментом "Рука" не допускается
+            if (activeTool == CanvasToolType.ToolHand && sender is Canvas)
             {
-                if (sender is Canvas)
-                {
-                    return;
-                }
-                selectedShape = sender as Shape;
-                selectedShape.Opacity = 0.5;
                 return;
             }
 
-            if (this.activeTool >= CanvasToolType.ToolSelect && this.activeTool != CanvasToolType.ToolFill)
+            // Выделение изменяется при любом инструменте работы с фигурами, кроме "Заливки"
+            if (activeTool >= CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolFill)
             {
                 selectionPoints.Item1 = GetCanvasPosition(sender, e);
                 selectionPoints.Item2 = GetCanvasPosition(sender, e);
@@ -451,10 +483,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Canvas.SetLeft(selectionRectangle, selectionPoints.Item1.X);
                 Canvas.SetTop(selectionRectangle, selectionPoints.Item1.Y);
             }
-            if (this.activeTool >= CanvasToolType.ToolSquare)
+            // Логика работы алгоритма создания фигур
+            if (activeTool >= CanvasToolType.ToolSquare)
             {
                 isPlacingFigure = true;
-                switch (this.activeTool)
+                switch (activeTool)
                 {
                     case CanvasToolType.ToolSquare:
                         lastShape = new Rectangle();
@@ -503,20 +536,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 }
             }
 
-            if (this.activeTool < CanvasToolType.ToolSelect)
+            // Логика работы алгоритма рисования от руки
+            if (activeTool < CanvasToolType.ToolSelect)
             {
                 canvasPointer = GetCanvasPosition(sender, e);
-                Canvas canvas = (Canvas)sender;
-
-                if (e.GetPosition(this).X > this.Width || e.GetPosition(this).Y > this.Height)
+                if (e.GetPosition(this).X > Width || e.GetPosition(this).Y > Height)
                 {
                     return;
                 }
 
-                currentLine = new Polyline();
-                currentLine.StrokeLineJoin = PenLineJoin.Round;
-                currentLine.StrokeStartLineCap = PenLineCap.Round;
-                currentLine.StrokeEndLineCap = PenLineCap.Round;
+                currentLine = new Polyline
+                {
+                    StrokeLineJoin = PenLineJoin.Round,
+                    StrokeStartLineCap = PenLineCap.Round,
+                    StrokeEndLineCap = PenLineCap.Round
+                };
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 AddNewFigure(currentLine, currentToolDescription, new Point(0, 0));
 
@@ -525,6 +559,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
                 CheckFigureSettings(currentLine);
 
+                // Установка настроек линии в зависимости от выбранного инструмента
                 switch (activeTool)
                 {
                     case CanvasToolType.ToolPencil:
@@ -533,8 +568,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     case CanvasToolType.ToolBrush:
                         currentLine.Stroke = new SolidColorBrush(Globals.applicationSettings.primaryColor);
                         currentLine.SnapsToDevicePixels = false;
-                        BlurEffect blurEffect = new BlurEffect();
-                        blurEffect.Radius = 10;
+                        BlurEffect blurEffect = new BlurEffect
+                        {
+                            Radius = 10
+                        };
                         currentLine.Effect = blurEffect;
                         break;
                     case CanvasToolType.ToolEraser:
@@ -545,13 +582,16 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
         }
 
+        // Проверка выбранных параметров инструмента
         void CheckFigureSettings(Shape targetShape, bool arrowCase = false)
         {
-            if (targetShape.GetType() == typeof(Polyline) && !(arrowCase))
+            // Установка параметров для инструментов рисования от руки
+            if (targetShape.GetType() == typeof(Polyline) && !arrowCase)
             {
                 targetShape.StrokeThickness = Globals.applicationSettings.brushSize;
                 return;
             }
+            // Установка параметров для прямой линии
             else if (targetShape.GetType() == typeof(Line))
             {
                 (targetShape as Line).StrokeThickness = Globals.applicationSettings.brushSize;
@@ -559,7 +599,9 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 return;
             }
 
+            // Удаление пунктира, отображаемого при предпросмотре
             targetShape.StrokeDashArray = null;
+            // Установка параметров для остальных фигур (прямоугольник, эллипс, треугольник, стрелка)
             if (Globals.applicationSettings.enableFigureFill)
             {
                 targetShape.Fill = new SolidColorBrush(Globals.applicationSettings.secondaryColor);
@@ -580,35 +622,44 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
+        // Событие отпускания ЛКМ на холсте
         private void OnCanvasMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            // Если ЛКМ изначально была нажата не на холсте, выход из метода
             if (!mousePressedOnCanvas)
             {
                 return;
             }
             mousePressedOnCanvas = false;
-            string currentToolDescription = CanvasToolDescription[(int)activeTool];
 
+            string currentToolDescription = CanvasToolDescription[(int)activeTool];
+            // Если не было операций рисования, проект не изменён
             if (activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolHand)
             {
                 Globals.isProjectSaved = false;
             }
 
-            if(activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
+            // Сброс выделения при любом инструменте, кроме "Заливки" и "Выделения"
+            if (activeTool < CanvasToolType.ToolSelect || activeTool > CanvasToolType.ToolFill)
             {
                 selectionRectangle.Width = 0;
                 selectionRectangle.Height = 0;
             }
 
-            if (this.activeTool < CanvasToolType.ToolSelect)
+            // Логика работы для инструментов рисования от руки
+            if (activeTool < CanvasToolType.ToolSelect)
             {
+                // Отрисовка точки, если между нажатием и отпусканием ЛКМ не было движения мышью
                 if (currentLine.Points.Count < 2)
                 {
+                    RadialGradientBrush blur = new RadialGradientBrush(Globals.applicationSettings.primaryColor, Colors.Transparent);
                     
-                    Ellipse brushPoint = new Ellipse();
-                    brushPoint.Fill = currentLine.Stroke;
-                    brushPoint.Width = currentLine.StrokeThickness;
-                    brushPoint.Height = currentLine.StrokeThickness;
+                    Ellipse brushPoint = new Ellipse
+                    {
+                        Width = currentLine.StrokeThickness,
+                        Height = currentLine.StrokeThickness
+                    };
+                    brushPoint.Fill = activeTool == CanvasToolType.ToolBrush ? blur : currentLine.Stroke;
                     Point topLeftPoint = new Point(currentLine.Points[0].X - currentLine.StrokeThickness / 2, currentLine.Points[0].Y - currentLine.StrokeThickness / 2);
                     Canvas.SetLeft(brushPoint, topLeftPoint.X);
                     Canvas.SetTop(brushPoint, topLeftPoint.Y);
@@ -620,7 +671,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 currentLine = null;
             }
 
-            if (this.activeTool >= CanvasToolType.ToolSquare && this.activeTool <= CanvasToolType.ToolCircle)
+            // Логика работы для инструментов "Прямоугольник" и "Эллипс"
+            if (activeTool >= CanvasToolType.ToolSquare && activeTool <= CanvasToolType.ToolCircle)
             {
                 CheckFigureSettings(lastShape);
 
@@ -630,7 +682,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
-            else if (this.activeTool == CanvasToolType.ToolLine)
+            // Логика работы для инструмента "Прямая"
+            else if (activeTool == CanvasToolType.ToolLine)
             {
                 CheckFigureSettings(lastShape);
 
@@ -638,8 +691,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
-
-            else if (this.activeTool == CanvasToolType.ToolTriangle)
+            // Логика работы для инструмента "Треугольник"
+            else if (activeTool == CanvasToolType.ToolTriangle)
             {
                 CheckFigureSettings(lastShape);
 
@@ -649,7 +702,8 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
-            else if (this.activeTool == CanvasToolType.ToolArrow)
+            // Логика работы для инструмента "Стрелка"
+            else if (activeTool == CanvasToolType.ToolArrow)
             {
                 CheckFigureSettings(lastShape, true);
 
@@ -659,11 +713,12 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 mainCanvas.Children.Remove(lastShape);
                 AddNewFigure(lastShape, currentToolDescription, topLeftPoint);
             }
-
-            if (this.activeTool != CanvasToolType.ToolSelect)
+            // Если был отрисован любой элемент, кроме выделения, то холст не пустой
+            if (activeTool != CanvasToolType.ToolSelect)
             {
-                this.isEmpty = false;
+                isEmpty = false;
             }
+            // Всем линиям и фигурам (кроме выделения) добавляются обработчики событий фигур
             if (activeTool < CanvasToolType.ToolHand && activeTool != CanvasToolType.ToolSelect && activeTool != CanvasToolType.ToolFill)
             {
                 lastShape.MouseDown += OnFigureMouseDown;
@@ -671,16 +726,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 lastShape.MouseEnter += OnFigureMouseEnter;
                 lastShape.MouseLeave += OnFigureMouseLeave;
             }
-            else if (!(sender is Canvas))
-            {
-                selectedShape.Opacity = 1;
-            }
-
             isPlacingFigure = false;
         }
 
+        // Экспорт холста в графический файл
         public void ExportProject(string exportType, string filename)
         {
+            // Временное сокрытие прямоугольника выделения, чтобы избежать его попадания на рендер
             selectionRectangle.Visibility = Visibility.Hidden;
             Rect rect = new Rect(0, 0, mainCanvas.ActualWidth, mainCanvas.ActualHeight);
 
@@ -704,6 +756,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             using (FileStream fs = new FileStream(filename, FileMode.Create))
             {
                 BitmapEncoder encoder;
+                // Использование соответствующего кодировщика в зависимости от выбранного пользователем формата
                 switch (exportType)
                 {
                     case ".png":
@@ -724,10 +777,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
 
                 encoder.Frames.Add(BitmapFrame.Create(renderBmp));
                 encoder.Save(fs);
+                // Возвращение видимости прямоугольника выделения
                 selectionRectangle.Visibility = Visibility.Visible;
             }
         }
-
+        // Импорт изображений в проект (подразумевает перезапись проекта, для вставки изображений в проект см. PasteClipboard())
         public void ImportToProject(string filename)
         {
             ResetCanvas();
@@ -740,17 +794,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             mainCanvas.Background = brush;
         }
 
+        // Метод добавления фигур на холст с занесением в историю изменений
         public void AddNewFigure(Shape figure, string operationDescription, Point position,  bool isRedo = false)
         {
             mainCanvas.Children.Add(figure);
 
+            // Логика установки координат для линий, прямоугольников и эллипсов
             if (!(figure is Polygon))
             {
                 Canvas.SetLeft(figure, position.X);
                 Canvas.SetTop(figure, position.Y);
             }
+            // Добавление фигуры в стэк применённых изменений
             Globals.changeHistoryBefore.Push((figure, operationDescription, position));
-            
+
+            // В случае нового действия (а не повторного применения правок) необходимо очистить стэк отменённых изменений
             if (!isRedo)
             {
                 Globals.changeHistoryAfter.Clear();
@@ -760,12 +818,15 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 OnFiguresChanged.Invoke(this, null);
             }
         }
+        // Перегрузка метода добавления фигур на холст с занесением в историю изменений. Обрабатывает изображения (Image)
         public void AddNewFigure(Image image, string operationDescription, Point position, bool isRedo = false)
         {
             mainCanvas.Children.Add(image);
 
+            // Добавление фигуры в стэк применённых изменений
             Globals.changeHistoryBefore.Push((image, operationDescription, position));
 
+            // В случае нового действия (а не повторного применения правок) необходимо очистить стэк отменённых изменений
             if (!isRedo)
             {
                 Globals.changeHistoryAfter.Clear();
@@ -776,17 +837,21 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
+        // Удаление последней фигуры с холста с занесением в историю изменений
         public void RemoveLastFigure()
         {
+            // Если отменять нечего, выход из метода
             if (Globals.changeHistoryBefore.Count == 0)
             {
                 return;
             }
+            // Удаление последнего элемента в стэке применённых изменений и получение его параметров
             (object figure, string operationDescription, Point position) = Globals.changeHistoryBefore.Pop();
 
             selectionRectangle.Width = 0;
             selectionRectangle.Height = 0;
 
+            // Разнесение по типам, т.к. Canvas.Children.Remove не принимает класс, объединяющий Shape и Image
             if (figure is Shape)
             {
                 mainCanvas.Children.Remove(figure as Shape);
@@ -795,6 +860,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             {
                 mainCanvas.Children.Remove(figure as Image);
             }
+            // Добавление удалённого объекта в стэк отменённых изменений
             Globals.changeHistoryAfter.Push((figure, operationDescription, position));
 
             if (OnFiguresChanged != null)
@@ -802,13 +868,19 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 OnFiguresChanged.Invoke(this, null);
             }
         }
+        // Возврат последней фигуры на холст с занесением в историю изменений
         public void ReturnLastFigure()
         {
+            // Если возвращать нечего, выход из метода
             if (Globals.changeHistoryAfter.Count == 0)
             {
                 return;
             }
+            // Удаление последнего элемента в стэке отменённых изменений и получение его параметров
             (object figure, string operationDescription, Point position) = Globals.changeHistoryAfter.Pop();
+
+            // Разнесение по типам, т.к. Canvas.Children.Remove не принимает класс, объединяющий Shape и Image
+            // Вызывается собственный метод добавления фигуры (AddNewFigure()), занесение в стэк реализовано в нём
             if (figure is Shape)
             {
                 lastShape = figure as Shape;
@@ -825,11 +897,13 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             }
         }
 
+        // Очистка выделения
         public void SelectClear()
         {
             selectionRectangle.Width = 0;
             selectionRectangle.Height = 0;
         }
+        // Выделение всего холста
         public void SelectAll()
         {
             Canvas.SetTop(selectionRectangle, 0);
@@ -837,19 +911,23 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             selectionRectangle.Width = mainCanvas.ActualWidth;
             selectionRectangle.Height = mainCanvas.ActualHeight;
         }
-
+        // Событие захода мыши на холст
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
+            // Отрисовка фигур "как есть", если ЛКМ была отпущена за границами холста
             if (e.LeftButton == MouseButtonState.Released && activeTool >= CanvasToolType.ToolSquare && isPlacingFigure)
             {
                 OnCanvasMouseUp(sender, null);
             }
         }
+        // Событие выхода мыши с холста
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
+            // Установка "пустого" значения текущего положения курсора относительно холста - на информационной панели выводится "[вне холста]"
             Globals.pageInfoLineRef.SetPointerValues(null);
         }
 
+        // Вставка содержимого буфера обмена. Только изображения
         public void PasteClipboard()
         {
             IDataObject myDataObject = Clipboard.GetDataObject();
@@ -863,8 +941,10 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                     Image image = new Image();
                     Canvas.SetLeft(image, 0);
                     Canvas.SetTop(image, 0);
-                    image.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
-                    image.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+                    image.MouseDown += OnFigureMouseDown;
+                    image.MouseUp += OnFigureMouseUp;
+                    image.MouseEnter += OnFigureMouseEnter;
+                    image.MouseLeave += OnFigureMouseLeave;
                     image.Source = imageSource;
                     AddNewFigure(image, "Вставка", new Point(0, 0));
                 }
@@ -877,13 +957,15 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 Image image = new Image();
                 Canvas.SetLeft(image, 0);
                 Canvas.SetTop(image, 0);
-                image.MouseDown += new MouseButtonEventHandler(FigureMouseDown);
-                image.MouseUp += new MouseButtonEventHandler(FigureMouseUp);
+                image.MouseDown += OnFigureMouseDown;
+                image.MouseUp += OnFigureMouseUp;
+                image.MouseEnter += OnFigureMouseEnter;
+                image.MouseLeave += OnFigureMouseLeave;
                 image.Source = img;
                 AddNewFigure(image, "Вставка", new Point(0, 0));
         }
         }
-
+        // Копирование выделенной области в буфер обмена
         public void CopyToClipboard()
         {
             if (selectionRectangle.Width <= 0 && selectionRectangle.Height <= 0)
@@ -918,28 +1000,20 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 selectionRectangle.Visibility = Visibility.Visible;
             }
         }
-        public void CutToClipboard()
-        {
-            //cut to clipboard
-        }
-
-        public void Rastrize()
-        {
-            //rastrize
-        }
-
+        // Вызов окна изменения размеров холста
         private void OnClickMenuItemCanvasSize(object sender, RoutedEventArgs e)
         {
             Actions.CanvasSize();
         }
-
+        // Получение текущего коэффициента приближения холста
         public double GetCanvasZoom()
         {
             return canvasZoom;
         }
-
+        // Установка коэффициента приближения холста
         public void SetCanvasZoom(double canvasZoom)
         {
+            // Ограничение константами
             if (canvasZoom >= ZOOM_PERCENT_MIN && canvasZoom <= ZOOM_PERCENT_MAX) 
             {
                 this.canvasZoom = canvasZoom;
@@ -962,9 +1036,14 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             SetCanvasZoom(canvasZoom - ZOOM_PERCENT_STEP);
         }
 
+        // Событие движения колёсика мыши
         private void OnCanvasMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (Keyboard.GetKeyStates(Key.LeftCtrl) == KeyStates.Down || Keyboard.GetKeyStates(Key.RightCtrl) == KeyStates.Down) 
+            // Если нажат или зажат левый/правый контрол, происходит зум, зависит от направления движения колёсика
+            KeyStates leftCtrl = Keyboard.GetKeyStates(Key.LeftCtrl);
+            KeyStates rightCtrl = Keyboard.GetKeyStates(Key.RightCtrl);
+            List<KeyStates> allowedStates = new List<KeyStates>() { KeyStates.Down | KeyStates.Toggled, KeyStates.Down, KeyStates.Toggled };
+            if (allowedStates.Contains(leftCtrl) || allowedStates.Contains(rightCtrl))
             {
                 if (e.Delta > 0)
                 {
@@ -974,6 +1053,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 {
                     ZoomDecrease();
                 }
+                return;
             }
         }
 

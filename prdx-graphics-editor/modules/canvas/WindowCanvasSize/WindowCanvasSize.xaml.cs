@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
+using prdx_graphics_editor.modules.utils;
+
 
 namespace prdx_graphics_editor.modules.canvas
 {
 
     public partial class WindowCanvasSize : Window
     {
+        // Маска допустимых элементов в полях ввода. В данном случае - цифры от 0 до 9
+        private static readonly Regex numbersMask = new Regex("^[0-9]+$");
+        // Статический метод вызова окна изменения размеров холста
         public static void ChangeCanvasSize(Canvas canvas)
         {
             WindowCanvasSize window = new WindowCanvasSize();
             window.canvasRef = canvas;
-            window.TextBoxWidth.Text = window.canvasRef.Width.ToString("F0");
-            window.TextBoxHeight.Text = window.canvasRef.Height.ToString("F0");
+            window.heightInput.Text = window.canvasRef.Width.ToString("F0");
+            window.widthInput.Text = window.canvasRef.Height.ToString("F0");
             window.ShowDialog();
         }
 
@@ -23,14 +29,28 @@ namespace prdx_graphics_editor.modules.canvas
             InitializeComponent();
         }
 
-        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        // Проверка значений введённых данных, отключение кнопки применения при некорректных значениях
+        private void checkForNumbers(object sender, TextChangedEventArgs e)
         {
-            canvasRef.Width = Int32.Parse(TextBoxWidth.Text);
-            canvasRef.Height = Int32.Parse(TextBoxHeight.Text);
-            Close();
+            if (!UtilityFunctions.CheckInputValidity(sender as TextBox, numbersMask, Globals.appcolorAccent2) && buttonApply != null)
+            {
+                buttonApply.IsEnabled = false;
+            }
+            else if (buttonApply != null)
+            {
+                buttonApply.IsEnabled = true;
+            }
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        // Применение изменений
+        private void ApplyNewSize(object sender, RoutedEventArgs e)
+        {
+            canvasRef.Width = Convert.ToInt32(widthInput.Text);
+            canvasRef.Height = Convert.ToInt32(heightInput.Text);
+            Close();
+        }
+        // Отмена изменений
+        private void CancelNewSize(object sender, RoutedEventArgs e)
         {
             Close();
         }

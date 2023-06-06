@@ -8,9 +8,6 @@ using System.Windows;
 
 namespace prdx_graphics_editor
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ResourceDictionary themeDictionary => Resources.MergedDictionaries[0];

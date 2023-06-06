@@ -18,11 +18,9 @@ using System.Windows.Shapes;
 
 namespace prdx_graphics_editor.modules.WindowProjectCreator
 {
-    /// <summary>
-    /// Логика взаимодействия для Window1.xaml
-    /// </summary>
     public partial class WindowProjectCreator : Window
     {
+        // Маска разрешённых символов в полях ввода. В данном случае - цифры от 0 до 9
         private static readonly Regex numbersMask = new Regex("^[0-9]+$");
 
         public WindowProjectCreator()
@@ -30,6 +28,7 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
             InitializeComponent();
         }
 
+        // Создание проекта с выбранными значениями ширины и высоты
         private void CreateProject(object sender, RoutedEventArgs e)
         {
             int width = Convert.ToInt32(widthInput.Text);
@@ -38,6 +37,7 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
             Close();
         }
 
+        // Проверка введённых значений при любом изменении полей ввода ширины и высоты
         private void checkForNumbers(object sender, TextChangedEventArgs e)
         {
             if (!UtilityFunctions.CheckInputValidity(sender as TextBox, numbersMask, Globals.appcolorAccent2))
@@ -50,11 +50,12 @@ namespace prdx_graphics_editor.modules.WindowProjectCreator
             }
         }
 
+        // Отмена создания проекта. Закрывает окно
         private void CancelProjectCreation(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
+        // Изменение выбранного проекта. Если оставить поле пустым, проект создан не будет
         private void ChangeProjectPath(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();

@@ -14,8 +14,9 @@
         <DockPanel VerticalAlignment="Top" DockPanel.Dock="Right" HorizontalAlignment="Right">
             <Label Style="{StaticResource StyleDarkNoBackground}" HorizontalAlignment="Center" VerticalAlignment="Center">Текущий проект:</Label>
             <DockPanel VerticalAlignment="Center">
-                  <TextBox Style="{StaticResource StyleDarkNoBackground}" x:Name="textblockCurrentLocation" Text="[path]" IsReadOnly="True" BorderBrush="Transparent"/>
-                  <TextBlock x:Name="textblockUnsavedAsterisk" Text="*" Foreground="Red"/>
+                <TextBox Style="{StaticResource StyleDarkNoBackground}" x:Name="textblockCurrentLocation" Text="[path]" IsReadOnly="True" BorderBrush="Transparent"/>
+                <!--Красная звёздочка означает, что проект не сохранён. Если проект сохранён или вовсе не изменён, звёздочка не будет отображена (Visibility="Hidden")-->
+                <TextBlock x:Name="textblockUnsavedAsterisk" Text="*" Foreground="Red"/>
              </DockPanel>
         </DockPanel>
     </DockPanel>

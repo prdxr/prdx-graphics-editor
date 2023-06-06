@@ -10,10 +10,10 @@
         <Label x:Name="LabelHeader" Content="Масштаб холста" FontSize="24" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource StyleDarkNoBackground}" />
         <Label x:Name="LabelZoom" Content="100%" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource StyleDarkNoBackground}" />
         <DockPanel x:Name="ZoomButtons" HorizontalAlignment="Center">
-            <Button x:Name="ButtonZoomDecrease" DockPanel.Dock="Left" Content="-" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomDecrease_Click" ToolTip="Уменьшить масштаб"/>
-            <Button x:Name="ButtonZoomReset" DockPanel.Dock="Left" Content="1:1" Height="40" Width="60" FontSize="18" Click="ButtonZoomReset_Click" ToolTip="Актуальный масштаб"/>
-            <Button x:Name="ButtonZoomIncrease" DockPanel.Dock="Left" Content="+" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="ButtonZoomIncrease_Click" ToolTip="Увеличить масштаб"/>
+            <Button x:Name="ButtonZoomDecrease" DockPanel.Dock="Left" Content="-" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="DecreaseZoomBy25" ToolTip="Уменьшить масштаб"/>
+            <Button x:Name="ButtonZoomReset" DockPanel.Dock="Left" Content="1:1" Height="40" Width="60" FontSize="18" Click="ResetToDefaultZoom" ToolTip="Актуальный масштаб"/>
+            <Button x:Name="ButtonZoomIncrease" DockPanel.Dock="Left" Content="+" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="IncreaseZoomBy25" ToolTip="Увеличить масштаб"/>
         </DockPanel>
-            <Slider x:Name="SliderZoom" DockPanel.Dock="Bottom" Width="171" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="SliderZoom_ValueChanged" ToolTip="Изменить масштаб"/>
+            <Slider x:Name="SliderZoom" DockPanel.Dock="Bottom" Width="171" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="ChangeZoomSlider" ToolTip="Изменить масштаб"/>
     </StackPanel>
 </Page>

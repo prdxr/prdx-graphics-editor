@@ -28,6 +28,7 @@ namespace prdx_graphics_editor.modules.utils
         public static SolidColorBrush colorTextDim = new SolidColorBrush(applicationSettings.applicationTheme[3]);
 
         public static string _currentFile;
+        // При изменении значения currentFile полученное значение сохраняется в _currentFile и вызывается метод установки текущего проекта в информационной строке
         public static string currentFile
         {
             get
@@ -44,6 +45,7 @@ namespace prdx_graphics_editor.modules.utils
             }
         }
         public static bool _isProjectSaved = true;
+        // При изменении значения isProjectSaved полученное значение сохраняется в _isProjectSaved и вызывается метод установки текущего проекта в информационной строке
         public static bool isProjectSaved
         {
             get

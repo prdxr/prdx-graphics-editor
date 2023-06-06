@@ -7,13 +7,10 @@ using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor.modules.main.PageToolParams
 {
-    /// <summary>
-    /// Логика взаимодействия для ToolParams.xaml
-    /// </summary>
-
     public partial class PageToolParams : Page
     {
-        private readonly Regex allowedMask = new Regex(("^[0-9]+$"));
+        // Маска разрешённых значений для размеров кисти и границы фигур, в данном случае - цифры от 0 до 9
+        private readonly Regex allowedMask = new Regex("^[0-9]+$");
 
         public PageToolParams()
         {
@@ -21,6 +18,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
             GetParamsData();
         }
 
+        // Получение текущих значений всех параметров для отображения актуальных данных
         private void GetParamsData()
         {
             textboxBorderThickness.Text = Globals.applicationSettings.borderSize.ToString();
@@ -49,6 +47,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
             }
         }
 
+        // Методы изменения толщины кисти и толщины границы
         private void ChangeBrushThickness(object sender, TextChangedEventArgs e)
         {
             TextBox trueSender = sender as TextBox;
@@ -77,6 +76,7 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
             }
         }
 
+        // Методы переключения режима рисования фигур. Используются радио-кнопками
         private void UseOnlyBorder(object sender, RoutedEventArgs e)
         {
             Globals.applicationSettings.enableFigureBorder = true;

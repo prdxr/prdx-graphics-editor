@@ -13,7 +13,7 @@
             <TextBox Style="{StaticResource StyleDark2}" x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1920"/>
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-            <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelHeight" HorizontalAlignment="Left" Content="Ширина (px)"/>
+            <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelHeight" HorizontalAlignment="Left" Content="Высота (px)"/>
             <TextBox Style="{StaticResource StyleDark2}" x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="1080"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" Width="300">
@@ -22,7 +22,7 @@
         </DockPanel>
         <DockPanel Height="25" Width="200" DockPanel.Dock="Bottom">
             <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonApply" Width="125" Content="Создать проект" Click="CreateProject"/>
-            <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Content="Отмена" Click="CancelProjectCreation"/>
+            <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Content="Отмена" Click="CancelProjectCreation" IsCancel="true"/>
         </DockPanel>
     </DockPanel>
 </Window>

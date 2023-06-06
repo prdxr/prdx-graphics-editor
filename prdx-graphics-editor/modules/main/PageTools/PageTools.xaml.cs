@@ -12,10 +12,6 @@ using prdx_graphics_editor.modules.utils;
 
 namespace prdx_graphics_editor
 {
-    /// <summary>
-    /// Логика взаимодействия для tools.xaml
-    /// </summary>
-
     public partial class PageTools : Page
     {
         public PageTools()
@@ -27,6 +23,7 @@ namespace prdx_graphics_editor
 
             int currentTool = (int)Globals.applicationSettings.activeTool;
             int count = VisualTreeHelper.GetChildrenCount(GridTools);
+            // Первоначальная установка активного инструмента в таблице инструментов при инициализации страницы
             for (int i = 0; i < count; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(GridTools, i);
@@ -37,7 +34,7 @@ namespace prdx_graphics_editor
                 }
             }
         }
-
+        // Изменение активного инструмента
         public void ChangeTool(object sender, ExecutedRoutedEventArgs e)
         {
             int a = Convert.ToInt32(e.Parameter);
@@ -58,6 +55,7 @@ namespace prdx_graphics_editor
             };
 
             int count = VisualTreeHelper.GetChildrenCount(GridTools);
+            // Поскольку метод может быть вызван нажатием горячих клавиш, повторная установка активного инструмента в таблице инструментов
             for (int i = 0; i < count; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(GridTools, i);
@@ -72,10 +70,11 @@ namespace prdx_graphics_editor
             List<RadioButton> radioButtons = LogicalTreeHelper.GetChildren(GridTools).OfType<RadioButton>().ToList();
             RadioButton selected = radioButtons.FirstOrDefault(x => x.CommandParameter == e.Parameter);
             int index = Array.IndexOf(buttons, selected);
-
+            // Установка инструмента с помощью его числового ID, позже преобразуемового в перечисляемый тип
             Actions.SetActiveTool(toolType);
         }
 
+        // Обрабочтик события изменения цветов, вызывается при изменении цвета фона или основного цвета. Меняет подсказки к кнопкам выбора цвета на соответствующий HEX-код
         public void ChangeColorListener()
         {
             ButtonColorForeground.Background = new SolidColorBrush(Globals.applicationSettings.primaryColor);
@@ -83,7 +82,8 @@ namespace prdx_graphics_editor
             ButtonColorForeground.ToolTip = "Основной цвет: #" + Globals.applicationSettings.primaryColor.ToString().Substring(3);
             ButtonColorBackground.ToolTip = "Фоновый цвет: #" + Globals.applicationSettings.secondaryColor.ToString().Substring(3);
         }
-
+        
+        //Методы изменения основного цвета и цвета фона, а также метод смены цвета
         private void ChangeForegroundColor(object sender, RoutedEventArgs e)
         {
             Color? color = Actions.PickForegroundColor();

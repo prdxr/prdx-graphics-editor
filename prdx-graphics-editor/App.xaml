@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--Подключение библиотеки стилей-->
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
                     </ResourceDictionary.MergedDictionaries>

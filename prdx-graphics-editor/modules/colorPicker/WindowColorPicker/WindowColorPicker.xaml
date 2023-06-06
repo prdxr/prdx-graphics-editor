@@ -14,10 +14,10 @@
         <Frame x:Name="FrameColorPicker" VerticalAlignment="Top" Height="400" HorizontalAlignment="Stretch" Source="..\PageColorPicker\PageColorPicker.xaml"/>
         <DockPanel Width="225" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
             <Button x:Name="ButtonCancel" Style="{StaticResource StyleDarkButton1}" DockPanel.Dock="Right" Width="100" Height="40" Content="Отмена"
-                    Click="OnButtonCancelClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle" IsCancel="true">
+                    Click="OnButtonCancelClick" IsCancel="true">
             </Button>
             <Button x:Name="ButtonApply" Style="{StaticResource StyleDarkButton1}" DockPanel.Dock="Right" Width="100" Height="40" Content="Применить"
-                    Click="OnButtonApplyClick" MouseEnter="OnMouseEnterStyle" MouseLeave="OnMouseLeaveStyle">
+                    Click="OnButtonApplyClick">
             </Button>
         </DockPanel>
     </Grid>

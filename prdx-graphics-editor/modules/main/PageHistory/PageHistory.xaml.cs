@@ -33,26 +33,28 @@ namespace prdx_graphics_editor.modules.main
             Actions.HistoryRedo();
         }
 
+        // Событие изменения фигур. Вызывает метод компиляции и отображения истории изменений
         public void OnFiguresChanged(object sender, EventArgs e)
         {
             ShowHistory();
         }
-
+        // Компиляция и отображение истории изменений на соответствующей панели
         public void ShowHistory()
         {
-            //List<(object, string, Point)> mergeList = new List<(object, string, Point)>();
+            // Сначала в пустой лист добавляются элементы стэка отменённых изменений в обратном порядке, далее - элементы стэка применённых изменений в обычном порядке
             List<(object, string, Point)> mergeList = new List<(object, string, Point)>(); ObservableCollection<string> historyList = new ObservableCollection<string>();
             mergeList = mergeList.Concat(Globals.changeHistoryAfter.Reverse()).ToList();
             mergeList = mergeList.Concat(Globals.changeHistoryBefore).ToList();
             
-            //foreach ((object, string, Point) element in mergeList)
+            // Список historyList отображает только текстовые описания действий, в отличие от изначального mergeList, хранящего помимо описания сам объект и его положение
             foreach ((object, string, Point) element in mergeList)
             {
                 historyList.Add(element.Item2);
             }
-            
+            // Добавление полученного списка в контрол ListView
             HistoryListView.ItemsSource = historyList;
             int currentIndex = Globals.changeHistoryBefore.Count;
+            // Если отменённых изменений нет, то сброс выделения ListView, проект в таком случае не имеет правок, а значит сохранён
             if (currentIndex == 0)
             {
                 HistoryListView.UnselectAll();
@@ -65,18 +67,16 @@ namespace prdx_graphics_editor.modules.main
                 Globals.isProjectSaved = false;
             }
         }
-
+        // При двойном нажатии ЛКМ по любому элементу ListView производится переход до выбранного действия
         private void GoToSelectedAction(object sender, MouseButtonEventArgs e)
         {
             targetSelection = (sender as ListView).SelectedIndex;
             while (oldSelection > targetSelection)
             {
-                Console.WriteLine($"selection > index -- {oldSelection} {targetSelection}");
                 Actions.HistoryRedo();
             }
             while (oldSelection < targetSelection)
             {
-                Console.WriteLine($"selection < index -- {oldSelection} {targetSelection}");
                 Actions.HistoryUndo();
             }
         }
