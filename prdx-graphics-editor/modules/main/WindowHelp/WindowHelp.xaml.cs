@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
-namespace prdx_graphics_editor.modules.WindowHelp
+namespace prdx_graphics_editor.modules.main.WindowHelp
 {
     public partial class WindowHelp : Window
     {

@@ -7,6 +7,8 @@ using prdx_graphics_editor.modules.canvas;
 using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
+using prdx_graphics_editor.modules.main.WindowProjectCreator;
+using prdx_graphics_editor.modules.main.WindowHelp;
 
 namespace prdx_graphics_editor.modules.actions
 {
@@ -66,7 +68,7 @@ namespace prdx_graphics_editor.modules.actions
         {
             if (CheckBeforeReset())
             {
-                var window = new WindowProjectCreator.WindowProjectCreator()
+                var window = new WindowProjectCreator()
                 {
                     WindowStartupLocation = WindowStartupLocation.CenterScreen
                 };
@@ -231,7 +233,7 @@ namespace prdx_graphics_editor.modules.actions
         // Отображение справки
         public static void ShowHelp()
         {
-            WindowHelp.WindowHelp window = new WindowHelp.WindowHelp
+            WindowHelp window = new WindowHelp
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };

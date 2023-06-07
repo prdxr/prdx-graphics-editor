@@ -1,12 +1,12 @@
-﻿using prdx_graphics_editor.modules.actions;
-using prdx_graphics_editor.modules.utils;
-using System;
+﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using prdx_graphics_editor.modules.actions;
+using prdx_graphics_editor.modules.utils;
 
-namespace prdx_graphics_editor.modules.WindowProjectCreator
+namespace prdx_graphics_editor.modules.main.WindowProjectCreator
 {
     public partial class WindowProjectCreator : Window
     {
