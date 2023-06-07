@@ -73,7 +73,7 @@
                 </RadioButton>
                 <RadioButton Grid.Row="2" Grid.Column="0" x:Name="buttonHand" Background="Transparent" Style="{StaticResource {x:Type ToggleButton}}" ToolTip="Рука"
                              Command="{StaticResource ToolHotkey}" CommandParameter="10">
-                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/arrow.png"/>
+                    <Image Margin="2" Stretch="Fill" Source="/modules/main/PageTools/icons/hand.png"/>
                 </RadioButton>
             </Grid>
             <Grid x:Name="GridColors" Style="{StaticResource StyleContainersDark}" DockPanel.Dock="Top" Width="125" Height="50" >

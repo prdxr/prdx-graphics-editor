@@ -232,5 +232,8 @@
   <ItemGroup>
     <Resource Include="chili.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="modules\main\PageTools\icons\hand.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
