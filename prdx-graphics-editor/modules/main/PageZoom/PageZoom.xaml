@@ -14,6 +14,6 @@
             <Button x:Name="ButtonZoomReset" DockPanel.Dock="Left" Content="1:1" Height="40" Width="60" FontSize="18" Click="ResetToDefaultZoom" ToolTip="Актуальный масштаб"/>
             <Button x:Name="ButtonZoomIncrease" DockPanel.Dock="Left" Content="+" Height="40" Width="40" FontSize="14" FontWeight="Bold" Click="IncreaseZoomBy25" ToolTip="Увеличить масштаб"/>
         </DockPanel>
-            <Slider x:Name="SliderZoom" DockPanel.Dock="Bottom" Width="171" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="ChangeZoomSlider" ToolTip="Изменить масштаб"/>
+            <Slider x:Name="SliderZoom" DockPanel.Dock="Bottom" Width="171" Margin="0,10" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="ChangeZoomSlider" ToolTip="Изменить масштаб"/>
     </StackPanel>
 </Page>

@@ -23,8 +23,8 @@
                 </DockPanel>
             </StackPanel>
             <DockPanel Grid.Row="1" Height="25" Width="200" VerticalAlignment="Top">
-                <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonApply" Width="150" Content="Изменить размер холста" Click="ApplyNewSize"/>
-                <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Content="Отмена" Click="CancelNewSize" IsCancel="true"/>
+                <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonApply" Width="75" DockPanel.Dock="Left" Content="Изменить" Click="ApplyNewSize"/>
+                <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Width="75" DockPanel.Dock="Right" Content="Отмена" Click="CancelNewSize" IsCancel="true"/>
             </DockPanel>
         </Grid>
     </Grid>
