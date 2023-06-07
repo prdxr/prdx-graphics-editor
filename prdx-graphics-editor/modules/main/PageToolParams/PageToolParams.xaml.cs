@@ -52,28 +52,27 @@ namespace prdx_graphics_editor.modules.main.PageToolParams
         {
             TextBox trueSender = sender as TextBox;
 
-            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1))
+            if (!UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1) || trueSender.Text[0] == '0')
             {
-                int newSize = Convert.ToInt32((sender as TextBox).Text);
+                trueSender.Background = Brushes.DarkRed;
+                return;
 
-                Globals.applicationSettings.brushSize = newSize;
             }
+            int newSize = Convert.ToInt32((sender as TextBox).Text);
+            Globals.applicationSettings.brushSize = newSize;
         }
         private void ChangeBorderThickness(object sender, TextChangedEventArgs e)
         {
             TextBox trueSender = sender as TextBox;
 
-            if (trueSender.Text[0] == '0')
+            if (!UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1) || trueSender.Text[0] == '0')
             {
                 trueSender.Background = Brushes.DarkRed;
                 return;
-            }
 
-            if (UtilityFunctions.CheckInputValidity(trueSender, allowedMask, Globals.appcolorAccent1))
-            {
-                int newSize = Convert.ToInt32((sender as TextBox).Text);
-                Globals.applicationSettings.borderSize = newSize;
             }
+            int newSize = Convert.ToInt32((sender as TextBox).Text);
+            Globals.applicationSettings.borderSize = newSize;
         }
 
         // Методы переключения режима рисования фигур. Используются радио-кнопками

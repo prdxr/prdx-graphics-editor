@@ -127,9 +127,13 @@ namespace prdx_graphics_editor.modules.colorPicker.PageColorPicker
             {
                 return;
             }
-            bool isValid = !(textBox.Text.Length == 0 
-                || !UtilityFunctions.CheckInputValidity(textBox, RegexRgbColorNumber, Globals.appcolorAccent1) 
+            bool isValid = true;
+
+            isValid = !(textBox.Text.Length == 0
+                || !UtilityFunctions.CheckInputValidity(textBox, RegexRgbColorNumber, Globals.appcolorAccent1)
                 || Convert.ToInt32(textBox.Text) > 255 || Convert.ToInt32(textBox.Text) < 0);
+
+
             SetInputValid(textBox, isValid);
             if (isValid)
             {

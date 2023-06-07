@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Collections.Generic;
 using prdx_graphics_editor.modules.main;
@@ -25,9 +24,8 @@ namespace prdx_graphics_editor.modules.utils
         public static SolidColorBrush appcolorAccent1 = new SolidColorBrush(applicationSettings.applicationTheme[0]);
         public static SolidColorBrush appcolorAccent2 = new SolidColorBrush(applicationSettings.applicationTheme[1]);
         public static SolidColorBrush appcolorText = new SolidColorBrush(applicationSettings.applicationTheme[2]);
-        public static SolidColorBrush colorTextDim = new SolidColorBrush(applicationSettings.applicationTheme[3]);
 
-        public static string _currentFile;
+        private static string _currentFile;
         // При изменении значения currentFile полученное значение сохраняется в _currentFile и вызывается метод установки текущего проекта в информационной строке
         public static string currentFile
         {
@@ -44,7 +42,7 @@ namespace prdx_graphics_editor.modules.utils
                 }
             }
         }
-        public static bool _isProjectSaved = true;
+        private static bool _isProjectSaved = true;
         // При изменении значения isProjectSaved полученное значение сохраняется в _isProjectSaved и вызывается метод установки текущего проекта в информационной строке
         public static bool isProjectSaved
         {

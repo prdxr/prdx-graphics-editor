@@ -7,7 +7,6 @@ using prdx_graphics_editor.modules.canvas;
 using prdx_graphics_editor.modules.utils;
 using prdx_graphics_editor.modules.canvas.PageCanvas;
 using prdx_graphics_editor.modules.colorPicker.WindowColorPicker;
-using prdx_graphics_editor.modules.WindowHelp;
 
 namespace prdx_graphics_editor.modules.actions
 {

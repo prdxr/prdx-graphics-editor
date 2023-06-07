@@ -280,12 +280,11 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
         public void ResetCanvas(int width = 800, int height = 800)
         {
             mainCanvas.Children.Clear();
-            ImageBrush brush = new ImageBrush();
             Globals.isProjectSaved = true;
 
             mainCanvas.Width = width;
             mainCanvas.Height = height;
-            mainCanvas.Background = new SolidColorBrush(Colors.White);
+            mainCanvas.Background = Brushes.White;
             selectionPoints = (new Point(0, 0), new Point(0, 0));
             Canvas.SetLeft(selectionRectangle, 0);
             Canvas.SetTop(selectionRectangle, 0);
@@ -315,7 +314,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 string currentToolDescription = CanvasToolDescription[(int)activeTool];
                 AddNewFigure(rectangle, currentToolDescription, new Point(x, y));
             }
-            }
+        }
 
         // Событие движения мыши по холсту
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
@@ -963,7 +962,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
                 image.MouseLeave += OnFigureMouseLeave;
                 image.Source = img;
                 AddNewFigure(image, "Вставка", new Point(0, 0));
-        }
+            }
         }
         // Копирование выделенной области в буфер обмена
         public void CopyToClipboard()
@@ -971,7 +970,7 @@ namespace prdx_graphics_editor.modules.canvas.PageCanvas
             if (selectionRectangle.Width <= 0 && selectionRectangle.Height <= 0)
             {
                 return;
-        }
+            }
             else
             {
                 selectionRectangle.Visibility = Visibility.Hidden;

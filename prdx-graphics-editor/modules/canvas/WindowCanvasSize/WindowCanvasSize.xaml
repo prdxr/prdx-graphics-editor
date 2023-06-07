@@ -5,21 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prdx_graphics_editor.modules.canvas"
         mc:Ignorable="d" Icon="../../../chili.ico"
-        Title="Размер холста" Height="255" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Размер холста" Height="200" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,0,-6">
-        <DockPanel Style="{StaticResource StyleContainersBright}">
-            <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-                <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>
-                <TextBox Style="{StaticResource StyleDark2}" x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="[current width]"/>
-            </DockPanel>
-            <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
-                <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelHeight" HorizontalAlignment="Left" Content="Высота (px)"/>
-                <TextBox Style="{StaticResource StyleDark2}" x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="[current height]"/>
-            </DockPanel>
-            <DockPanel Height="25" Width="200" DockPanel.Dock="Bottom">
+        <Grid Style="{StaticResource StyleContainersBright}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" VerticalAlignment="Center">
+                <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
+                    <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelWidth" HorizontalAlignment="Left" Content="Ширина (px)"/>
+                    <TextBox Style="{StaticResource StyleDark2}" x:Name="widthInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="[current width]"/>
+                </DockPanel>
+                <DockPanel Height="25" Width="200" DockPanel.Dock="Top">
+                    <Label Style="{StaticResource StyleDarkNoBackground}" x:Name="labelHeight" HorizontalAlignment="Left" Content="Высота (px)"/>
+                    <TextBox Style="{StaticResource StyleDark2}" x:Name="heightInput" TextChanged="checkForNumbers" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Width="100" Text="[current height]"/>
+                </DockPanel>
+            </StackPanel>
+            <DockPanel Grid.Row="1" Height="25" Width="200" VerticalAlignment="Top">
                 <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonApply" Width="150" Content="Изменить размер холста" Click="ApplyNewSize"/>
                 <Button Style="{StaticResource StyleDarkButton1}" x:Name="buttonCancel" Content="Отмена" Click="CancelNewSize" IsCancel="true"/>
             </DockPanel>
-        </DockPanel>
+        </Grid>
     </Grid>
 </Window>

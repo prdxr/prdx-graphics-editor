@@ -8,7 +8,6 @@
       Title="PageCanvas">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <!--<Border Background="Aqua" BorderThickness="2"> -->
         <Canvas
                 x:Name="mainCanvas" 
                 Width="800" Height="800"
@@ -19,13 +18,11 @@
                 MouseWheel="OnCanvasMouseWheel"
                 MouseEnter="OnMouseEnter"
                 MouseLeave="OnMouseLeave">
-
             <Canvas.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="MenuItemCanvasSize" Header="Размер холста" Click="OnClickMenuItemCanvasSize"/>
                 </ContextMenu>
             </Canvas.ContextMenu>
-
         </Canvas>
     </Grid>
 </Page>
